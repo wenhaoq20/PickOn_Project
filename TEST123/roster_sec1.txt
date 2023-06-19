@@ -1,0 +1,4 @@
+ID	StudentName	Institution	Major	Email	Reg	GradeMode	SubmittedGrade	FinalGrade
+12345678	Student1, Joe	MAN	Marketing	joe1@hawaii.edu	RW	Letter Plus + Minus		
+87654321	Student2, Joe	MAN	Management Information Systems	joe2@hawaii.edu	RW	Letter Plus + Minus		
+12341234	Student3, Joe 	MAN	Business Administration	joe3@hawaii.edu	RW	Letter Plus + Minus		
