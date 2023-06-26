@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+
+
+
+<body>
+    <script> // Send registration data to server using a form</script>
+
+     <form name="registration_form" action="/registration.html" method="POST">
+
+    <div>
+      <table>
+        <tr>
+          <td>
+            <label for="uname"><b>Email Address</b></label>
+            <input type="text" placeholder="Enter Email Address" name="uname" required>
+          </td>
+        </tr>
+
+        <tr>
+            <td>
+              <label for="name"><b>Full Name</b></label>
+              <input type="text" placeholder="Enter Name" name="uname" required>
+            </td>
+          </tr>
+
+        <tr>
+          <td>
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+          </td>
+        </tr>
+
+        <tr>
+            <td>
+              <label for="psw"><b>Repeat Password</b></label>
+              <input type="password" placeholder="Repeat Password" name="repeat_password" required>
+            </td>
+          </tr>
+
+        <tr>
+          <td>
+            <button type="submit"  class = "login_confirm_button" name="button">Register</button>
+          </td>
+
+          <td>
+            <div class="container" style="background-color:#f1f1f1">
+              <button type="button" class="cancel_button"
+                onclick="window.location.href='./index.html'">Cancel</button>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </form>
+</body>
+</body>
+</html>
