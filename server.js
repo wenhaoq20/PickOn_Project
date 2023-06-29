@@ -32,6 +32,11 @@ app.all('*', function (request, response, next) {
     request.session['login'] = {};
  }
 
+ // initialize a session array to store all the names that are currently logged in 
+ if (typeof request.session['students'] == 'undefined') {
+   request.session['students'] = [];
+}
+
  // set flag, assume user is not logged in; if the session has the username, then change flag to true
  if (typeof request.session.login.username == 'undefined') {
     request.session.login.loggedIn = false;
@@ -50,6 +55,10 @@ var fs = require('fs');
 var filename = __dirname + '/user_data.json';
 var user_data_object_JSON = fs.readFileSync(filename, 'utf-8');
 var user_data = JSON.parse(user_data_object_JSON);
+
+
+
+
 
 
 //route for when users log in; direct to home page if successful
@@ -89,18 +98,29 @@ app.post("/login", function (request, response) {
        if (!request.session.login) {
           request.session.login = {};
        }
- 
+       
+       //store the user's name in the session 
+       request.session.login.name = user_data[username][`name`];
+
+       // push user's name to the end of the session array that stores all name's of those currently logged in 
+       request.session.students.push(request.session.login.name);
+       console.log(request.session.students);
+
        // set the flag to indicate that the user is logged in
        request.session.login.loggedIn = true;
- 
-       // Store the login email in the session
-       request.session.login.username = username;
- 
+
        console.log(request.session.login);
        response.redirect('./index.html');
     }
  });
  
+
+
+
+
+
+
+
  // Registration
  
  //store a 'succesful login' variable that will display when the user successfully creates a new account
@@ -154,8 +174,6 @@ app.post("/login", function (request, response) {
        user_data[username] = {};
        user_data[username].name = request.body.name;
        user_data[username].password = request.body.password;
-       user_data[username].last_login = '';
-       user_data[username].login_count = 0;
        fs.writeFileSync(filename, JSON.stringify(user_data));
  
        // push this to display when the user return to login after successfully registering a new account 
@@ -164,7 +182,7 @@ app.post("/login", function (request, response) {
     } else if (reg_errors.length > 0) {
  
        //make user stay if registration page if there are errors. Pass errors via query string
-       response.redirect('./registration.html?' + querystring.stringify({ ...request.body, reg_errors: `${JSON.stringify(reg_errors)}` }));
+       response.redirect('./registration.html?' + querystring.stringify({reg_errors: `${JSON.stringify(reg_errors)}` }));
     }
  
  });
@@ -173,3 +191,27 @@ app.post("/login", function (request, response) {
  app.get('/registration.html', function (request, response) {
     response.sendFile(__dirname + '/public' + '/registration.html');
  });
+
+
+
+
+// THE FOLLOWING ROUTES PERTAIN TO THE "GROUP" MODE OF THE SOFTWARE
+
+
+ //create a route to validate the group mode of the 
+ app.post('/group_sort', function (request, response) {
+   var group_number = request.body.desired_groups;
+   var errors = []; // an empty array to store validation errors; number of groups must be more than 0 and must not exceed (the number of students currently logged in)/2
+
+   var students = request.session.students.length;
+   if (group_number <= 1){
+      errors.push('Please enter a number greater than 1');
+      response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
+   }if (group_number > (students/2)){
+      errors.push('Students must be sorted into groups of 2 or more'); 
+      response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
+   } else{
+      response.redirect("./index.html")
+   }
+});
+

@@ -8,9 +8,23 @@
 </head>
 
 
-
 <body>
-    <script> // Send registration data to server using a form</script>
+    <script> // Send registration data to server using a form; pass back any registration errors via query string, alert user
+    let params = (new URL(document.location)).searchParams;
+
+    // grab reg_errors from param string (if there is an error) and display an alert; make texboxes sticky
+    window.onload = function () {
+
+      // if query string has the array "reg_errors" (passed back by via the server), params.get the array, use JSON parse to turn it from a string back into a js object (I learned to do this by RTFM), store this in a variable
+      if (params.has(`reg_errors`)) {
+        var errors = JSON.parse(params.get(`reg_errors`));
+      }
+      if (errors) {
+        window.alert(errors);
+      }
+
+    };
+  </script>
 
      <form name="registration_form" action="/registration.html" method="POST">
 
@@ -19,21 +33,21 @@
         <tr>
           <td>
             <label for="uname"><b>Email Address</b></label>
-            <input type="text" placeholder="Enter Email Address" name="uname" required>
+            <input type="text" placeholder="Enter Email Address" name="email" required>
           </td>
         </tr>
 
         <tr>
             <td>
               <label for="name"><b>Full Name</b></label>
-              <input type="text" placeholder="Enter Name" name="uname" required>
+              <input type="text" placeholder="Enter Name" name="name" required>
             </td>
           </tr>
 
         <tr>
           <td>
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
+            <input type="password" placeholder="Enter Password" name="password" required>
           </td>
         </tr>
 

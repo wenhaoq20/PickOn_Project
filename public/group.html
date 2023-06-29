@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let params = (new URL(document.location)).searchParams;
+          // group validation errors from server has been input into the query string and assigned to the variable "errors". if errors is in the query string, get it, pull out the value, and display it in window alert
+          // store in function and call it when the page loads 
+          window.onload = function () {
+        
+        // if query string has the array "errors" (passed back by via the server), params.get the array, use JSON parse to turn it from a string back into a js object (I learned to do this by RTFM), store this in a variable
+        if (params.has(`errors`)) {
+          var errors = JSON.parse(params.get(`errors`));
+        }
+        // if the variable storing the errors exists, alert errors
+        if (errors) {
+          window.alert(errors);
+        }}
+        </script>
+
+    <form name="group_form" action="/group_sort" method="POST">
+    There are xxx students logged in. How many groups would you like to create?
+    <input type ="number" name = "desired_groups">
+</body>
+</html>
