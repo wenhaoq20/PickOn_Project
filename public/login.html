@@ -33,6 +33,7 @@ if (success) {
 
 
 <body>
+  <h1>Please log in to continue</h1>
     <script> // Send login data  to server using a form</script>
 
      <form name="login_form" action="/login" method="POST">
@@ -67,26 +68,14 @@ if (success) {
         </script>
 
         <tr>
-          <td class="login_row">
-            <div>
-              <span class="registration_link"> Click <a href="/registration.html">here</a> to create a new
-                account!</span>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="login_row">
-            <div class="container" style="background-color:#f1f1f1">
+          <td class="cancel_row">
               <button type="button" class="cancel_button"
                 onclick="window.location.href='./index.html'">Cancel</button>
-              <span class="psw">Forgot <a href="#">password?</a></span>
-            </div>
+
           </td>
         </tr>
       </table>
     </div>
   </form>
-</body>
 </body>
 </html>

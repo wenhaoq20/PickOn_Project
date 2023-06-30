@@ -1,1 +1,6 @@
-{"testemail@pickon.com":{"name":"John Doe","password":"test123"},"mellora@hawaii.edu":{"name":"alanna","password":"12345678901"},"jimbo@yahoo.com":{"name":"jimbo","password":"12345678901"},"bob@hawaii.edu":{"name":"bob","password":"12345678901"}}
+{
+    "student@pickon.com": {
+        "name": "John Doe",
+        "password": "test123"
+    }
+}
