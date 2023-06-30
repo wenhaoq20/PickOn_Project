@@ -8,6 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
+// look up how to set session id to shared
 // Set up session middleware
 app.use(
     session({
@@ -293,15 +294,28 @@ app.get('/registration_teacher.html', function (request, response) {
    var group_number = request.body.desired_groups;
    var errors = []; // an empty array to store validation errors; number of groups must be more than 0 and must not exceed (the number of students currently logged in)/2
 
-   var students = request.session.students.length;
+   var students = request.session.students;
    if (group_number <= 1){
       errors.push('Please enter a number greater than 1');
       response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
-   }if (group_number > (students/2)){
+   }if (group_number > (students.length/2)){
       errors.push('Students must be sorted into groups of 2 or more'); 
       response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
    } else{
-      response.redirect("./index.html")
+      var groupstr = students.join('<p>');
+      var str = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      <body>
+          Here are the groups:
+          ${groupstr}
+      </body>
+      </html>`;
+      response.send(str);
    }
 });
 

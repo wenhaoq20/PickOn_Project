@@ -2,5 +2,21 @@
     "student@pickon.com": {
         "name": "John Doe",
         "password": "test123"
+    },
+    "student1@pickon.com": {
+        "name": "John1 Doe",
+        "password": "test123"
+    },
+    "student2@pickon.com": {
+        "name": "John2 Doe",
+        "password": "test123"
+    },
+    "student3@pickon.com": {
+        "name": "John3 Doe",
+        "password": "test123"
+    },
+    "student4@pickon.com": {
+        "name": "John4 Doe",
+        "password": "test123"
     }
 }
