@@ -24,6 +24,11 @@ app.listen(8080, () => console.log(`listening on port 8080`))
 /* enable server to respond to requests for static files (files that are not intended to have any server-processing); files must be located in a directory called "public"; the following uses the Express static middleware component */
 app.use(express.static(__dirname + '/public'));
 
+
+//// the following array is intended to store student data while the teacher is logged in, for instance the studnents name should be stored; if the teacher logs out, the array should be cleared 
+var students = [];
+
+
 // monitor all requests; this manages what is output in the console for all requests
 app.all('*', function (request, response, next) {
     console.log(request.method + ' to ' + request.path);
@@ -33,14 +38,11 @@ app.all('*', function (request, response, next) {
     request.session['login'] = {};
  }
 
- // initialize a session array to store all the names that are currently logged in 
- if (typeof request.session['students'] == 'undefined') {
-   request.session['students'] = [];
-}
-
- // set flag, assume user is not logged in; if the session has the username, then change flag to true
+ // utilize flag to note whether a teacher is logged in or not -- used in group mode to clear students name from array if teacher is logged out
+ // set flag, assume teacher is not logged in; if the session has the username, then change flag to true
  if (typeof request.session.login.username == 'undefined') {
     request.session.login.loggedIn = false;
+    students = [];
  } else {
     request.session.login.loggedIn = true;
  }
@@ -61,9 +63,6 @@ var user_data = JSON.parse(user_data_object_JSON);
 var newfile = __dirname + '/teacher_data.json';
 var teacher_data_object_JSON = fs.readFileSync(newfile, 'utf-8');
 var teacher_data = JSON.parse(teacher_data_object_JSON);
-
-
-
 
 
 
@@ -98,25 +97,12 @@ app.post("/login", function (request, response) {
        response.redirect('./login.html?' + querystring.stringify({ error_check: `${JSON.stringify(error_check)}` }));
     }
  
-    //for STUDENTS: check if the username exists in either the user_data file and that the password matches appropriately
+    //for STUDENTS: check if the username exists in either the user_data file and that the password matches appropriately; if so, continue to home page
     if (user_data.hasOwnProperty(`${username}`) && password == user_data[username][`password`]) {
- 
-       // store the user data in the session
-       if (!request.session.login) {
-          request.session.login = {};
-       }
-       
-       //store the user's name in the session 
-       request.session.login.name = user_data[username][`name`];
 
-       // push user's name to the end of the session array that stores all name's of those currently logged in 
-       request.session.students.push(request.session.login.name);
-       console.log(request.session.students);
-
-       // set the flag to indicate that the user is logged in
-       request.session.login.loggedIn = true;
-
-       console.log(request.session.login);
+      // after a student has logged in, push their name to the student array
+      students.push(user_data[username].name);
+      console.log(students);
        response.redirect('./home_student.html');
     }
 
@@ -294,7 +280,6 @@ app.get('/registration_teacher.html', function (request, response) {
    var group_number = request.body.desired_groups;
    var errors = []; // an empty array to store validation errors; number of groups must be more than 0 and must not exceed (the number of students currently logged in)/2
 
-   var students = request.session.students;
    if (group_number <= 1){
       errors.push('Please enter a number greater than 1');
       response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
