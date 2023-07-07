@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
-// look up how to set session id to shared
+// look up how to set session id to shared; can manually set session ids; can evens store it in a different file
 // Set up session middleware
 app.use(
     session({
@@ -25,7 +25,7 @@ app.listen(8080, () => console.log(`listening on port 8080`))
 app.use(express.static(__dirname + '/public'));
 
 
-//// the following array is intended to store student data while the teacher is logged in, for instance the studnents name should be stored; if the teacher logs out, the array should be cleared 
+// the following array is intended to store student data while the teacher is logged in, for instance the studnents name should be stored; if the teacher logs out, the array should be cleared 
 var students = [];
 
 
