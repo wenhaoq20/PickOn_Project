@@ -20,7 +20,7 @@ We welcome and appreciate contributions in the form of code enhancements, bug fi
 - Fork the repository on GitHub. 
 - Clone the forked repository to your local machine. 
 - Create a new branch for your work: git checkout -b branch-name.
-- Make your changes, ensuring adherence to the code style guidelines.
+- Make your changes, ensuring adherence to the [code style guidlines](#code-style).
 - Test your changes thoroughly.
 - Commit your changes with clear and concise messages.
 - Push your branch to your forked repository on GitHub: git push origin branch-name.
@@ -39,10 +39,10 @@ We value your ideas for enhancing our application! If you have a feature request
 - Engage in any discussions related to your feature request and be open to feedback.
 # Submitting Changes
 To have your changes considered for integration in the project, follow these steps:
-- Ensure that your changes adhere to the code style guidelines.
+- Ensure that your changes adhere to the [code style guidlines](#code-style).
 - Include relevant tests and ensure that all existing tests pass successfully.
-- Update the project's documentation if required (see the Documentation section).
-- Submit your changes as a pull request (PR) following the Code Contributions guidelines.
+- Update the project's documentation if required (see the [Documentation](#Documentation) section).
+- Submit your changes as a pull request (PR) following the [Code Contributions](#code-contributions) guidelines.
 # Code Style
 Consistent code style enhances readability and maintainability. Please adhere to the following guidelines:
 - Use meaningful variable, function, and class names.
