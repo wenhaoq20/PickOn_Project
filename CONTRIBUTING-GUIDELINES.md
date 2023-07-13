@@ -1,15 +1,16 @@
 # Contributing Guidelines
 Thank you for your interest in contributing to our project! We appreciate your support and collaboration. This document provides guidelines to help you understand how you can contribute effectively.
 ## Table of Contents
-<li><a href="##Getting Started">Getting Started</a></li>
-<li><a href="##Code Contributions">Code Contributions</a></li>
-<li><a href="##Bug Reports">Bug Reports</a></li>
-<li><a href="##Feature Requests">Feature Requests</a></li>
-<li><a href="##Submitting Changes">Submitting Changes</a></li>
-<li><a href="##Code Style">Code Style</a></li>
-<li><a href="##Documentation">Documentation</a></li>
-<li><a href="##Community Guidelines">Community Guidelines</a></li>
-<li><a href="##Contact">Contact</a></li>
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Code Contributions](#code-contributions)
+- [Bug Reports](#bug-reports)
+- [Feature Requests](#feature-requests)
+- [Submitting Changes](#submitting-changes)
+- [Code Style](#code-style)
+- [Documentation](#documentation)
+- [Community Guidelines](#community-guidelines)
+- [Contact](#contact)
 
 ## Getting Started
 Before you start contributing, please take a moment to read and understand the project's goals and scope. Familiarize yourself with our <a href="code-of-conduct.md">Code of Conduct</a> and community guidelines, as well as the project's <a href="license">licensing information</a>. 
