@@ -65,6 +65,6 @@ To foster a positive and inclusive community, we expect contributors to follow t
 - If you notice any behavior that violates the project's code of conduct, please report it to the project maintainers.
 # Contact
 If you have any questions or need further assistance, you can reach out to us via the following channels:
-Project Repository: lhttps://github.com/anmell/PickOn
-Issue Tracker: https://github.com/anmell/PickOn/issues
-Email: dport@hawaii.edu
+- Project Repository: lhttps://github.com/anmell/PickOn
+- Issue Tracker: https://github.com/anmell/PickOn/issues
+- Email: dport@hawaii.edu
