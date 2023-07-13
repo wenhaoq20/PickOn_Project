@@ -12,7 +12,8 @@ Thank you for your interest in contributing to our project! We appreciate your s
 - [Contact](#contact)
 
 # Getting Started
-Before you start contributing, please take a moment to read and understand the project's goals and scope. Familiarize yourself with our <a href="code-of-conduct.md">Code of Conduct</a> and community guidelines, as well as the project's <a href="license">licensing information</a>. 
+Before you start contributing, please take a moment to read and understand the project's goals and scope. Familiarize yourself with our [Code of Conduct](./CODE-OF-CONDUCT.md) and community guidelines, as well as the project's [licensing information](./LICENSE).
+
 To contribute to the project, you'll need to have a GitHub account. If you don't have one, you can create an account for free at https://github.com/join.
 # Code Contributions
 We welcome and appreciate contributions in the form of code enhancements, bug fixes, and new features. To ensure smooth collaboration, follow these steps:
