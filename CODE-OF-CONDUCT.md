@@ -40,7 +40,7 @@ This Code of Conduct applies to all community spaces, including online and offli
 
 ## Reportinging Guidelines
 
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. They can be reached at dport@hawaii.du.
+If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. They can be reached at dport@hawaii.edu.
 
 ## Amendment and Updates
 
