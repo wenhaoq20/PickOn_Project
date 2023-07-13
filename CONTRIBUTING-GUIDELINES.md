@@ -1,8 +1,8 @@
-Contributing Guidelines
+# Contributing Guidelines
 Thank you for your interest in contributing to our project! We appreciate your support and collaboration. This document provides guidelines to help you understand how you can contribute effectively.
-Table of Contents
-<a href="#Introduction">Introduction</a> Getting Started
-Code Contributions
+## Table of Contents
+<a href="#Getting Started">Getting Started</a>
+<a href="#Code Contributions">Code Contributions</a>
 Bug Reports
 Feature Requests
 Submitting Changes
