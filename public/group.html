@@ -3,27 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pick The Number of Groups To Create</title>
+
+    <script> /*the following CSS was provided by Chat Gpt*/</script>
+    <style>
+      
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ff6f69;
+            margin-top: 0;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        
+        button[type="submit"] {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #ff6f69;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        
+        p {
+            margin-top: 0;
+        }
+        
+        .box {
+            position: relative;
+            display: inline-block;
+            padding: 10px;
+            background-color: #f7cb2d;
+            color: #fff;
+            border-radius: 5px;
+        }
+        
+        .box:before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: #fcca15 transparent transparent transparent;
+        }
+    </style>
 </head>
 <body>
-    <script>
-        let params = (new URL(document.location)).searchParams;
-          // group validation errors from server has been input into the query string and assigned to the variable "errors". if errors is in the query string, get it, pull out the value, and display it in window alert
-          // store in function and call it when the page loads 
-          window.onload = function () {
+    <div class="container">
+        <h1>Group Mode</h1>
         
-        // if query string has the array "errors" (passed back by via the server), params.get the array, use JSON parse to turn it from a string back into a js object (I learned to do this by RTFM), store this in a variable
-        if (params.has(`errors`)) {
-          var errors = JSON.parse(params.get(`errors`));
-        }
-        // if the variable storing the errors exists, alert errors
-        if (errors) {
-          window.alert(errors);
-        }}
-        </script>
-
-    <form name="group_form" action="/group_sort" method="POST">
-    There are xxx students logged in. How many groups would you like to create?
-    <input type ="number" name = "desired_groups">
+        <form name="group_form" action="/group_sort" method="POST">
+            <p>There are [this many] students logged in. How many groups would you like to create?</p>
+            <button type="submit">Input how many groups you would like to create</button>
+        </form>
+        
+        <p class="box">Instead of a button, the instructor should get to input the number of groups they would like to sort their class into. There should be an algorithm that sorts the names of the students logged in into random groups based on the number of groups chosen by the instructor.</p>
+        
+        <p>**Click the button to see an example of what would happen if there were 30 students logged in and the instructor chose to sort the class into 6 groups.</p>
+    </div>
 </body>
 </html>

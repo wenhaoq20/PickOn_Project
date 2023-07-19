@@ -275,32 +275,14 @@ app.get('/registration_teacher.html', function (request, response) {
 
 
 // THE FOLLOWING ROUTES PERTAIN TO THE "GROUP" MODE OF THE SOFTWARE
- //create a route to validate the group mode of the 
+ //create a route to validate the number of groups requested by the teacher; then sort the student names and redirect them to group2a.html
  app.post('/group_sort', function (request, response) {
-   var group_number = request.body.desired_groups;
-   var errors = []; // an empty array to store validation errors; number of groups must be more than 0 and must not exceed (the number of students currently logged in)/2
-
-   if (group_number <= 1){
-      errors.push('Please enter a number greater than 1');
-      response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
-   }if (group_number > (students.length/2)){
-      errors.push('Students must be sorted into groups of 2 or more'); 
-      response.redirect('./group.html?' + querystring.stringify({ errors: `${JSON.stringify(errors)}` }));
-   } else{
-      var groupstr = students.join('<p>');
-      var str = `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Document</title>
-      </head>
-      <body>
-          Here are the groups:
-          ${groupstr}
-      </body>
-      </html>`;
-      response.send(str);
+   response.sendFile(__dirname + '/public' + '/group2a.html');
    }
-});
+);
 
+// now that the groups have been sorted, allow the instructor to randomly "pickon" them; i.e. allow the instructor to call on a group based on a random picker
+app.post('/group_pick', function (request, response) {
+   response.sendFile(__dirname + '/public' + '/group3a.html');
+   }
+);
