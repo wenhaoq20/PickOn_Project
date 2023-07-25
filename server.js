@@ -286,3 +286,15 @@ app.post('/group_pick', function (request, response) {
    response.sendFile(__dirname + '/public' + '/group3a.html');
    }
 );
+
+
+// THE FOLLOWING PERTAINS TO THE MODE THAT ALLOWS STUDENTS TO ANSWER QUESTIONS ANONYMOUSLY
+app.post('/anonymous_question', function (request, response) {
+   response.sendFile(__dirname + '/public' + '/anonymous2a.html');
+   }
+);
+
+app.post('/anonymous_response', function (request, response) {
+   response.sendFile(__dirname + '/public' + '/anonymous2b.html');
+   }
+);
