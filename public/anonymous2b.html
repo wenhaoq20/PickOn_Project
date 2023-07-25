@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Styles for the "Home" link */
+        #home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+            color: #005ea5;
+            text-decoration: none;
+            padding: 6px 10px;
+            background-color: #f3f3f3;
+            border: 2px solid #005ea5;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #home-btn:hover {
+            background-color: #005ea5;
+            color: #f3f3f3;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        p {
+            background-color: #ffffff;
+        }
+
+        .note-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .note {
+            display: inline-block;
+            padding: 10px;
+            background-color: #ffb647;
+            color: #fff;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .note:before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: #ffb647 transparent transparent transparent;
+        }
+
+        .responses {
+            margin-top: 20px;
+        }
+
+        .responses p {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+        }
+
+        .responses p:first-child {
+            font-size: 18px;
+            text-align: center;
+            margin: 0;
+        }
+
+        .responses .dots {
+            font-size: 24px;
+            border: none;
+            padding: 0;
+            background: none;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <a href="home_teacher.html" id="home-btn">Home</a>
+    <h1 style="color: #007bff; text-align: center;">What makes you more likely to participate in a class?</h1>
+
+    <div class="note-container">
+        <div class="note">Student answers populate in real-time as they are submitted. All answers remain anonymous so as to reduce one's fear of failure and create a welcoming learning environment. The instructor and students alike can view this page.</div>
+    </div>
+
+    <div class="responses">
+        <p>Taking notes</p>
+        <p>If the course work is interesting and if my professor seems like they actually want to put in effort.</p>
+        <p>A open and positive class environment and a captivating professor.</p>
+        <p>Orientation of seating where you are looking at other students, discussion prompts from the professor, and a check-in/ ice breaker question at the start so everyone already speaks at least once during class.</p>
+        <p>Engaging topic, responding to open-ended questions, participation is required</p>
+        <p class="dots">...</p>
+    </div>
+</body>
+</html>

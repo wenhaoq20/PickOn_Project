@@ -3,23 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Choose a mode to get started!
+    <title>Home Page</title>
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
 
-        <nav>
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 10px;
+        }
+
+        nav a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #ff6f69;
+        }
+
+        /* Unique Colors for Each Link */
+        nav li:nth-child(1) a {
+             background-color: #83c358;
+        }
+
+        nav li:nth-child(2) a {
+            background-color: #36a9e1;
+        }
+
+        nav li:nth-child(3) a {
+           background-color:  #ff6f69;
+        }
+
+        nav li:nth-child(4) a {
+           background-color: #f7cb2d;
+        }
+    </style>
+</head>
+<h1>Choose a mode to get started!</h1>
+<body>
+    
+    <nav>
         <ul>
             <li><a href="game.html">Competition</a></li>
-                Students compete to answer questions correctly. Scores are based on time and accuracy. 
             <li><a href="anonymous.html">Answer Anonymously</a></li>
-                Allow students to answer questions anonymously to create an environment that is safe and free of judgement
             <li><a href="group.html">Group</a></li>
-                Organize students into groups in encourage collaboration or work on class projects
             <li><a href="pickon.html">PickOn</a></li>
-                Randomly select students to call on and allow them to earn direct credit for their participation
         </ul>
     </nav>
-   
 </body>
 </html>
