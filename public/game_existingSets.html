@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Sets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.quiz-sets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.quiz-set {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: center;
+    width: 150px;
+}
+
+.quiz-set:hover {
+    background-color: #f0f0f0;
+}
+
+.start-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    margin: 10px auto;
+}
+
+.start-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+<script>// Function to highlight the selected quiz set and switch highlighting
+    function highlightQuiz(element) {
+        const quizSets = document.querySelectorAll('.quiz-set');
+        quizSets.forEach((quizSet) => {
+            quizSet.classList.remove('selected');
+        });
+        element.classList.add('selected');
+    }
+    
+    // Function to start the quiz (you can customize this function as needed)
+    function startQuiz() {
+        const selectedQuizSet = document.querySelector('.quiz-set.selected');
+        if (selectedQuizSet) {
+            const quizSetName = selectedQuizSet.textContent.trim();
+            alert(`You have chosen the "${quizSetName}" quiz set. Let's get started!`);
+            // Add code here to navigate to the quiz for the selected quiz set or perform any other action you want when starting the quiz.
+        } else {
+            alert('Please select a quiz set before starting.');
+        }
+    }
+    
+    // Event listener to initialize the quiz sets
+    document.addEventListener('DOMContentLoaded', function () {
+        const quizSets = document.querySelectorAll('.quiz-set');
+        quizSets.forEach((quizSet) => {
+            quizSet.addEventListener('click', function () {
+                highlightQuiz(this);
+            });
+        });
+    });
+    
+    </script>
+<body>
+    <div class="container">
+        <h1>Quiz Sets</h1>
+        <div class="quiz-sets" id="quizSets">
+            <div class="quiz-set" onclick="highlightQuiz(this)">
+                Biology
+            </div>
+            <div class="quiz-set" onclick="highlightQuiz(this)">
+                Chemistry
+            </div>
+            <div class="quiz-set" onclick="highlightQuiz(this)">
+                Python
+            </div>
+            <div class="quiz-set" onclick="highlightQuiz(this)">
+                Javascript
+            </div>
+            <div class="quiz-set" onclick="highlightQuiz(this)">
+                Finance
+            </div>
+        </div>
+        <button class="start-button" onclick="startQuiz()">Start</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

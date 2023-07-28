@@ -1,173 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PickOn Set Creator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .question {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .question input[type="text"],
-        .question input[type="checkbox"] {
-            margin-right: 10px;
-        }
-
-        .stars {
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        .star {
-            color: #ffa500;
-            cursor: pointer;
-        }
-
-        .star.selected {
-            color: #ffcc00;
-        }
-    </style>
-    
-    <script>
-        // Function to add a new question to the form
-        function addQuestion() {
-            const questionsContainer = document.getElementById('questionsContainer');
-
-            const questionDiv = document.createElement('div');
-            questionDiv.classList.add('question');
-
-            const questionInput = document.createElement('input');
-            questionInput.type = 'text';
-            questionInput.placeholder = 'Enter your question here...';
-            questionDiv.appendChild(questionInput);
-
-            for (let i = 1; i <= 4; i++) {
-                const optionInput = document.createElement('input');
-                optionInput.type = 'text';
-                optionInput.placeholder = `Option ${i}`;
-                questionDiv.appendChild(optionInput);
-
-                const starSpan = document.createElement('span');
-                starSpan.classList.add('stars');
-                for (let j = 1; j <= 4; j++) {
-                    const star = document.createElement('span');
-                    star.classList.add('star');
-                    star.setAttribute('data-option', i);
-                    star.setAttribute('data-star', j);
-                    star.innerHTML = '&#9733;';
-                    starSpan.appendChild(star);
-                }
-                questionDiv.appendChild(starSpan);
-            }
-
-            questionsContainer.appendChild(questionDiv);
-
-            // Attach event listeners to the stars
-            const stars = document.getElementsByClassName('star');
-            for (const star of stars) {
-                star.addEventListener('click', toggleStar);
-            }
-        }
-
-        // Function to toggle the selection of stars
-        function toggleStar() {
-            const option = this.getAttribute('data-option');
-            const star = this.getAttribute('data-star');
-
-            const selectedStars = document.querySelectorAll(`.star[data-option="${option}"][data-star="${star}"].selected`);
-
-            if (selectedStars.length === 0) {
-                this.classList.add('selected');
-            } else {
-                this.classList.remove('selected');
-            }
-        }
-
-        // Event listener for form submission
-        document.getElementById('quizForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            // Gather all the form data here and process it as needed
-            const questions = document.querySelectorAll('.question');
-            questions.forEach((questionDiv, index) => {
-                const question = questionDiv.querySelector('input[type="text"]').value;
-                const options = [];
-                const correctOption = [];
-                const optionInputs = questionDiv.querySelectorAll('input[type="text"]');
-                const stars = questionDiv.querySelectorAll('.star.selected');
-
-                optionInputs.forEach((input, i) => {
-                    options.push(input.value);
-                    if (stars.length > 0 && stars[0].getAttribute('data-option') === input.getAttribute('data-option')) {
-                        correctOption.push(i);
-                    }
-                });
-
-                // Here, you can do further processing with the question and its options, such as sending them to a server or storing them in an array.
-                console.log(`Question ${index + 1}: ${question}`);
-                console.log(`Options:`, options);
-                console.log(`Correct Option(s):`, correctOption);
-                console.log('---');
-            });
-        });
-    </script>
+    <title>Quiz Form</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .question {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    input[type="text"] {
+        display: block;
+        margin-bottom: 10px;
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .stars {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .star {
+        color: #ffa500;
+        cursor: pointer;
+    }
+
+    .star.selected {
+        color: #ffcc00;
+    }
+</style>
+<script>// Function to add a new question to the form
+    function addQuestion() {
+        const questionsContainer = document.getElementById('questionsContainer');
+
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+
+        const questionInput = document.createElement('input');
+        questionInput.type = 'text';
+        questionInput.placeholder = 'Enter your question here...';
+        questionDiv.appendChild(questionInput);
+
+        for (let i = 1; i <= 4; i++) {
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.placeholder = `Option ${i}`;
+            questionDiv.appendChild(optionInput);
+
+            const starSpan = document.createElement('span');
+            starSpan.classList.add('stars');
+            const star = document.createElement('span');
+            star.classList.add('star');
+            star.innerHTML = '&#9733;';
+            star.setAttribute('data-option', i);
+            starSpan.appendChild(star);
+            questionDiv.appendChild(starSpan);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+
+        // Attach event listeners to the stars
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((star) => {
+            star.addEventListener('click', toggleStar);
+        });
+    }
+
+    // Function to toggle the selection of stars
+    function toggleStar() {
+        const option = this.getAttribute('data-option');
+
+        const selectedStars = document.querySelectorAll(`.star[data-option="${option}"].selected`);
+
+        if (selectedStars.length === 0) {
+            this.classList.add('selected');
+        } else {
+            this.classList.remove('selected');
+        }
+    }
+
+    // Event listener for form submission
+    document.getElementById('quizForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Gather all the form data here and process it as needed
+        const questions = document.querySelectorAll('.question');
+        questions.forEach((questionDiv, index) => {
+            const question = questionDiv.querySelector('input[type="text"]').value;
+            const options = [];
+            const correctOption = [];
+            const optionInputs = questionDiv.querySelectorAll('input[type="text"]');
+            const stars = questionDiv.querySelectorAll('.star.selected');
+
+            optionInputs.forEach((input, i) => {
+                options.push(input.value);
+                if (stars.length > 0 && stars[0].getAttribute('data-option') === input.getAttribute('data-option')) {
+                    correctOption.push(i);
+                }
+            });
+
+            // Here, you can do further processing with the question and its options, such as sending them to a server or storing them in an array.
+            console.log(`Question ${index + 1}: ${question}`);
+            console.log(`Options:`, options);
+            console.log(`Correct Option(s):`, correctOption);
+            console.log('---');
+        });
+
+        // Reset the form after submission
+        this.reset();
+    });
+
+    // Initial setup: Add one question when the page loads
+    addQuestion();
+</script>
 
 <body>
     <div class="container">
-        <h1>QuizMaster Form</h1>
+        <h1>Quiz Form</h1>
         <form id="quizForm">
             <div id="questionsContainer">
-                <!-- Questions and options will be added dynamically here -->
+                <!-- Initial question will be added here -->
+                <div class="question">
+                    <input type="text" placeholder="Enter your question here...">
+                    <input type="text" placeholder="Option 1">
+                    <span class="stars">
+                        <span class="star" data-option="1">&#9733;</span>
+                    </span>
+                    <input type="text" placeholder="Option 2">
+                    <span class="stars">
+                        <span class="star" data-option="2">&#9733;</span>
+                    </span>
+                    <input type="text" placeholder="Option 3">
+                    <span class="stars">
+                        <span class="star" data-option="3">&#9733;</span>
+                    </span>
+                    <input type="text" placeholder="Option 4">
+                    <span class="stars">
+                        <span class="star" data-option="4">&#9733;</span>
+                    </span>
+                </div>
             </div>
             <button type="button" onclick="addQuestion()">Add Question</button>
             <button type="submit">Submit</button>
         </form>
     </div>
+    <script src="app.js"></script>
 </body>
-
 </html>
