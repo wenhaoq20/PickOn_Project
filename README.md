@@ -18,18 +18,13 @@ PickOn is an exciting open-source project, developed as an information system, w
 
 # Credits
 Past Project Managers
-- Alanna Mellor
-    Techfolio: https://anmell.github.io/
-- Levi Bringman 
-    Techfolio: https://lwkb808.github.io/
+- Alanna Mellor - Techfolio: https://anmell.github.io/
+- Levi Bringman - Techfolio: https://lwkb808.github.io/
 
 Past Volunteers
-- Jiayan Wu
-    Techfolio: https://jae238.github.io/
-- Maxen Donate
-    Techfolio: https://maxendonate.github.io/
-- Valerie Linuma
-    Techfolio: https://viinuma.github.io/
+- Jiayan Wu - Techfolio: https://jae238.github.io/
+- Maxen Donate - Techfolio: https://maxendonate.github.io/
+- Valerie Linuma - Techfolio: https://viinuma.github.io/
 
 # Licensing
 GNU GENERAL PUBLIC LICENSE
