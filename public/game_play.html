@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot-style Game Mode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .question-container {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .question {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .answer-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .option {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .timer {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 24px;
+        cursor: pointer;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    /* Styles Home Button*/
+    #home-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 18px;
+        color: #005ea5;
+        text-decoration: none;
+        padding: 6px 10px;
+        background-color: #f3f3f3;
+        border: 2px solid #005ea5;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #home-btn:hover {
+        background-color: #005ea5;
+        color: #f3f3f3;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const timer = document.querySelector('.timer');
+
+        let remainingSeconds = 30;
+        let timerInterval;
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            remainingSeconds = 30;
+            updateTimerDisplay();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimerDisplay() {
+            timer.textContent = remainingSeconds;
+        }
+
+        function updateTimer() {
+            remainingSeconds--;
+            updateTimerDisplay();
+            if (remainingSeconds === 0) {
+                clearInterval(timerInterval);
+                startTimer();
+            }
+        }
+
+        startTimer();
+    });
+
+</script>
+
+<body>
+    <div class="container">
+        <h1>Game Mode</h1>
+        <a href="home_teacher.html" id="home-btn">Home</a>
+        <div class="question-container">
+            <div class="question">What is the unique physical feature that allows giraffes to reach leaves high up in trees?</div>
+            <div class="answer-options">
+                <div class="option">Long legs</div>
+                <div class="option">Long neck</div>
+                <div class="option">Big ears</div>
+                <div class="option">Spots on their skin</div>
+            </div>
+        </div>
+        <div class="timer">30</div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

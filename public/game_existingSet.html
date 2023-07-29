@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,62 +9,81 @@
 </head>
 <style>
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 50px;
-}
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 50px;
+    }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
 
-.quiz-sets {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
+    .quiz-sets {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
 
-.quiz-set {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    text-align: center;
-    width: 150px;
-}
+    .quiz-set {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        text-align: center;
+        width: 150px;
+    }
 
-.quiz-set:hover {
-    background-color: #f0f0f0;
-}
+    .quiz-set:hover {
+        background-color: #f0f0f0;
+    }
 
-.start-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    display: block;
-    margin: 10px auto;
-}
+    .start-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        display: block;
+        margin: 10px auto;
+    }
 
-.start-button:hover {
-    background-color: #0056b3;
-}
+    .start-button:hover {
+        background-color: #0056b3;
+    }
 
+    /* Styles Home Button*/
+    #home-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 18px;
+        color: #005ea5;
+        text-decoration: none;
+        padding: 6px 10px;
+        background-color: #f3f3f3;
+        border: 2px solid #005ea5;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #home-btn:hover {
+        background-color: #005ea5;
+        color: #f3f3f3;
+    }
 </style>
 <script>// Function to highlight the selected quiz set and switch highlighting
     function highlightQuiz(element) {
@@ -73,7 +93,7 @@ h1 {
         });
         element.classList.add('selected');
     }
-    
+
     // Function to start the quiz (you can customize this function as needed)
     function startQuiz() {
         const selectedQuizSet = document.querySelector('.quiz-set.selected');
@@ -85,7 +105,7 @@ h1 {
             alert('Please select a quiz set before starting.');
         }
     }
-    
+
     // Event listener to initialize the quiz sets
     document.addEventListener('DOMContentLoaded', function () {
         const quizSets = document.querySelectorAll('.quiz-set');
@@ -95,10 +115,12 @@ h1 {
             });
         });
     });
-    
-    </script>
+
+</script>
+
 <body>
     <div class="container">
+        <a href="home_teacher.html" id="home-btn">Home</a>
         <h1>Quiz Sets</h1>
         <div class="quiz-sets" id="quizSets">
             <div class="quiz-set" onclick="highlightQuiz(this)">
@@ -117,8 +139,9 @@ h1 {
                 Finance
             </div>
         </div>
-        <button class="start-button" onclick="startQuiz()">Start</button>
+        <button class="start-button" onclick="window.location.href='game_play.html'">Start</button>
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>
