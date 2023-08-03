@@ -26,21 +26,26 @@
         }
         
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             margin: 30px 30px 30px 140px; /* Add padding to prevent overlap with home button */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+        
+        h3 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #17568a;
+        }
 
         #groups-container {
             text-align: left;
             margin: 20px;
             padding: 10px;
-            border: 2px solid #ff6f69;
+            border: 2px solid #17568a;
             border-radius: 10px;
-            background-color: #fadedc;
+            background-color: #f8f6f6;
             width: 40%;
             min-width: 200px;
         }
@@ -48,7 +53,7 @@
         #groups-container span {
             display: block;
             margin-bottom: 5px;
-            color: #ff6f69;
+            color: #17568a;
         }
 
         #current-group {
@@ -57,7 +62,7 @@
             padding: 10px;
             border: 2px solid #ffba00;
             border-radius: 10px;
-            background-color: #fff5cc;
+            background-color: #f8f6f6;
             color: #ff8c00;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             flex-grow: 1;
@@ -68,7 +73,7 @@
             margin-top: 30px;
             font-size: 20px;
             background-color: #ffba00;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
             padding: 12px 24px;
@@ -90,12 +95,13 @@
             width: 100%;
         }
     </style>
+</head>
 <body>
     <a href="home_teacher.html" id="home-btn">Home</a>
 
     <div id="groups-wrapper">
         <div id="groups-container">
-            <h2 style="color: #ff6f69;">Groups left to call on:</h2>
+            <h2 style="color: #17568a;">Groups left to call on:</h2>
             <span id="group1">Group 1</span>
             <span id="group2">Group 2</span>
             <span id="group3">Group 3</span>
@@ -114,21 +120,17 @@
         <button type="button" id="btn" onclick="sampleClick()">PickOn a Group!</button>
     </div>
 
+    <h3 id ="participation_points"></h3>
+
     <script>
         // The JavaScript code
-        var availableGroups = ["Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"];
-        var groupElements;
+        var availableGroups = ["1", "2", "3", "4", "5", "6"];
 
-        // initialize the groups on page load
-        function initGroups() {
-            groupElements = {
-                "Group 1": document.getElementById("group1"),
-                "Group 2": document.getElementById("group2"),
-                "Group 3": document.getElementById("group3"),
-                "Group 4": document.getElementById("group4"),
-                "Group 5": document.getElementById("group5"),
-                "Group 6": document.getElementById("group6"),
-            };
+        // Function to update the selected group
+        function updateSelectedGroup(selectedGroupNumber) {
+            var selectedGroup = "Group " + selectedGroupNumber;
+            document.getElementById("sample_selection").innerHTML = selectedGroup;
+            document.getElementById("participation_points").innerHTML = "+2 participation points for all members in " + selectedGroup;
         }
 
         function sampleClick() {
@@ -142,35 +144,33 @@
             // Generate a random index between 0 and the number of available groups
             var randomIndex = Math.floor(Math.random() * availableGroups.length);
 
-            // Get the randomly selected group
-            var selectedGroup = availableGroups[randomIndex];
+            // Get the randomly selected group number
+            var selectedGroupNumber = availableGroups[randomIndex];
 
             // Remove the selected group from the availableGroups array
             availableGroups.splice(randomIndex, 1);
 
             // Hide the selected group from the "Groups left to call on" list
-            var pickedGroupElement = groupElements[selectedGroup];
+            var pickedGroupElement = document.getElementById("group" + selectedGroupNumber);
             if (pickedGroupElement) {
                 pickedGroupElement.style.display = "none";
             }
 
             // Update the element with the randomly selected group
-            document.getElementById("sample_selection").innerHTML = selectedGroup;
+            updateSelectedGroup(selectedGroupNumber);
         }
-
-        // Initialize the group elements
-        document.addEventListener("DOMContentLoaded", function () {
-            initGroups();
-        });
 
         // Function to reset the whole process when the 'Reset' button is clicked
         function resetGroups() {
-            availableGroups = ["Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"];
-            var groupElementsArray = Object.values(groupElements);
-            for (var i = 0; i < groupElementsArray.length; i++) {
-                groupElementsArray[i].style.display = "block";
+            availableGroups = ["1", "2", "3", "4", "5", "6"];
+            for (var i = 1; i <= 6; i++) {
+                var groupElement = document.getElementById("group" + i);
+                if (groupElement) {
+                    groupElement.style.display = "block";
+                }
             }
             document.getElementById("sample_selection").innerHTML = "";
+            document.getElementById("participation_points").innerHTML = "";
             document.getElementById("btn").innerText = "PickOn a Group!";
             document.getElementById("btn").setAttribute("onclick", "sampleClick()");
         }
