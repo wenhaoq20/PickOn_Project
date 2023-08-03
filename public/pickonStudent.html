@@ -16,28 +16,55 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px;
+        }
+
+        .absent-list {
+            float: left;
+            width: 20%;
+            margin-right: 20px;
+            text-align: center;
+        }
+
+        .absent-list h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .absent-list-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .absent-list-items li {
+            margin-bottom: 5px;
         }
 
         .gif-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
+            display: block;
+            float: left;
+            width: 50%;
         }
 
         .gif {
-            width: 50%;
-            height: 40%;
+            width: 100%;
+            height: 60%;
             object-fit: cover;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .content {
+            float: left;
+            width: 80%;
         }
 
         .leaderboard {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
 
         .leaderboard h2 {
@@ -102,7 +129,6 @@
             background-color: #005ea5;
             color: #f3f3f3;
         }
-        
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -166,8 +192,8 @@
             createLeaderboard();
             pickRandomPerson();
 
-            // passButton.addEventListener('click', reloadPage);
-            volunteerButton.addEventListener('click', reloadPage);
+             passButton.addEventListener('click', reloadPage);
+            //volunteerButton.addEventListener('click', reloadPage);
             answerButton.addEventListener('click', reloadPage);
         });
 
@@ -178,10 +204,18 @@
 <body>
     <div class="container">
         <a href="home_teacher.html" id="home-btn">Home</a>
-        <h1 style="text-align:center;">PickOn Mode</h1>
-        <div class="gif-container">
-            <img src="https://media.giphy.com/media/I7mKeTz5VEFe8/giphy.gif" alt="GIF" class="gif">
-        </div>
+        <h1 style="text-align:center; margin-top: 5px">PickOn Mode</h1>
+    </div>
+    <div class="absent-list">
+        <h2>Absent</h2>
+        <ul class="absent-list-items">
+            <li>Two Students</li>
+        </ul>
+    </div>
+    <div class="gif-container">
+        <img src="https://media.giphy.com/media/RRKLKJoeDX0ljTlXCj/giphy.gif" alt="GIF" class="gif">
+    </div>
+    <div class="students">
         <div class="leaderboard">
             <h2>Leaderboard</h2>
             <ul class="leaderboard-list">
@@ -190,9 +224,8 @@
         </div>
         <div class="picked-text"></div>
         <div class="buttons">
-            <button class="pass-button" onclick="window.location.href = 'pickon.html'">Pass</button>
-            <!-- <button class="volunteer-button">Volunteer</button> -->
-            <button class="answer-button" onclick="window.location.href = 'pickon.html'">Answer</button>
+            <button class="volunteer-button" onclick="window.location.href = 'pickonStudent_1a.html'">Volunteer</button>
+            <button class="answer-button">Answer</button>
         </div>
     </div>
 </body>
