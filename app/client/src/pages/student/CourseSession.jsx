@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -13,12 +13,15 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import StudentGame from "../../components/student/StudentGame";
+import StudentGameScores from "../../components/student/StudentGameScores";
+import StudentGroup from "../../components/student/StudentGroup";
 
 const defaultTheme = createTheme();
 
 const createData = (name, scores) => {
   return { name, scores };
-}
+};
 
 const rows = [
   createData("Game Mode", 10),
@@ -28,48 +31,56 @@ const rows = [
   createData("Total", 35),
 ];
 
-const CourseSession = () => {
+const SessionLobby = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline component="main">
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={3}
-        >
-          <Typography variant="h4">Waiting for your instructor.....</Typography>
-          <Typography variant="h5"> John Doe </Typography>
-          <Typography variant="h5"> ITM 352 </Typography>
-          <Container>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 500 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Mode name</TableCell>
-                    <TableCell align="center">Points</TableCell>
+      <CssBaseline />
+      <Stack
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        spacing={3}
+      >
+        <Typography variant="h4">Waiting for your instructor.....</Typography>
+        <Typography variant="h5"> John Doe </Typography>
+        <Typography variant="h5"> ITM 352 </Typography>
+        <Container>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 500 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Mode name</TableCell>
+                  <TableCell align="center">Points</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="center">{row.scores}</TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">{row.scores}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Container>
-          <Typography variant="h5"> Progress in course: {rows[4].scores}</Typography>
-        </Stack>
-      </CssBaseline>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
+        <Typography variant="h5">
+          Progress in course: {rows[4].scores}
+        </Typography>
+      </Stack>
     </ThemeProvider>
+  );
+};
+
+const CourseSession = () => {
+  return (
+    <div>
+    </div>
   );
 };
 

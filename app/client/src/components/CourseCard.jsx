@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   Card,
   CardActions,
@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const BasicCard = () => {
+const CourseCard = () => {
   return (
     <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
@@ -20,9 +20,7 @@ const BasicCard = () => {
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Instructor
         </Typography>
-        <Typography variant="body2">
-          Description of course
-        </Typography>
+        <Typography variant="body2">Description of course</Typography>
       </CardContent>
       <CardActions>
         <Button size="small">Enter</Button>
@@ -31,4 +29,4 @@ const BasicCard = () => {
   );
 };
 
-export default BasicCard;
+export default CourseCard;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   Container,
   CssBaseline,
@@ -20,7 +20,7 @@ const CourseList = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline component="main">
+      <CssBaseline/>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -34,7 +34,7 @@ const CourseList = () => {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Container>
+        <Container component="main">
           <Box
             sx={{
               marginTop: 5,
@@ -71,7 +71,6 @@ const CourseList = () => {
             ))}
           </Grid>
         </Container>
-      </CssBaseline>
     </ThemeProvider>
   );
 };
