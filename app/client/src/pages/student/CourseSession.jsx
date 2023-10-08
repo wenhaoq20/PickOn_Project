@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import StudentGame from "../../components/student/StudentGame";
 import StudentGameScores from "../../components/student/StudentGameScores";
+import StudentGroup from "../../components/student/StudentGroup";
 
 const defaultTheme = createTheme();
 
@@ -79,7 +80,6 @@ const SessionLobby = () => {
 const CourseSession = () => {
   return (
     <div>
-
     </div>
   );
 };
