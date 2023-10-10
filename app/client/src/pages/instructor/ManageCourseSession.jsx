@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   Container,
   Grid,
@@ -55,7 +55,6 @@ const ManageCourseSession = () => {
         </Button>
       </CardActions>
     </Card>
-
       <Card sx={{ backgroundColor: 'white', minWidth: 300, maxWidth: 400 }}>
         <CardActionArea>
           <CardMedia
@@ -79,7 +78,6 @@ const ManageCourseSession = () => {
           </Button>
         </CardActions>
       </Card>
-
       <Card sx={{ backgroundColor: 'white', minWidth: 300, maxWidth: 400 }}>
         <CardActionArea>
           <CardMedia
@@ -103,7 +101,6 @@ const ManageCourseSession = () => {
           </Button>
         </CardActions>
       </Card>
-
       <Card sx={{ backgroundColor: 'white', minWidth: 300, maxWidth: 400 }}>
         <CardActionArea>
           <CardMedia
