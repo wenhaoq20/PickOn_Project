@@ -17,6 +17,8 @@ import StudentGame from "../../components/student/StudentGame";
 import StudentGameScores from "../../components/student/StudentGameScores";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
+import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
+import StudentAnonymous from "../../components/student/StudentAnonymous";
 
 const defaultTheme = createTheme();
 
