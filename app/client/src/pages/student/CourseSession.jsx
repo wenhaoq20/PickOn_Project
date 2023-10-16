@@ -82,6 +82,7 @@ const SessionLobby = () => {
 const CourseSession = () => {
   return (
     <div>
+      <StudentAnonymous />
     </div>
   );
 };
