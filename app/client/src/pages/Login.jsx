@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Await, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -25,12 +25,18 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/login", { email, password });
-      console.log(response.data);
+      const response = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
+
+      if (response.data.success) {
+        navigator("/courselist");
+      }
+
     } catch (error) {
       console.error("Login error:", error);
     }
-    navigator("/courselist");
   };
 
   return (

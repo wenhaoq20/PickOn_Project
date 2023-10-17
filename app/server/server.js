@@ -54,7 +54,7 @@ app.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).send("Invalid password.");
         }
-        res.send("Logged in successfully!");
+        res.json({ success: true });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error logging in.");
