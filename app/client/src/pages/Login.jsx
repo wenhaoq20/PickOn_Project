@@ -11,7 +11,7 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import axios from "axios";
+import axios from "../api/axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
@@ -25,15 +25,23 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: { "Content-type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
       if (response.data.success) {
+        setEmail("");
+        setPassword("");
         navigator("/courselist");
       }
-
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -70,6 +78,7 @@ const Login = () => {
               autoComplete="email"
               autoFocus
               onChange={(event) => setEmail(event.target.value)}
+              value={email}
             />
             <TextField
               margin="normal"
@@ -81,6 +90,7 @@ const Login = () => {
               id="password"
               autoComplete="current-password"
               onChange={(event) => setPassword(event.target.value)}
+              value={password}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

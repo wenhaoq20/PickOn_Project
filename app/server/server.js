@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== 'production') {
 const User = require('./models/User');
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const cors = require('cors');
@@ -16,14 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/loginApp', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error(err));
 
 // Passport setup
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.post('/register', async (req, res) => {
     const { email, password, firstname, lastname, uhid } = req.body;
