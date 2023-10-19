@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   CssBaseline,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import axios from "../api/axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
@@ -20,8 +21,9 @@ const defaultTheme = createTheme();
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { login, isAuthenticated } = useAuth();
   const navigator = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -33,19 +35,25 @@ const Login = () => {
         },
         {
           headers: { "Content-type": "application/json" },
-          withCredentials: true,
         }
       );
 
       if (response.data.success) {
         setEmail("");
         setPassword("");
-        navigator("/courselist");
+        login();
+        navigator("/");
       }
     } catch (error) {
       console.error("Login error:", error);
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigator("/");
+    }
+  }, [isAuthenticated, navigator]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

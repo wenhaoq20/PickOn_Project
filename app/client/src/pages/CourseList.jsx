@@ -6,13 +6,10 @@ import {
   Typography,
   TextField,
   Grid,
-  AppBar,
-  Toolbar,
-  IconButton,
 } from "@mui/material";
-import { AccountCircle, Settings } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CourseCard from "../components/CourseCard";
+import Navbar from "../components/Navbar";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
@@ -20,57 +17,45 @@ const CourseList = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <CssBaseline/>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Menu
-            </Typography>
-            <IconButton aria-controls="menu-appbar" color="inherit" aria-label="user">
-              <AccountCircle />
-            </IconButton>
-            <IconButton aria-controls="menu-appbar" color="inherit" aria-label="setting">
-              <Settings />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Container component="main">
-          <Box
-            sx={{
-              marginTop: 5,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component={"h1"} variant={"h5"}>
-              Course List
-            </Typography>
-          </Box>
-          <TextField
-            margin="normal"
-            fullWidth
-            id="course"
-            label="Course name"
-            name="course"
-            autoComplete="course"
-            autoFocus
-          />
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={2}
-            sx={{
-              marginTop: 5,
-            }}
-          >
-            {courses.map((c) => (
-              <Grid item>
-                <CourseCard key={c} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+      <CssBaseline />
+      <Navbar />
+      <Container component="main">
+        <Box
+          sx={{
+            marginTop: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component={"h1"} variant={"h5"}>
+            Course List
+          </Typography>
+        </Box>
+        <TextField
+          margin="normal"
+          fullWidth
+          id="course"
+          label="Course name"
+          name="course"
+          autoComplete="course"
+          autoFocus
+        />
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={2}
+          sx={{
+            marginTop: 5,
+          }}
+        >
+          {courses.map((c) => (
+            <Grid item>
+              <CourseCard key={c} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </ThemeProvider>
   );
 };
