@@ -11,7 +11,6 @@ import {
   Button,
     Stack,
 } from '@mui/material';
-import InstructorGroup from '../../components/instructor/InstructorGroup';
 
 const ManageCourseSession = () => {
   return <Container>
