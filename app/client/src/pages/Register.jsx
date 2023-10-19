@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   TextField,
@@ -8,22 +8,38 @@ import {
   Link,
   Box,
 } from "@mui/material";
+import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 const Register = () => {
-  const navigator = useNavigate();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+  const [formData, setFormData] = useState(
+    { email: '', password: '', firstname: '', lastname: '', uhid: '' }
+    );
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
-    navigator("/courselist");
   };
+
+  // const navigator = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/register', formData);
+      console.log(response.data);
+      alert(response.data);
+    } catch (error) {
+      console.error("Register error:", error);
+      alert("Error registering.");
+    }
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component={"main"} maxWidth={"xs"}>
@@ -52,6 +68,7 @@ const Register = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={handleChange}
               autoFocus
             />
             <TextField
@@ -63,6 +80,7 @@ const Register = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -72,6 +90,7 @@ const Register = () => {
               label="First Name"
               id="firstname"
               autoComplete="firstname"
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -81,6 +100,7 @@ const Register = () => {
               label="Last Name"
               id="lastname"
               autoComplete="lastname"
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -90,6 +110,7 @@ const Register = () => {
               label="UH ID"
               id="uhid"
               autoComplete="UH ID"
+              onChange={handleChange}
             />
             <Button
               type="submit"

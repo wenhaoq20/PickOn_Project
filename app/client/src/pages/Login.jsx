@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   CssBaseline,
@@ -11,22 +11,49 @@ import {
   Typography,
   Container,
 } from "@mui/material";
+import axios from "../api/axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, isAuthenticated } = useAuth();
   const navigator = useNavigate();
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    navigator("/courselist");
+    try {
+      const response = await axios.post(
+        "/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: { "Content-type": "application/json" },
+        }
+      );
+
+      if (response.data.success) {
+        setEmail("");
+        setPassword("");
+        login();
+        navigator("/");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigator("/");
+    }
+  }, [isAuthenticated, navigator]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -58,6 +85,8 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
             />
             <TextField
               margin="normal"
@@ -68,6 +97,8 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => setPassword(event.target.value)}
+              value={password}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
