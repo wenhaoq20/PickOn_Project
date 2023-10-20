@@ -10,11 +10,21 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(
         () => localStorage.getItem('isAuthenticated') === 'true'
     );
-    const [userRole, setUserRole] = useState(null);
+    const [userRole, setUserRole] = useState(
+        () => localStorage.getItem('userRole') || null
+    );
 
     useEffect(() => {
         localStorage.setItem('isAuthenticated', isAuthenticated);
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        if (userRole) {
+            localStorage.setItem('userRole', userRole);
+        } else {
+            localStorage.removeItem('userRole');
+        }
+    }, [userRole]);
 
     const login = (role) => {
         setIsAuthenticated(true);
@@ -24,6 +34,8 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setIsAuthenticated(false);
         setUserRole(null);
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userRole');
     };
 
     return (
@@ -32,3 +44,5 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 }
+
+export default AuthProvider;

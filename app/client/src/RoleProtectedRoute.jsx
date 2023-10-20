@@ -1,17 +1,18 @@
 import React from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import CourseList from "./pages/CourseList";
 
-const RoleBasedRoute = ({ requiredRole }) => {
+const RoleBasedRoute = ({ requiredRoles }) => {
   const { isAuthenticated, userRole } = useAuth();
-  const location = useLocation();
+  console.log(requiredRoles);
+  console.log(userRole);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 
-  if (location.pathname !== "/error" && userRole !== requiredRole) {
-    console.log("here");
+  if (!requiredRoles.includes(userRole)) {
     return <Navigate to="/error" />;
   }
 
