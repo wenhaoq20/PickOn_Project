@@ -1,15 +1,18 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 
 function ModeCard({ title, description, image, altText, onButtonClick }) {
   return (
-    <Card sx={{ backgroundColor: "white", minWidth: 300, maxWidth: 400 }}>
+    <Card
+      sx={{ backgroundColor: "white", minWidth: 300, maxWidth: 400 }}
+      onClick={onButtonClick}
+    >
       <CardActionArea>
         <CardMedia component="img" height="140" image={image} alt={altText} />
         <CardContent>
@@ -21,11 +24,6 @@ function ModeCard({ title, description, image, altText, onButtonClick }) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={onButtonClick}>
-          Start
-        </Button>
-      </CardActions>
     </Card>
   );
 }
