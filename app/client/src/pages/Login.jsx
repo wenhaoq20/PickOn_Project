@@ -10,6 +10,8 @@ import {
   Box,
   Typography,
   Container,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import axios from "../api/axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,6 +23,8 @@ const defaultTheme = createTheme();
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const { login, isAuthenticated } = useAuth();
   const navigator = useNavigate();
 
@@ -45,7 +49,13 @@ const Login = () => {
         navigator("/");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      if (!error?.response) {
+        setErrorMsg("No response from server");
+      } else if (error.response?.status === 400) {
+        setErrorMsg("Invalid email or password");
+      } else {
+        setErrorMsg("Something went wrong");
+      }
     }
   };
 
@@ -76,6 +86,12 @@ const Login = () => {
             noValidate
             sx={{ mt: 1 }}
           >
+            {errorMsg && (
+              <Alert severity="error">
+                <AlertTitle> Error </AlertTitle>
+                <strong> {errorMsg} </strong>
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required
