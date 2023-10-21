@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   TextField,
+  Typography,
 } from "@mui/material";
 
 const students = [
@@ -21,14 +22,24 @@ const students = [
 const InstructorGroup = ({ onButtonClick }) => {
   return (
     <Container>
+      <Button onClick={onButtonClick}>Back</Button>
+      <Box
+        sx={{
+          marginTop: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3">Group Mode</Typography>
+      </Box>
       <Grid container spacing={2}>
         <Grid item xs={5} textAlign="center">
-          <Button onClick={onButtonClick}> back </Button>
-          <h1>Student List</h1>
+          <Typography variant="h4">Student List</Typography>
           <Box sx={{ boxShadow: 2 }}>
             <List>
               {students.map((member) => (
-                <ListItem key={member.name}>
+                <ListItem>
                   <ListItemText primary={member.name} />
                 </ListItem>
               ))}
@@ -37,7 +48,7 @@ const InstructorGroup = ({ onButtonClick }) => {
         </Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={5} textAlign="center">
-          <h1>Groups</h1>
+          <Typography variant="h4">Groups</Typography>
           <Box sx={{ boxShadow: 2 }}>
             <List>
               <ListItem>Group1</ListItem>
@@ -66,9 +77,9 @@ const InstructorGroup = ({ onButtonClick }) => {
             fullWidth
             defaultValue="Enter the question here"
           />
-          <Container style={{ justifyContent: "flex-start" }}>
-            <Button variant="contained">Submit</Button>
-          </Container>
+          <Button variant="contained" sx={{ mt: 2 }}>
+            Submit
+          </Button>
         </Grid>
       </Grid>
     </Container>
