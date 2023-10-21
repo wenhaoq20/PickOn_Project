@@ -1,7 +1,5 @@
 import React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
-  CssBaseline,
   Stack,
   Typography,
   Box,
@@ -12,8 +10,6 @@ import {
   Paper,
 } from "@mui/material";
 
-const defaultTheme = createTheme();
-
 const responses = [
   "I found the course very informative and engaging.",
   "The content was a bit advanced for me, but I learned a lot.",
@@ -22,83 +18,81 @@ const responses = [
   "I had some technical issues with the platform, but the course itself was good.",
 ];
 
-const InstructorAnonymous = () => {
+const InstructorAnonymous = ({ onButtonClick }) => {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
-      <Container>
-        <Box
-          sx={{
-            marginTop: 3,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h3">Anonymous Mode</Typography>
-        </Box>
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <Stack
-              sx={{
-                direction: "column",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: 3,
-              }}
-              spacing={3}
-            >
-              <Typography variant="h5">Responses</Typography>
-              <Paper elevation={3} style={{ padding: "20px" }}>
-                {responses.map((response, index) => (
-                  <Box key={index} mt={1} mb={1}>
-                    <Typography variant="body1">{response}</Typography>
-                  </Box>
-                ))}
-              </Paper>
-            </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack
-              sx={{
-                direction: "column",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: 3,
-              }}
-              spacing={3}
-            >
-              <Typography variant="h5">
-                Write a question for your class to answer
-              </Typography>
-              <Box
-                component="form"
-                noValidate
-                sx={{
-                  width: 500,
-                  maxWidth: "100%",
-                }}
-              >
-                <TextField
-                  placeholder="Type something here..."
-                  multiline
-                  fullWidth
-                  rows={10}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Submit
-                </Button>
-              </Box>
-            </Stack>
-          </Grid>
+    <Container>
+      <Button onClick={onButtonClick}> back </Button>
+      <Box
+        sx={{
+          marginTop: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3">Anonymous Mode</Typography>
+      </Box>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <Stack
+            sx={{
+              direction: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              marginTop: 3,
+            }}
+            spacing={3}
+          >
+            <Typography variant="h5">Responses</Typography>
+            <Paper elevation={3} style={{ padding: "20px" }}>
+              {responses.map((response, index) => (
+                <Box key={index} mt={1} mb={1}>
+                  <Typography variant="body1">{response}</Typography>
+                </Box>
+              ))}
+            </Paper>
+          </Stack>
         </Grid>
-      </Container>
-    </ThemeProvider>
+        <Grid item xs={6}>
+          <Stack
+            sx={{
+              direction: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              marginTop: 3,
+            }}
+            spacing={3}
+          >
+            <Typography variant="h5">
+              Write a question for your class to answer
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              sx={{
+                width: 500,
+                maxWidth: "100%",
+              }}
+            >
+              <TextField
+                placeholder="Type something here..."
+                multiline
+                fullWidth
+                rows={10}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Stack>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

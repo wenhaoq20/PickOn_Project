@@ -7,6 +7,8 @@ import {
   Container,
   Link,
   Box,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -15,28 +17,39 @@ import { useNavigate } from "react-router-dom";
 const defaultTheme = createTheme();
 
 const Register = () => {
-  const [formData, setFormData] = useState(
-    { email: '', password: '', firstname: '', lastname: '', uhid: '' }
-    );
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    firstname: "",
+    lastname: "",
+    uhid: "",
+  });
+
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  // const navigator = useNavigate();
+  const navigator = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/register', formData);
+      const response = await axios.post(
+        "http://localhost:5000/register",
+        formData
+      );
       console.log(response.data);
-      alert(response.data);
+      setSuccessMsg("Successfully registered.");
+      navigator("/login");
     } catch (error) {
       console.error("Register error:", error);
-      alert("Error registering.");
+      setErrorMsg("Something went wrong");
     }
   };
 
@@ -60,6 +73,18 @@ const Register = () => {
             noValidate
             sx={{ mt: 1 }}
           >
+            {errorMsg && (
+              <Alert severity="error">
+                <AlertTitle> Error </AlertTitle>
+                <strong> {errorMsg} </strong>
+              </Alert>
+            )}
+            {successMsg && (
+              <Alert severity="success">
+                <AlertTitle> Success </AlertTitle>
+                <strong> {successMsg} </strong>
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required

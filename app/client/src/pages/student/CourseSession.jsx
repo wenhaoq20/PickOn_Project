@@ -18,6 +18,7 @@ import StudentGameScores from "../../components/student/StudentGameScores";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
+import Navbar from "../../components/Navbar";
 
 const defaultTheme = createTheme();
 
@@ -78,7 +79,8 @@ const CourseSession = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <StudentGroup />
+      <Navbar name="Course Session" redirect={true} />
+      <SessionLobby />
     </ThemeProvider>
   );
 };
