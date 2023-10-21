@@ -18,7 +18,7 @@ const CourseList = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <Navbar />
+      <Navbar name="Courses" />
       <Container component="main">
         <Box
           sx={{
