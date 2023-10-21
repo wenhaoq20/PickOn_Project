@@ -7,12 +7,15 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, ArrowBack } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
-const Navbar = () => {
+const Navbar = ({ name, redirect }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { logout } = useAuth();
+  const navigator = useNavigate();
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,11 +29,20 @@ const Navbar = () => {
     logout();
   };
 
+  const onClickBack = () => {
+    navigator(-1);
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
+        {redirect && (
+          <IconButton aria-label="back" color="inherit" onClick={onClickBack}>
+            <ArrowBack />
+          </IconButton>
+        )}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Menu
+          {name}
         </Typography>
         <div>
           <IconButton
