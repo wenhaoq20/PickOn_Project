@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar";
 import ModeCard from "../../components/instructor/ModeCard";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
 import InstructorGroup from "../../components/instructor/InstructorGroup";
+import InstructorPickOn from "../../components/instructor/InstructorPickOn";
 
 const defaultTheme = createTheme();
 
@@ -90,7 +91,9 @@ const ManageCourseSession = () => {
       {gameMode === "anonymous" && (
         <InstructorAnonymous onButtonClick={() => setGameMode("home")} />
       )}
-      {gameMode === "pickon" && <div>Pickon</div>}
+      {gameMode === "pickon" && (
+        <InstructorPickOn onButtonClick={() => setGameMode("home")} />
+      )}
     </ThemeProvider>
   );
 };
