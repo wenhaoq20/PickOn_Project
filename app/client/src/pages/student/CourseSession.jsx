@@ -16,8 +16,8 @@ import { CssBaseline } from "@mui/material";
 import StudentGame from "../../components/student/StudentGame";
 import StudentGameScores from "../../components/student/StudentGameScores";
 import StudentGroup from "../../components/student/StudentGroup";
+import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
-import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
 import Navbar from "../../components/Navbar";
 
 const defaultTheme = createTheme();
@@ -36,56 +36,52 @@ const rows = [
 
 const SessionLobby = () => {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
-      <Stack
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-        spacing={3}
-      >
-        <Typography variant="h4">Waiting for your instructor.....</Typography>
-        <Typography variant="h5"> John Doe </Typography>
-        <Typography variant="h5"> ITM 352 </Typography>
-        <Container>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 500 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Mode name</TableCell>
-                  <TableCell align="center">Points</TableCell>
+    <Stack
+      direction="column"
+      justifyContent="flex-start"
+      alignItems="center"
+      spacing={3}
+    >
+      <Typography variant="h4">Waiting for your instructor.....</Typography>
+      <Typography variant="h5"> John Doe </Typography>
+      <Typography variant="h5"> ITM 352 </Typography>
+      <Container>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Mode name</TableCell>
+                <TableCell align="center">Points</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow
+                  key={row.name}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="center">{row.scores}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="center">{row.scores}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Container>
-        <Typography variant="h5">
-          Progress in course: {rows[4].scores}
-        </Typography>
-      </Stack>
-    </ThemeProvider>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+      <Typography variant="h5">Progress in course: {rows[4].scores}</Typography>
+    </Stack>
   );
 };
 
 const CourseSession = () => {
   return (
-    <div>
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
       <Navbar name="Course Session" redirect={true} />
       <SessionLobby />
-    </div>
+    </ThemeProvider>
   );
 };
 
