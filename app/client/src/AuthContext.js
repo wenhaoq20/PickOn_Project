@@ -38,12 +38,14 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setIsAuthenticated(false);
         setUserRole(null);
+        setUserId(null);
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('userRole');
+        localStorage.removeItem('userId');
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, userRole, userId, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

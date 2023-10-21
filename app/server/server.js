@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
 const authRoutes = require('./userAuth');
+const userInfo = require('./userInfo');
 const http = require("http");
 const { Server } = require("socket.io");
 
@@ -39,6 +40,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 app.use(authRoutes);
+app.use(userInfo);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
