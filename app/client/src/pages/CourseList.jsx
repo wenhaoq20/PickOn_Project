@@ -18,7 +18,7 @@ const CourseList = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <Navbar />
+      <Navbar name="Courses" />
       <Container component="main">
         <Box
           sx={{
@@ -50,8 +50,8 @@ const CourseList = () => {
           }}
         >
           {courses.map((c) => (
-            <Grid item>
-              <CourseCard key={c} />
+            <Grid item key={c}>
+              <CourseCard />
             </Grid>
           ))}
         </Grid>

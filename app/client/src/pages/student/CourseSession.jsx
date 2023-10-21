@@ -19,6 +19,7 @@ import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
+import Navbar from "../../components/Navbar";
 
 const defaultTheme = createTheme();
 
@@ -83,7 +84,8 @@ const SessionLobby = () => {
 const CourseSession = () => {
   return (
     <div>
-      <StudentAnonymous />
+      <Navbar name="Course Session" redirect={true} />
+      <SessionLobby />
     </div>
   );
 };
