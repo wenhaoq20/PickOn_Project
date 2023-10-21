@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  Box,
-  Button,
-  Container, CssBaseline,
-  Grid, List, ListItem, ListItemText,
-  TextField, Typography
-
+  Box, Button,
+  Container, CssBaseline, Grid, List, ListItem, ListItemText, TextField, Typography
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CasinoIcon from '@mui/icons-material/Casino';
 
 const defaultTheme = createTheme();
 
@@ -32,9 +29,9 @@ const InstructorGroup = () => {
                 alignItems: "center",
               }}
           >
-            <Typography variant="h3">Group Mode</Typography>
+            <Typography variant="h3">PickOn Mode</Typography>
           </Box>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{mt: 2}}>
             <Grid item xs={5} textAlign='center'>
               <Typography variant='h4'>Student List</Typography>
               <Box sx={{ boxShadow: 2 }}>
@@ -48,26 +45,7 @@ const InstructorGroup = () => {
               </Box>
             </Grid>
             <Grid item xs={2}></Grid>
-            <Grid item xs={5} textAlign='center'>
-              <Typography variant='h4'>Groups</Typography>
-              <Box sx={{ boxShadow: 2 }}>
-                <List>
-                  <ListItem>Group1</ListItem>
-                </List>
-              </Box>
-              <Box sx={{ boxShadow: 2 }}>
-                <List>
-                  <ListItem>Group2</ListItem>
-                </List>
-              </Box>
-              <Box sx={{ boxShadow: 2 }}>
-                <List>
-                  <ListItem>Group3</ListItem>
-                </List>
-              </Box>
-              <Button variant='contained' sx={{ margin: 2 }}>Randomize</Button>
-              <Button variant='contained'>Select groups</Button>
-              <Container padding={2}/>
+            <Grid item xs={5} textAlign='center' sx={{mt: 5}}>
               <TextField
                   id="outlined-multiline-static"
                   label="Question"
@@ -77,6 +55,15 @@ const InstructorGroup = () => {
                   defaultValue="Enter the question here"
               />
               <Button variant="contained" sx={{mt: 2}}>Submit</Button>
+              <Container/>
+              <Button variant="contained" sx={{mt: 8}} size='large' startIcon={<CasinoIcon/>}>PickOn</Button>
+              <TextField
+                  id="outlined-multiline-static"
+                  label="Picked Student"
+                  fullWidth
+                  defaultValue="No current student"
+                  sx={{mt: 1}}
+              />
             </Grid>
           </Grid>
         </Container>
