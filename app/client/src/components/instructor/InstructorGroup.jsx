@@ -39,7 +39,7 @@ const InstructorGroup = ({ onButtonClick }) => {
           <Box sx={{ boxShadow: 2 }}>
             <List>
               {students.map((member) => (
-                <ListItem>
+                <ListItem key={member.name}>
                   <ListItemText primary={member.name} />
                 </ListItem>
               ))}

@@ -12,8 +12,9 @@ import { useAuth } from "../AuthContext";
 const CourseCard = () => {
   const { userRole } = useAuth();
   const navigator = useNavigate();
+
   const onButtonClick = () => {
-    if (userRole === "stundet") {
+    if (userRole === "student") {
       navigator("/coursesession");
     } else if (userRole === "instructor") {
       navigator("/managecoursesession");

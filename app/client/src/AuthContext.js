@@ -13,22 +13,26 @@ export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState(
         () => localStorage.getItem('userRole') || null
     );
+    const [userId, setUserId] = useState(
+        () => localStorage.getItem('userId') || null
+    );
 
     useEffect(() => {
         localStorage.setItem('isAuthenticated', isAuthenticated);
     }, [isAuthenticated]);
 
     useEffect(() => {
-        if (userRole) {
-            localStorage.setItem('userRole', userRole);
-        } else {
-            localStorage.removeItem('userRole');
-        }
+        localStorage.setItem('userId', userId);
+    }, [userId]);
+
+    useEffect(() => {
+        localStorage.setItem('userRole', userRole);
     }, [userRole]);
 
-    const login = (role) => {
+    const login = (role, id) => {
         setIsAuthenticated(true);
         setUserRole(role);
+        setUserId(id);
     };
 
     const logout = () => {

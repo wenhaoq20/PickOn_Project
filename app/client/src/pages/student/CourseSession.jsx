@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,13 +13,14 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import io from "socket.io-client";
 import StudentGame from "../../components/student/StudentGame";
-import StudentGameScores from "../../components/student/StudentGameScores";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
 import Navbar from "../../components/Navbar";
 
+const socket = io.connect("http://localhost:5000");
 const defaultTheme = createTheme();
 
 const createData = (name, scores) => {
@@ -76,11 +77,23 @@ const SessionLobby = () => {
 };
 
 const CourseSession = () => {
+  const [sessionMode, setSessionMode] = useState("home");
+
+  useEffect(() => {
+    socket.on("receive_mode", (data) => {
+      setSessionMode(data);
+    });
+  }, [socket]);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Course Session" redirect={true} />
-      <SessionLobby />
+      {sessionMode === "home" && <SessionLobby />}
+      {sessionMode === "competition" && <StudentGame />}
+      {sessionMode === "group" && <StudentGroup />}
+      {sessionMode === "anonymous" && <StudentAnonymous />}
+      {sessionMode === "pickon" && <StudentPickOn />}
     </ThemeProvider>
   );
 };
