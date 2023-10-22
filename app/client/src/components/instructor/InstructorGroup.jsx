@@ -19,7 +19,8 @@ const students = [
   { name: "Eve" },
 ];
 
-const InstructorGroup = ({ onButtonClick }) => {
+const InstructorGroup = ({ onButtonClick, onlineUsers }) => {
+  console.log(onlineUsers);
   return (
     <Container>
       <Button onClick={onButtonClick}>Back</Button>
@@ -38,9 +39,9 @@ const InstructorGroup = ({ onButtonClick }) => {
           <Typography variant="h4">Student List</Typography>
           <Box sx={{ boxShadow: 2 }}>
             <List>
-              {students.map((member) => (
-                <ListItem key={member.name}>
-                  <ListItemText primary={member.name} />
+              {onlineUsers.map((name) => (
+                <ListItem key={name}>
+                  <ListItemText primary={name} />
                 </ListItem>
               ))}
             </List>

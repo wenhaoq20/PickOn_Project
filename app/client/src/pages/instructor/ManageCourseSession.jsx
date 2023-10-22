@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, Stack, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import io from "socket.io-client";
@@ -48,11 +48,26 @@ const ManageCourseSession = () => {
   ];
 
   const [sessionMode, setSessionMode] = useState("home");
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   const selectMode = (mode) => {
-    socket.emit("select_mode", mode);
+    socket.emit("select_mode", { mode: mode, sessionId: "ICS314" });
     setSessionMode(mode);
   };
+
+  useEffect(() => {
+    socket.emit("join_session", {
+      sessionId: "ICS314",
+      username: "Instructor",
+      isInstructor: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("send_online_users", (data) => {
+      setOnlineUsers(data);
+    });
+  }, [socket]);
 
   const baseScreen = () => {
     return (
@@ -93,7 +108,10 @@ const ManageCourseSession = () => {
       {sessionMode === "home" && baseScreen()}
       {sessionMode === "competition" && <div>competition</div>}
       {sessionMode === "group" && (
-        <InstructorGroup onButtonClick={() => selectMode("home")} />
+        <InstructorGroup
+          onButtonClick={() => selectMode("home")}
+          onlineUsers={onlineUsers}
+        />
       )}
       {sessionMode === "anonymous" && (
         <InstructorAnonymous onButtonClick={() => selectMode("home")} />

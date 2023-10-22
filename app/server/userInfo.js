@@ -9,7 +9,6 @@ info.get('/full_name', async (req, res) => {
         if (!user) {
             return res.status(400).send("User not found.");
         }
-        console.log(user.firstname + " " + user.lastname);
         res.json({ success: true, firstname: user.firstname, lastname: user.lastname });
     } catch (error) {
         console.error(error);

@@ -16,6 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const onlineUsers = {};
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -25,12 +27,31 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
-    socket.on("select_mode", (mode) => {
-        console.log(mode);
-        socket.broadcast.emit("receive_mode", mode);
+    socket.on("join_session", ({ sessionId, username, isInstructor }) => {
+        socket.join(sessionId);
+        if (!onlineUsers[sessionId]) {
+            onlineUsers[sessionId] = [];
+        }
+        if (!isInstructor && !onlineUsers[sessionId].includes(username)) {
+            onlineUsers[sessionId].push(username);
+        };
+        socket.emit("send_online_users", onlineUsers[sessionId]);
+        console.log(onlineUsers);
     });
+
+    socket.on("leave_session", ({ sessionId, username }) => {
+        socket.leave(sessionId);
+        onlineUsers[sessionId].splice(onlineUsers[sessionId].indexOf(username), 1);
+        socket.emit("send_online_users", onlineUsers[sessionId]);
+        console.log(onlineUsers);
+    });
+
+    socket.on("select_mode", ({ mode, sessionId }) => {
+        console.log(mode);
+        console.log(sessionId);
+        socket.to(sessionId).emit("receive_mode", mode);
+    });
+
 });
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
