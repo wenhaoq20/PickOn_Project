@@ -32,6 +32,15 @@ function setupSocketIO(server) {
             socket.to(sessionId).emit("receive_mode", mode);
         });
 
+        socket.on("send_answer", ({ answer, sessionId }) => {
+            socket.to(sessionId).emit("receive_answer", answer)
+        });
+
+        socket.on("send_question", ({ question, sessionId }) => {
+            socket.to(sessionId).emit("receive_question", question)
+        });
+
+
         socket.on("receive_groups", ({ groups, sessionId }) => {
             socket.to(sessionId).emit("user_group", groups);
         });
