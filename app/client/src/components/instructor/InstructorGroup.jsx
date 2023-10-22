@@ -77,7 +77,6 @@ const InstructorGroup = ({ onButtonClick, onlineUsers, sessionId, socket }) => {
           <Paper sx={{ p: 1, textAlign: "center" }}>
             {pickedGroup === null ? "" : `Group ${pickedGroup + 1}`}
           </Paper>
-
           <Typography variant="h4" sx={{ mt: 2 }}>
             Group Generator
           </Typography>
@@ -104,7 +103,7 @@ const InstructorGroup = ({ onButtonClick, onlineUsers, sessionId, socket }) => {
           <Typography variant="h4">Groups</Typography>
           <Box sx={{ boxShadow: 2 }}>
             {groups.map((group, index) => (
-              <Accordion onClick={() => handleGroupSelect(index)}>
+              <Accordion key={index} onClick={() => handleGroupSelect(index)}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -114,8 +113,11 @@ const InstructorGroup = ({ onButtonClick, onlineUsers, sessionId, socket }) => {
                 </AccordionSummary>
                 <AccordionDetails style={{ padding: "8px 16px" }}>
                   <List style={{ padding: 0 }}>
-                    {group.map((member, idx) => (
-                      <ListItem key={idx} style={{ padding: "4px 16px" }}>
+                    {group.map((member) => (
+                      <ListItem
+                        key={member + index}
+                        style={{ padding: "4px 16px" }}
+                      >
                         <ListItemText primary={member} />
                       </ListItem>
                     ))}

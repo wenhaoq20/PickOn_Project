@@ -1,11 +1,26 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Grid } from "@mui/material";
 
-const StudentPickOn = () => {
+const StudentPickOn = ({ socket, name, sessionId }) => {
   const [message, setMessage] = useState(
     "You have not been picked on this session."
   );
+  const [picked, setPicked] = useState(false);
+  const [volunteer, setVolunteer] = useState(false);
+  const [pass, setPass] = useState(false);
+
+  useEffect(() => {
+    socket.on("receive_pickON_student", ({ pickedName }) => {
+      console.log(pickedName);
+      if (name === pickedName) {
+        setPicked(true);
+        setMessage("You have been picked on this session.");
+      } else {
+        setPicked(false);
+        setMessage("You pass to someone else.");
+      }
+    });
+  }, [socket]);
 
   return (
     <Grid Container>
@@ -44,9 +59,22 @@ const StudentPickOn = () => {
           sx={{ mt: 1 }}
           onClick={() => {
             setMessage("You have been picked on this session.");
+            setVolunteer(true);
+            setPass(false);
           }}
         >
           Volunteer
+        </Button>
+        <Button
+          variant="contained"
+          sx={{ mt: 1 }}
+          onClick={() => {
+            setMessage("You pass to someone else.");
+            setPass(true);
+            setVolunteer(false);
+          }}
+        >
+          Pass
         </Button>
       </Grid>
     </Grid>

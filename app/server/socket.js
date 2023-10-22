@@ -39,6 +39,11 @@ function setupSocketIO(server) {
         socket.on("select_group", ({ pickedGroupNumber, sessionId }) => {
             socket.to(sessionId).emit("receive_group", pickedGroupNumber);
         });
+
+        socket.on("pickON_student", ({ name, sessionId }) => {
+            socket.to(sessionId).emit("receive_pickON_student", { pickedName: name });
+            console.log(name);
+        });
     });
 
     return io;
