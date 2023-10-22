@@ -19,23 +19,26 @@ function setupSocketIO(server) {
             if (!isInstructor && !onlineUsers[sessionId].includes(username)) {
                 onlineUsers[sessionId].push(username);
             };
-            socket.emit("send_online_users", onlineUsers[sessionId]);
-            console.log(onlineUsers);
+            socket.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
         });
 
         socket.on("leave_session", ({ sessionId, username }) => {
             socket.leave(sessionId);
             onlineUsers[sessionId].splice(onlineUsers[sessionId].indexOf(username), 1);
-            socket.emit("send_online_users", onlineUsers[sessionId]);
-            console.log(onlineUsers);
+            socket.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
         });
 
         socket.on("select_mode", ({ mode, sessionId }) => {
-            console.log(mode);
-            console.log(sessionId);
             socket.to(sessionId).emit("receive_mode", mode);
         });
 
+        socket.on("receive_groups", ({ groups, sessionId }) => {
+            socket.to(sessionId).emit("user_group", groups);
+        });
+
+        socket.on("select_group", ({ pickedGroupNumber, sessionId }) => {
+            socket.to(sessionId).emit("receive_group", pickedGroupNumber);
+        });
     });
 
     return io;

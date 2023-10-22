@@ -64,7 +64,7 @@ const CourseSession = () => {
       <Navbar name="Course Session" redirect={true} />
       {sessionMode === "home" && <SessionLobby name={name} />}
       {sessionMode === "competition" && <StudentGame />}
-      {sessionMode === "group" && <StudentGroup />}
+      {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
       {sessionMode === "anonymous" && <StudentAnonymous />}
       {sessionMode === "pickon" && <StudentPickOn />}
     </ThemeProvider>

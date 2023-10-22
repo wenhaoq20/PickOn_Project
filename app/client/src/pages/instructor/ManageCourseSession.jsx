@@ -49,15 +49,16 @@ const ManageCourseSession = () => {
 
   const [sessionMode, setSessionMode] = useState("home");
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [session, setSession] = useState("ICS314");
 
   const selectMode = (mode) => {
-    socket.emit("select_mode", { mode: mode, sessionId: "ICS314" });
+    socket.emit("select_mode", { mode: mode, sessionId: session });
     setSessionMode(mode);
   };
 
   useEffect(() => {
     socket.emit("join_session", {
-      sessionId: "ICS314",
+      sessionId: session,
       username: "Instructor",
       isInstructor: true,
     });
@@ -111,6 +112,8 @@ const ManageCourseSession = () => {
         <InstructorGroup
           onButtonClick={() => selectMode("home")}
           onlineUsers={onlineUsers}
+          sessionId={session}
+          socket={socket}
         />
       )}
       {sessionMode === "anonymous" && (
