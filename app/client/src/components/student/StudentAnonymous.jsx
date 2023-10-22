@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Stack,
   Typography,
@@ -9,16 +9,30 @@ import {
   Container,
   Paper,
 } from "@mui/material";
+import io from 'socket.io-client';
 
-const responses = [
-  "I found the course very informative and engaging.",
-  "The content was a bit advanced for me, but I learned a lot.",
-  "Great course! Looking forward to more like this.",
-  "The instructor was knowledgeable and explained concepts clearly.",
-  "I had some technical issues with the platform, but the course itself was good.",
-];
-
+const socket = io.connect("http://localhost:5000");
+const sendAnswer = (ref) => {
+  socket.emit("send_answer", ref.current.value);
+}
 const StudentAnonymous = () => {
+  const [responses, setResponses] =  useState([]);
+  const [question, setQuestion] =  useState('Waiting for instructor to send question...');
+
+  useEffect(() => {
+    socket.on("receive_answer", (answer) => {
+      setResponses([...responses, answer]);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("receive_question", (question) => {
+      setQuestion(question);
+    });
+  }, [socket]);
+
+  const ref = useRef('');
+
   return (
     <Container>
       <Box
@@ -31,6 +45,28 @@ const StudentAnonymous = () => {
       >
         <Typography variant="h3">Anonymous Mode</Typography>
       </Box>
+      <Container sx={{
+        mt: 2,
+        mb: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}>
+        <Box
+            component="div"
+            sx={{
+              display: "inline",
+              p: 1,
+              m: 1,
+              border: "1px solid",
+              borderRadius: 2,
+              fontSize: "3rem",
+              fontWeight: "700",
+            }}
+        >
+          {question}
+        </Box>
+      </Container>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <Stack
@@ -78,12 +114,14 @@ const StudentAnonymous = () => {
                 multiline
                 fullWidth
                 rows={10}
+                inputRef={ref}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => sendAnswer(ref)}
               >
                 Submit
               </Button>

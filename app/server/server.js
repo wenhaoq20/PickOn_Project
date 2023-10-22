@@ -31,6 +31,14 @@ io.on("connection", (socket) => {
         console.log(mode);
         socket.broadcast.emit("receive_mode", mode);
     });
+
+    socket.on("send_answer", (answer) => {
+      socket.broadcast.emit("receive_answer", answer)
+    });
+
+  socket.on("send_question", (question) => {
+    socket.broadcast.emit("receive_question", question)
+  });
 });
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

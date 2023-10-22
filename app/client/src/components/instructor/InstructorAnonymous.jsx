@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   Stack,
   Typography,
@@ -9,16 +9,26 @@ import {
   Container,
   Paper,
 } from "@mui/material";
+import { useEffect } from "react";
+import io from "socket.io-client";
 
-const responses = [
-  "I found the course very informative and engaging.",
-  "The content was a bit advanced for me, but I learned a lot.",
-  "Great course! Looking forward to more like this.",
-  "The instructor was knowledgeable and explained concepts clearly.",
-  "I had some technical issues with the platform, but the course itself was good.",
-];
+const socket = io.connect("http://localhost:5000");
+
+const sendQuestion = (ref) => {
+  socket.emit("send_question", ref.current.value);
+}
 
 const InstructorAnonymous = ({ onButtonClick }) => {
+  const [responses, updateResponses] =  useState([]);
+
+  useEffect(() => {
+    socket.on("receive_answer", (answer) => {
+      updateResponses([...responses, answer]);
+    });
+  }, [socket]);
+
+  const ref = useRef('');
+
   return (
     <Container>
       <Button onClick={onButtonClick}> back </Button>
@@ -79,12 +89,14 @@ const InstructorAnonymous = ({ onButtonClick }) => {
                 multiline
                 fullWidth
                 rows={10}
+                inputRef={ref}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => sendQuestion(ref)}
               >
                 Submit
               </Button>
