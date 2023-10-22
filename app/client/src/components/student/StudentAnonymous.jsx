@@ -9,15 +9,11 @@ import {
   Container,
   Paper,
 } from "@mui/material";
-import io from 'socket.io-client';
 
-const socket = io.connect("http://localhost:5000");
-const sendAnswer = (ref) => {
-  socket.emit("send_answer", ref.current.value);
-}
-const StudentAnonymous = () => {
-  const [responses, setResponses] =  useState([]);
-  const [question, setQuestion] =  useState('Waiting for instructor to send question...');
+const StudentAnonymous = ({ socket }) => {
+  const [responses, setResponses] = useState([]);
+  const [question, setQuestion] = useState("");
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     socket.on("receive_answer", (answer) => {
@@ -31,7 +27,7 @@ const StudentAnonymous = () => {
     });
   }, [socket]);
 
-  const ref = useRef('');
+  const ref = useRef("");
 
   return (
     <Container>
@@ -45,24 +41,26 @@ const StudentAnonymous = () => {
       >
         <Typography variant="h3">Anonymous Mode</Typography>
       </Box>
-      <Container sx={{
-        mt: 2,
-        mb: 2,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}>
+      <Container
+        sx={{
+          mt: 2,
+          mb: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Box
-            component="div"
-            sx={{
-              display: "inline",
-              p: 1,
-              m: 1,
-              border: "1px solid",
-              borderRadius: 2,
-              fontSize: "3rem",
-              fontWeight: "700",
-            }}
+          component="div"
+          sx={{
+            display: "inline",
+            p: 1,
+            m: 1,
+            border: "1px solid",
+            borderRadius: 2,
+            fontSize: "3rem",
+            fontWeight: "700",
+          }}
         >
           {question}
         </Box>
@@ -114,14 +112,15 @@ const StudentAnonymous = () => {
                 multiline
                 fullWidth
                 rows={10}
-                inputRef={ref}
+                onChange={(event) => setResponse(event.target.value)}
+                value={response}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => sendAnswer(ref)}
+                onClick={}
               >
                 Submit
               </Button>
