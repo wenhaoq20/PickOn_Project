@@ -120,7 +120,12 @@ const ManageCourseSession = () => {
         <InstructorAnonymous onButtonClick={() => selectMode("home")} />
       )}
       {sessionMode === "pickon" && (
-        <InstructorPickOn onButtonClick={() => selectMode("home")} />
+        <InstructorPickOn
+          onButtonClick={() => selectMode("home")}
+          socket={socket}
+          sessionId={session}
+          onlineUsers={onlineUsers}
+        />
       )}
     </ThemeProvider>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,20 +7,24 @@ import {
   List,
   ListItem,
   ListItemText,
-  TextField,
   Typography,
 } from "@mui/material";
 import CasinoIcon from "@mui/icons-material/Casino";
 
-const students = [
-  { name: "Alice" },
-  { name: "Bob" },
-  { name: "Charlie" },
-  { name: "David" },
-  { name: "Eve" },
-];
+const InstructorGroup = ({ onButtonClick, socket, onlineUsers, sessionId }) => {
+  const [pickedStudent, setPickedStudent] = useState(null);
 
-const InstructorGroup = ({ onButtonClick }) => {
+  const handleRandomPickOn = () => {
+    if (onlineUsers.length > 0) {
+      const randomIndex = Math.floor(Math.random() * onlineUsers.length);
+      setPickedStudent(onlineUsers[randomIndex]);
+    }
+  };
+
+  useEffect(() => {
+    socket.emit("pickON_student", { name: pickedStudent, sessionId });
+  }, [pickedStudent]);
+
   return (
     <Container>
       <Button onClick={onButtonClick}> Back </Button>
@@ -39,9 +43,9 @@ const InstructorGroup = ({ onButtonClick }) => {
           <Typography variant="h4">Student List</Typography>
           <Box sx={{ boxShadow: 2 }}>
             <List>
-              {students.map((member) => (
+              {onlineUsers.map((member) => (
                 <ListItem>
-                  <ListItemText primary={member.name} />
+                  <ListItemText primary={member} />
                 </ListItem>
               ))}
             </List>
@@ -49,33 +53,19 @@ const InstructorGroup = ({ onButtonClick }) => {
         </Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={5} textAlign="center" sx={{ mt: 5 }}>
-          <TextField
-            id="outlined-multiline-static"
-            label="Question"
-            multiline
-            rows={6}
-            fullWidth
-            defaultValue="Enter the question here"
-          />
-          <Button variant="contained" sx={{ mt: 2 }}>
-            Submit
-          </Button>
-          <Container />
+          <Typography variant="h4">Picked Student</Typography>
+          <Box sx={{ boxShadow: 2 }}>
+            <Typography variant="h5">{pickedStudent}</Typography>
+          </Box>
           <Button
             variant="contained"
             sx={{ mt: 8 }}
             size="large"
             startIcon={<CasinoIcon />}
+            onClick={handleRandomPickOn}
           >
-            PickOn
+            PickOn A Student
           </Button>
-          <TextField
-            id="outlined-multiline-static"
-            label="Picked Student"
-            fullWidth
-            defaultValue="No current student"
-            sx={{ mt: 1 }}
-          />
         </Grid>
       </Grid>
     </Container>
