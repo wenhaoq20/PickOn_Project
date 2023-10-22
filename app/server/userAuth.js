@@ -32,7 +32,7 @@ auth.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).send("Invalid password.");
         }
-        res.json({ success: true, role: user.accountType });
+        res.json({ success: true, role: user.accountType, id: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error logging in.");

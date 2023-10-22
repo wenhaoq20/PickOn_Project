@@ -45,7 +45,7 @@ const Login = () => {
       if (response.data.success) {
         setEmail("");
         setPassword("");
-        login(response.data.role);
+        login(response.data.role, response.data.id);
         navigator("/");
       }
     } catch (error) {

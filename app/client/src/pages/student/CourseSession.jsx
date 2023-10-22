@@ -1,86 +1,72 @@
-import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  Paper,
-  TableRow,
-  TableHead,
-  Stack,
-  Container,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import io from "socket.io-client";
 import StudentGame from "../../components/student/StudentGame";
-import StudentGameScores from "../../components/student/StudentGameScores";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
+import SessionLobby from "../../components/student/SessionLobby";
 import Navbar from "../../components/Navbar";
+import { useAuth } from "../../AuthContext";
+import axios from "../../api/axios";
 
+const socket = io.connect("http://localhost:5000");
 const defaultTheme = createTheme();
 
-const createData = (name, scores) => {
-  return { name, scores };
-};
-
-const rows = [
-  createData("Game Mode", 10),
-  createData("Anonymous Mode", 8),
-  createData("Group Mode", 12),
-  createData("PickOn Mode Points", 5),
-  createData("Total", 35),
-];
-
-const SessionLobby = () => {
-  return (
-    <Stack
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="center"
-      spacing={3}
-    >
-      <Typography variant="h4">Waiting for your instructor.....</Typography>
-      <Typography variant="h5"> John Doe </Typography>
-      <Typography variant="h5"> ITM 352 </Typography>
-      <Container>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 500 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Mode name</TableCell>
-                <TableCell align="center">Points</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="center">{row.scores}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
-      <Typography variant="h5">Progress in course: {rows[4].scores}</Typography>
-    </Stack>
-  );
-};
-
 const CourseSession = () => {
+  const [sessionMode, setSessionMode] = useState("home");
+
+  const [name, setName] = useState("");
+  const { userId } = useAuth();
+
+  useEffect(() => {
+    const getStudentName = async () => {
+      if (userId) {
+        try {
+          const res = await axios.get("/full_name", { params: { id: userId } });
+          if (res.data.success) {
+            setName(res.data.firstname + " " + res.data.lastname);
+          } else {
+            console.log("User not found or another issue");
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        console.log("User ID is null or undefined");
+      }
+    };
+
+    getStudentName();
+  }, [userId]);
+
+  useEffect(() => {
+    if (name) {
+      socket.emit("join_session", {
+        sessionId: "ICS314",
+        username: name,
+        isInstructor: false,
+      });
+    }
+  }, [name]);
+
+  useEffect(() => {
+    socket.on("receive_mode", (data) => {
+      setSessionMode(data);
+    });
+  }, [socket]);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Course Session" redirect={true} />
-      <SessionLobby />
+      {sessionMode === "home" && <SessionLobby name={name} />}
+      {sessionMode === "competition" && <StudentGame />}
+      {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
+      {sessionMode === "anonymous" && <StudentAnonymous />}
+      {sessionMode === "pickon" && <StudentPickOn />}
     </ThemeProvider>
   );
 };

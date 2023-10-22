@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, Stack, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import io from "socket.io-client";
 import Navbar from "../../components/Navbar";
 import ModeCard from "../../components/instructor/ModeCard";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
@@ -8,6 +9,7 @@ import InstructorGroup from "../../components/instructor/InstructorGroup";
 import InstructorPickOn from "../../components/instructor/InstructorPickOn";
 
 const defaultTheme = createTheme();
+const socket = io.connect("http://localhost:5000");
 
 const ManageCourseSession = () => {
   const modeCardData = [
@@ -45,7 +47,28 @@ const ManageCourseSession = () => {
     },
   ];
 
-  const [gameMode, setGameMode] = useState("home");
+  const [sessionMode, setSessionMode] = useState("home");
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [session, setSession] = useState("ICS314");
+
+  const selectMode = (mode) => {
+    socket.emit("select_mode", { mode: mode, sessionId: session });
+    setSessionMode(mode);
+  };
+
+  useEffect(() => {
+    socket.emit("join_session", {
+      sessionId: session,
+      username: "Instructor",
+      isInstructor: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("send_online_users", (data) => {
+      setOnlineUsers(data);
+    });
+  }, [socket]);
 
   const baseScreen = () => {
     return (
@@ -70,7 +93,7 @@ const ManageCourseSession = () => {
                 description={card.description}
                 image={card.image}
                 altText={card.altText}
-                onButtonClick={() => setGameMode(card.altText)}
+                onButtonClick={() => selectMode(card.altText)}
               />
             ))}
           </Stack>
@@ -83,16 +106,21 @@ const ManageCourseSession = () => {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Session Manager" redirect={true} />
-      {gameMode === "home" && baseScreen()}
-      {gameMode === "competition" && <div>competition</div>}
-      {gameMode === "group" && (
-        <InstructorGroup onButtonClick={() => setGameMode("home")} />
+      {sessionMode === "home" && baseScreen()}
+      {sessionMode === "competition" && <div>competition</div>}
+      {sessionMode === "group" && (
+        <InstructorGroup
+          onButtonClick={() => selectMode("home")}
+          onlineUsers={onlineUsers}
+          sessionId={session}
+          socket={socket}
+        />
       )}
-      {gameMode === "anonymous" && (
-        <InstructorAnonymous onButtonClick={() => setGameMode("home")} />
+      {sessionMode === "anonymous" && (
+        <InstructorAnonymous onButtonClick={() => selectMode("home")} />
       )}
-      {gameMode === "pickon" && (
-        <InstructorPickOn onButtonClick={() => setGameMode("home")} />
+      {sessionMode === "pickon" && (
+        <InstructorPickOn onButtonClick={() => selectMode("home")} />
       )}
     </ThemeProvider>
   );
