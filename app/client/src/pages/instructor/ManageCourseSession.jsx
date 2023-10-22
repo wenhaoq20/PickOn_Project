@@ -117,10 +117,19 @@ const ManageCourseSession = () => {
         />
       )}
       {sessionMode === "anonymous" && (
-        <InstructorAnonymous onButtonClick={() => selectMode("home")} />
+        <InstructorAnonymous
+          onButtonClick={() => selectMode("home")}
+          socket={socket}
+          sessionId={session}
+        />
       )}
       {sessionMode === "pickon" && (
-        <InstructorPickOn onButtonClick={() => selectMode("home")} />
+        <InstructorPickOn
+          onButtonClick={() => selectMode("home")}
+          socket={socket}
+          sessionId={session}
+          onlineUsers={onlineUsers}
+        />
       )}
     </ThemeProvider>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
@@ -10,27 +10,56 @@ import {
   Paper,
 } from "@mui/material";
 
-const responses = [
-  "I found the course very informative and engaging.",
-  "The content was a bit advanced for me, but I learned a lot.",
-  "Great course! Looking forward to more like this.",
-  "The instructor was knowledgeable and explained concepts clearly.",
-  "I had some technical issues with the platform, but the course itself was good.",
-];
+const InstructorAnonymous = ({ onButtonClick, socket, sessionId }) => {
+  const [responses, setResponses] = useState([]);
+  const [question, setQuestion] = useState("");
+  const [currentQuestion, setCurrentQuestion] = useState("");
 
-const InstructorAnonymous = ({ onButtonClick }) => {
+  const handleSendQuestion = () => {
+    socket.emit("send_question", { question, sessionId });
+    setCurrentQuestion(question);
+    setQuestion("");
+  };
+
+  const handleClearResponses = () => {
+    socket.emit("clear_responses", { sessionId });
+  };
+
+  useEffect(() => {
+    socket.on("receive_responses", (responses) => {
+      setResponses(responses);
+    });
+  }, [socket]);
+
   return (
-    <Container>
+    <Container maxWidth={false}>
       <Button onClick={onButtonClick}> back </Button>
       <Box
         sx={{
-          marginTop: 3,
+          marginTop: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <Typography variant="h3">Anonymous Mode</Typography>
+        <Typography variant="h4">
+          Current Question:
+          <Box
+            component="div"
+            sx={{
+              display: "inline",
+              p: 1,
+              m: 1,
+              border: "1px solid",
+              borderRadius: 2,
+              fontSize: "2rem",
+              fontWeight: "700",
+            }}
+          >
+            {currentQuestion}
+          </Box>
+        </Typography>
       </Box>
       <Grid container spacing={3}>
         <Grid item xs={6}>
@@ -44,10 +73,38 @@ const InstructorAnonymous = ({ onButtonClick }) => {
             spacing={3}
           >
             <Typography variant="h5">Responses</Typography>
-            <Paper elevation={3} style={{ padding: "20px" }}>
+            <Paper
+              elevation={3}
+              style={{
+                padding: "20px",
+                width: "40vw",
+                height: "65vh",
+                overflow: "auto",
+              }}
+            >
               {responses.map((response, index) => (
-                <Box key={index} mt={1} mb={1}>
-                  <Typography variant="body1">{response}</Typography>
+                <Box
+                  key={index}
+                  mt={1}
+                  mb={1}
+                  sx={{
+                    width: "100%",
+                    p: 2,
+                    border: "1px solid #e0e0e0",
+                    borderRadius: "4px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{
+                      width: "100%",
+                      wordWrap: "break-word",
+                      overflowWrap: "break-word",
+                    }}
+                  >
+                    {response}
+                  </Typography>
                 </Box>
               ))}
             </Paper>
@@ -67,7 +124,6 @@ const InstructorAnonymous = ({ onButtonClick }) => {
               Write a question for your class to answer
             </Typography>
             <Box
-              component="form"
               noValidate
               sx={{
                 width: 500,
@@ -78,15 +134,26 @@ const InstructorAnonymous = ({ onButtonClick }) => {
                 placeholder="Type something here..."
                 multiline
                 fullWidth
-                rows={10}
+                rows={2}
+                onChange={(event) => setQuestion(event.target.value)}
+                value={question}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={() => handleSendQuestion()}
               >
                 Submit
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => handleClearResponses()}
+              >
+                Clear
               </Button>
             </Box>
           </Stack>

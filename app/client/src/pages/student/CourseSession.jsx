@@ -17,6 +17,7 @@ const defaultTheme = createTheme();
 
 const CourseSession = () => {
   const [sessionMode, setSessionMode] = useState("home");
+  const [session, setSession] = useState("ICS314");
 
   const [name, setName] = useState("");
   const { userId } = useAuth();
@@ -45,7 +46,7 @@ const CourseSession = () => {
   useEffect(() => {
     if (name) {
       socket.emit("join_session", {
-        sessionId: "ICS314",
+        sessionId: session,
         username: name,
         isInstructor: false,
       });
@@ -65,8 +66,12 @@ const CourseSession = () => {
       {sessionMode === "home" && <SessionLobby name={name} />}
       {sessionMode === "competition" && <StudentGame />}
       {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
-      {sessionMode === "anonymous" && <StudentAnonymous />}
-      {sessionMode === "pickon" && <StudentPickOn />}
+      {sessionMode === "anonymous" && (
+        <StudentAnonymous socket={socket} sessionId={session} />
+      )}
+      {sessionMode === "pickon" && (
+        <StudentPickOn socket={socket} name={name} sessionId={session} />
+      )}
     </ThemeProvider>
   );
 };
