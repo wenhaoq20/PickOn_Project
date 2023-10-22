@@ -66,7 +66,9 @@ const CourseSession = () => {
       {sessionMode === "home" && <SessionLobby name={name} />}
       {sessionMode === "competition" && <StudentGame />}
       {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
-      {sessionMode === "anonymous" && <StudentAnonymous socket={socket} />}
+      {sessionMode === "anonymous" && (
+        <StudentAnonymous socket={socket} sessionId={session} />
+      )}
       {sessionMode === "pickon" && (
         <StudentPickOn socket={socket} name={name} sessionId={session} />
       )}

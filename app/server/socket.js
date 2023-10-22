@@ -1,6 +1,8 @@
+const { session } = require("passport");
 const { Server } = require("socket.io");
 
 const onlineUsers = {};
+const anonymousResponse = {};
 
 function setupSocketIO(server) {
     const io = new Server(server, {
@@ -32,14 +34,23 @@ function setupSocketIO(server) {
             socket.to(sessionId).emit("receive_mode", mode);
         });
 
-        socket.on("send_answer", ({ answer, sessionId }) => {
-            socket.to(sessionId).emit("receive_answer", answer)
+        socket.on("send_response", ({ response, sessionId }) => {
+            if (!anonymousResponse[sessionId]) {
+                anonymousResponse[sessionId] = [];
+            }
+            anonymousResponse[sessionId].push(response);
+            io.to(sessionId).emit("receive_responses", anonymousResponse[sessionId])
+        });
+
+        socket.on("clear_responses", ({ sessionId }) => {
+            anonymousResponse[sessionId].length = 0;
+            io.to(sessionId).emit("receive_responses", anonymousResponse[sessionId])
         });
 
         socket.on("send_question", ({ question, sessionId }) => {
+            console.log(question);
             socket.to(sessionId).emit("receive_question", question)
         });
-
 
         socket.on("receive_groups", ({ groups, sessionId }) => {
             socket.to(sessionId).emit("user_group", groups);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
@@ -10,27 +10,27 @@ import {
   Paper,
 } from "@mui/material";
 
-const StudentAnonymous = ({ socket }) => {
+const StudentAnonymous = ({ socket, sessionId }) => {
   const [responses, setResponses] = useState([]);
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState("");
 
   useEffect(() => {
-    socket.on("receive_answer", (answer) => {
-      setResponses([...responses, answer]);
-    });
-  }, [socket]);
-
-  useEffect(() => {
     socket.on("receive_question", (question) => {
       setQuestion(question);
     });
+    socket.on("receive_responses", (responses) => {
+      setResponses(responses);
+    });
   }, [socket]);
 
-  const ref = useRef("");
+  const handleSendResponse = () => {
+    socket.emit("send_response", { response, sessionId });
+    setResponse("");
+  };
 
   return (
-    <Container>
+    <Container maxWidth={false}>
       <Box
         sx={{
           marginTop: 3,
@@ -50,20 +50,23 @@ const StudentAnonymous = ({ socket }) => {
           alignItems: "center",
         }}
       >
-        <Box
-          component="div"
-          sx={{
-            display: "inline",
-            p: 1,
-            m: 1,
-            border: "1px solid",
-            borderRadius: 2,
-            fontSize: "3rem",
-            fontWeight: "700",
-          }}
-        >
-          {question}
-        </Box>
+        <Typography variant="h4">
+          Current Question:
+          <Box
+            component="div"
+            sx={{
+              display: "inline",
+              p: 1,
+              m: 1,
+              border: "1px solid",
+              borderRadius: 2,
+              fontSize: "2rem",
+              fontWeight: "700",
+            }}
+          >
+            {question}
+          </Box>{" "}
+        </Typography>
       </Container>
       <Grid container spacing={3}>
         <Grid item xs={6}>
@@ -77,10 +80,38 @@ const StudentAnonymous = ({ socket }) => {
             spacing={3}
           >
             <Typography variant="h5">Responses</Typography>
-            <Paper elevation={3} style={{ padding: "20px" }}>
+            <Paper
+              elevation={3}
+              style={{
+                padding: "25px",
+                width: "40vw",
+                height: "65vh",
+                overflow: "auto",
+              }}
+            >
               {responses.map((response, index) => (
-                <Box key={index} mt={1} mb={1}>
-                  <Typography variant="body1">{response}</Typography>
+                <Box
+                  key={index}
+                  mt={1}
+                  mb={1}
+                  sx={{
+                    width: "100%",
+                    p: 2,
+                    border: "1px solid #e0e0e0",
+                    borderRadius: "4px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{
+                      width: "100%",
+                      wordWrap: "break-word",
+                      overflowWrap: "break-word",
+                    }}
+                  >
+                    {response}
+                  </Typography>
                 </Box>
               ))}
             </Paper>
@@ -97,10 +128,9 @@ const StudentAnonymous = ({ socket }) => {
             spacing={3}
           >
             <Typography variant="h5">
-              Waiting for your instructor.....
+              Type your response to the question here
             </Typography>
             <Box
-              component="form"
               noValidate
               sx={{
                 width: 500,
@@ -120,7 +150,7 @@ const StudentAnonymous = ({ socket }) => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={}
+                onClick={() => handleSendResponse()}
               >
                 Submit
               </Button>
