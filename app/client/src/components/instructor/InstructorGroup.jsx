@@ -66,8 +66,9 @@ const InstructorGroup = ({ onButtonClick, onlineUsers }) => {
         >
           <Typography variant="h4">Currently Picking On</Typography>
           <Paper sx={{ p: 1, textAlign: "center" }}>
-            Group {pickedGroup + 1}
+            {pickedGroup === null ? "" : `Group ${pickedGroup + 1}`}
           </Paper>
+
           <Typography variant="h4" sx={{ mt: 2 }}>
             Group Generator
           </Typography>
