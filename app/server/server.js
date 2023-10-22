@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+  require('dotenv').config();
 }
 
 const express = require('express');
@@ -9,7 +9,7 @@ const cors = require('cors');
 const authRoutes = require('./userAuth');
 const userInfo = require('./userInfo');
 const http = require("http");
-const { Server } = require("socket.io");
+const setupSocketIO = require('./socket');
 
 const app = express();
 app.use(cors());
@@ -17,33 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
-    }
-});
-
-io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
-    socket.on("select_mode", (mode) => {
-        console.log(mode);
-        socket.broadcast.emit("receive_mode", mode);
-    });
-
-    socket.on("send_answer", (answer) => {
-      socket.broadcast.emit("receive_answer", answer)
-    });
-
-  socket.on("send_question", (question) => {
-    socket.broadcast.emit("receive_question", question)
-  });
-});
+setupSocketIO(server);
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error(err));
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 

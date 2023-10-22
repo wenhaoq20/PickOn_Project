@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -11,8 +11,6 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import axios from "../../api/axios";
-import { useAuth } from "../../AuthContext";
 
 const createData = (name, scores) => {
   return { name, scores };
@@ -26,31 +24,7 @@ const rows = [
   createData("Total", 35),
 ];
 
-const SessionLobby = () => {
-  const [name, setName] = useState("");
-  const { userId } = useAuth();
-
-  useEffect(() => {
-    const getStudentName = async () => {
-      if (userId) {
-        try {
-          const res = await axios.get("/full_name", { params: { id: userId } });
-          if (res.data.success) {
-            setName(res.data.firstname + " " + res.data.lastname);
-          } else {
-            console.log("User not found or another issue");
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        console.log("User ID is null or undefined");
-      }
-    };
-
-    getStudentName();
-  }, [userId]);
-
+const SessionLobby = ({ name }) => {
   return (
     <Stack
       direction="column"
