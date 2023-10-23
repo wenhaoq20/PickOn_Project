@@ -62,7 +62,14 @@ function setupSocketIO(server) {
 
         socket.on("pickON_student", ({ name, sessionId }) => {
             socket.to(sessionId).emit("receive_pickON_student", { pickedName: name });
-            console.log(name);
+        });
+
+        socket.on("pickON_volunteer", ({ name, sessionId }) => {
+            socket.to(sessionId).emit("receive_pickOn_volunteer", { name });
+        });
+
+        socket.on("pickOn_pass", ({ name, sessionId }) => {
+            socket.to(sessionId).emit("receive_pickOn_pass", { name });
         });
     });
 

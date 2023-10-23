@@ -9,15 +9,39 @@ const StudentPickOn = ({ socket, name, sessionId }) => {
   const [volunteer, setVolunteer] = useState(false);
   const [pass, setPass] = useState(false);
 
+  const handleVolunteer = () => {
+    setMessage("You volunteered on this session.");
+    setVolunteer(true);
+    setPass(false);
+    setPicked(true);
+    socket.emit("pickON_volunteer", { name, sessionId });
+  };
+
+  const handlePass = () => {
+    if (picked) {
+      setMessage("You pass to someone else.");
+      setPass(true);
+      setVolunteer(false);
+      setPicked(false);
+      socket.emit("pickOn_pass", { name, sessionId });
+    } else {
+      setMessage(
+        "You have not been picked on this session so you can not pass."
+      );
+    }
+  };
+
   useEffect(() => {
     socket.on("receive_pickON_student", ({ pickedName }) => {
-      console.log(pickedName);
+      console.log(pickedName);  
       if (name === pickedName) {
         setPicked(true);
+        setPass(false);
         setMessage("You have been picked on this session.");
       } else {
         setPicked(false);
-        setMessage("You pass to someone else.");
+        setPass(false);
+        setMessage("You have not been picked on this session.");
       }
     });
   }, [socket]);
@@ -58,9 +82,7 @@ const StudentPickOn = ({ socket, name, sessionId }) => {
           variant="contained"
           sx={{ mt: 1 }}
           onClick={() => {
-            setMessage("You have been picked on this session.");
-            setVolunteer(true);
-            setPass(false);
+            handleVolunteer();
           }}
         >
           Volunteer
@@ -69,9 +91,7 @@ const StudentPickOn = ({ socket, name, sessionId }) => {
           variant="contained"
           sx={{ mt: 1 }}
           onClick={() => {
-            setMessage("You pass to someone else.");
-            setPass(true);
-            setVolunteer(false);
+            handlePass();
           }}
         >
           Pass

@@ -25,6 +25,20 @@ const InstructorGroup = ({ onButtonClick, socket, onlineUsers, sessionId }) => {
     socket.emit("pickON_student", { name: pickedStudent, sessionId });
   }, [pickedStudent]);
 
+  useEffect(() => {
+    socket.on("receive_pickOn_volunteer", ({ name }) => {
+      setPickedStudent(name);
+    });
+    socket.on("receive_pickOn_pass", ({ name }) => {
+      console.log(name);
+      if (pickedStudent === name) {
+        console.log(name);
+        handleRandomPickOn();
+      }
+    });
+  }, [socket]);
+
+  console.log("1:", pickedStudent);
   return (
     <Container>
       <Button onClick={onButtonClick}> Back </Button>
