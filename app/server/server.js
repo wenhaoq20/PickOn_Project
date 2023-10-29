@@ -8,6 +8,7 @@ const session = require('express-session');
 const cors = require('cors');
 const authRoutes = require('./userAuth');
 const userInfo = require('./userInfo');
+const courseInfo = require('./courseInfo');
 const http = require("http");
 const setupSocketIO = require('./socket');
 
@@ -27,6 +28,7 @@ app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUniniti
 
 app.use(authRoutes);
 app.use(userInfo);
+app.use(courseInfo);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));

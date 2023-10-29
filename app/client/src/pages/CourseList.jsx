@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   CssBaseline,
@@ -8,12 +8,30 @@ import {
   Grid,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "../api/axios";
 import CourseCard from "../components/CourseCard";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../AuthContext";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
-  const courses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [courses, setCourses] = useState([]);
+  const { userId } = useAuth();
+
+  useEffect(() => {
+    const getCourseList = async () => {
+      try {
+        const res = await axios.get("/get_enrolled_courses", {
+          params: { id: userId },
+        });
+        setCourses(res.data.courses);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getCourseList();
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -49,9 +67,9 @@ const CourseList = () => {
             marginTop: 5,
           }}
         >
-          {courses.map((c) => (
-            <Grid item key={c}>
-              <CourseCard />
+          {courses.map((course) => (
+            <Grid item key={course._id}>
+              <CourseCard data={course} />
             </Grid>
           ))}
         </Grid>
