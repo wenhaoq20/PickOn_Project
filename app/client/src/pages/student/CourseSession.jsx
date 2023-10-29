@@ -11,7 +11,6 @@ import StudentAnonymous from "../../components/student/StudentAnonymous";
 import SessionLobby from "../../components/student/SessionLobby";
 import Navbar from "../../components/Navbar";
 import { useAuth } from "../../AuthContext";
-import axios from "../../api/axios";
 
 const socket = io.connect("http://localhost:5000");
 const defaultTheme = createTheme();
@@ -21,30 +20,8 @@ const CourseSession = () => {
 
   const [sessionMode, setSessionMode] = useState("home");
   const [session, setSession] = useState("ICS314");
-
-  const [name, setName] = useState("");
-  const { userId } = useAuth();
-
-  useEffect(() => {
-    const getStudentName = async () => {
-      if (userId) {
-        try {
-          const res = await axios.get("/full_name", { params: { id: userId } });
-          if (res.data.success) {
-            setName(res.data.firstname + " " + res.data.lastname);
-          } else {
-            console.log("User not found or another issue");
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        console.log("User ID is null or undefined");
-      }
-    };
-
-    getStudentName();
-  }, [userId]);
+  const { userName } = useAuth();
+  const name = userName;
 
   useEffect(() => {
     if (name) {

@@ -8,6 +8,7 @@ import {
   Grid,
   Card,
   CardContent,
+  Modal,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -15,14 +16,16 @@ import axios from "../api/axios";
 import CourseCard from "../components/CourseCard";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
+import JoinCourse from "../components/student/Modals/JoinCourse";
+import CreateCourse from "../components/instructor/Modals/CreateCourse";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const { userId, userRole } = useAuth();
   const [open, setOpen] = useState(false);
-
-  const onButtonClick = () => {};
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const getCourseList = async () => {
@@ -87,7 +90,7 @@ const CourseList = () => {
                 display: "flex",
                 flexDirection: "column",
               }}
-              onClick={() => onButtonClick()}
+              onClick={() => handleOpen()}
             >
               <CardContent
                 sx={{
@@ -108,6 +111,14 @@ const CourseList = () => {
             </Card>
           </Grid>
         </Grid>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          {userRole === "student" ? <JoinCourse /> : <CreateCourse />}
+        </Modal>
       </Container>
     </ThemeProvider>
   );
