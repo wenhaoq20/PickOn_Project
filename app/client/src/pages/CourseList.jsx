@@ -8,29 +8,35 @@ import {
   Grid,
   Card,
   CardContent,
-  Modal,
+  Alert,
+  AlertTitle,
+  IconButton,
+  Collapse,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CourseCard from "../components/CourseCard";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
-import JoinCourse from "../components/student/Modals/JoinCourse";
-import CreateCourse from "../components/instructor/Modals/CreateCourse";
-import { getCourses } from "../api/course/courses";
+import JoinCourse from "../components/student/modals/JoinCourse";
+import CreateCourse from "../components/instructor/modals/CreateCourse";
+import { getUserCourseList } from "../api/course/courses";
+import CloseIcon from "@mui/icons-material/Close";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
+  const [successMsg, setSuccessMsg] = useState("");
   const { userId, userRole } = useAuth();
   const [open, setOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const getCourseList = async () => {
       try {
-        const res = await getCourses(userId);
+        const res = await getUserCourseList(userId);
         setCourses(res.data.courses);
       } catch (err) {
         console.log(err);
@@ -38,12 +44,33 @@ const CourseList = () => {
     };
 
     getCourseList(userId);
-  }, []);
+  }, [successMsg]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Courses" />
+      <Collapse in={alertOpen}>
+        <Alert
+          severity="success"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setAlertOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          <AlertTitle> Success! </AlertTitle>
+          <strong> {successMsg} </strong>
+        </Alert>
+      </Collapse>
       <Container component="main">
         <Box
           sx={{
@@ -109,16 +136,21 @@ const CourseList = () => {
             </Card>
           </Grid>
         </Grid>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <div>
-            {userRole === "student" ? <JoinCourse /> : <CreateCourse />}
-          </div>
-        </Modal>
+        {userRole === "student" ? (
+          <JoinCourse
+            open={open}
+            handleClose={handleClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+          />
+        ) : (
+          <CreateCourse
+            open={open}
+            handleClose={handleClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );

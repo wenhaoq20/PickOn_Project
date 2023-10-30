@@ -3,7 +3,7 @@ import { Container, Box, Typography, Stack, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import io from "socket.io-client";
 import Navbar from "../../components/Navbar";
-import ModeCard from "../../components/instructor/Cards/ModeCard";
+import ModeCard from "../../components/instructor/cards/ModeCard";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
 import InstructorGroup from "../../components/instructor/InstructorGroup";
 import InstructorPickOn from "../../components/instructor/InstructorPickOn";
