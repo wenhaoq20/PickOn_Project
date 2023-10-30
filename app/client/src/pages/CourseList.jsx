@@ -12,12 +12,12 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import axios from "../api/axios";
 import CourseCard from "../components/CourseCard";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
 import JoinCourse from "../components/student/Modals/JoinCourse";
 import CreateCourse from "../components/instructor/Modals/CreateCourse";
+import { getCourses } from "../api/course/courses";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
@@ -30,16 +30,14 @@ const CourseList = () => {
   useEffect(() => {
     const getCourseList = async () => {
       try {
-        const res = await axios.get("/get_enrolled_courses", {
-          params: { id: userId },
-        });
+        const res = await getCourses(userId);
         setCourses(res.data.courses);
       } catch (err) {
         console.log(err);
       }
     };
 
-    getCourseList();
+    getCourseList(userId);
   }, []);
 
   return (
@@ -117,7 +115,9 @@ const CourseList = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          {userRole === "student" ? <JoinCourse /> : <CreateCourse />}
+          <div>
+            {userRole === "student" ? <JoinCourse /> : <CreateCourse />}
+          </div>
         </Modal>
       </Container>
     </ThemeProvider>

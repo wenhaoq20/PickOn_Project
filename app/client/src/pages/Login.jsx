@@ -13,10 +13,10 @@ import {
   Alert,
   AlertTitle,
 } from "@mui/material";
-import axios from "../api/axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
+import { userLogin } from "../api/user/users";
 
 const defaultTheme = createTheme();
 
@@ -31,17 +31,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "/login",
-        {
-          email,
-          password,
-        },
-        {
-          headers: { "Content-type": "application/json" },
-        }
-      );
-
+      const response = await userLogin(email, password);
       if (response.data.success) {
         setEmail("");
         setPassword("");

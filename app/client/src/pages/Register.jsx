@@ -10,9 +10,9 @@ import {
   Alert,
   AlertTitle,
 } from "@mui/material";
-import axios from "axios";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { userRegister } from "../api/user/users";
 
 const defaultTheme = createTheme();
 
@@ -27,6 +27,7 @@ const Register = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const navigator = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -35,20 +36,15 @@ const Register = () => {
     });
   };
 
-  const navigator = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/register",
-        formData
-      );
+      const response = await userRegister(formData);
       console.log(response.data);
       setSuccessMsg("Successfully registered.");
       navigator("/login");
     } catch (error) {
-      console.error("Register error:", error);
       setErrorMsg("Something went wrong");
     }
   };
