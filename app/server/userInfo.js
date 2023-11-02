@@ -1,8 +1,8 @@
 const express = require('express');
-const info = express.Router();
+const userInfo = express.Router();
 const User = require('./models/User');
 
-info.get('/full_name', async (req, res) => {
+userInfo.get('/full_name', async (req, res) => {
     const { id } = req.query;
     try {
         const user = await User.findById(id);
@@ -16,4 +16,4 @@ info.get('/full_name', async (req, res) => {
     }
 });
 
-module.exports = info;
+module.exports = userInfo;

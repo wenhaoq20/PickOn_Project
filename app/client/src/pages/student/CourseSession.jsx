@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import io from "socket.io-client";
+import { useLocation } from "react-router-dom";
 import StudentGame from "../../components/student/StudentGame";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
@@ -16,6 +17,8 @@ const socket = io.connect("http://localhost:5000");
 const defaultTheme = createTheme();
 
 const CourseSession = () => {
+  const { state } = useLocation();
+
   const [sessionMode, setSessionMode] = useState("home");
   const [session, setSession] = useState("ICS314");
 
@@ -63,7 +66,7 @@ const CourseSession = () => {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Course Session" redirect={true} />
-      {sessionMode === "home" && <SessionLobby name={name} />}
+      {sessionMode === "home" && <SessionLobby name={name} data={state} />}
       {sessionMode === "competition" && <StudentGame />}
       {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
       {sessionMode === "anonymous" && (

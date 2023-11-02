@@ -1,4 +1,3 @@
-const { session } = require("passport");
 const { Server } = require("socket.io");
 
 const onlineUsers = {};

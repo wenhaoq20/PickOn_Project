@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
   accountType: { type: String, required: true, default: 'student' },
+  enrolledCourses: [{ type: String, ref: 'Course', field: 'courseCRN', default: [] }],
 });
 
 UserSchema.pre('save', function (next) {
