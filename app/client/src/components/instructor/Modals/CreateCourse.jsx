@@ -1,6 +1,20 @@
 import React, { useState } from "react";
-import { Box, TextField, Typography, Button, Grid, Modal } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Grid,
+  Modal,
+  Alert,
+  AlertTitle,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { useAuth } from "../../../AuthContext";
+import { createCourse } from "../../../api/course/courses";
 
 const style = {
   position: "absolute",
@@ -13,20 +27,46 @@ const style = {
   p: 4,
 };
 
-const CreateCourse = ({ open, handleClose }) => {
+const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   const { userName, userId } = useAuth();
+  const currDate = new Date();
   const [formData, setFormData] = useState({
     courseCode: "",
     courseSection: "",
     courseCRN: "",
     courseName: "",
     courseSemester: "",
+    courseYear: currDate.getFullYear(),
     instructor: userName,
     description: "",
+    userId: userId,
   });
+  const [errorMsg, setErrorMsg] = useState("");
+  const sucessAlert = () => {
+    setSuccessMsg("Successfully created the course");
+    setAlertOpen(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await createCourse(formData);
+      console.log(response);
+      if (response.data.success) {
+        sucessAlert();
+        handleClose();
+      }
+    } catch (error) {
+      if (!error?.response) {
+        setErrorMsg("No response from server");
+      } else if (error.response?.status === 400) {
+        setErrorMsg(
+          "Invalid user/course information or course already created"
+        );
+      } else {
+        setErrorMsg("Something went wrong");
+      }
+    }
   };
 
   return (
@@ -37,6 +77,12 @@ const CreateCourse = ({ open, handleClose }) => {
       aria-describedby="modal-modal-description"
     >
       <Box component="form" sx={style} onSubmit={handleSubmit}>
+        {errorMsg && (
+          <Alert severity="error">
+            <AlertTitle> Error </AlertTitle>
+            <strong> {errorMsg} </strong>
+          </Alert>
+        )}
         <Typography variant="h5">Enter the class information</Typography>
         <Grid container spacing={1}>
           <Grid item xs={6}>
@@ -93,18 +139,40 @@ const CreateCourse = ({ open, handleClose }) => {
             setFormData({ ...formData, courseName: e.target.value })
           }
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="courseSemester"
-          label="Course Semester"
-          name="courseSemester"
-          onChange={(e) =>
-            setFormData({ ...formData, courseSemester: e.target.value })
-          }
-        />
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <FormControl variant="outlined" margin="normal" required fullWidth>
+              <InputLabel id="courseSemesterLabel">Semester</InputLabel>
+              <Select
+                id="courseSemester"
+                value={formData.courseSemester}
+                onChange={(e) =>
+                  setFormData({ ...formData, courseSemester: e.target.value })
+                }
+                label="Semester"
+              >
+                <MenuItem value={"Spring"}>Spring</MenuItem>
+                <MenuItem value={"Summer"}>Summer</MenuItem>
+                <MenuItem value={"Fall"}>Fall</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="courseYear"
+              label="Course Year"
+              name="courseYear"
+              value={formData.courseYear}
+              onChange={(e) =>
+                setFormData({ ...formData, courseYear: e.target.value })
+              }
+            />
+          </Grid>
+        </Grid>
         <TextField
           variant="outlined"
           margin="normal"

@@ -7,7 +7,6 @@ import CourseList from "./pages/CourseList";
 import Register from "./pages/Register";
 import Course from "./pages/student/Course";
 import CourseSession from "./pages/student/CourseSession";
-import CreateCourse from "./pages/instructor/CreateCourse";
 import ManageCourse from "./pages/instructor/ManageCourse";
 import ManageCourseSession from "./pages/instructor/ManageCourseSession";
 import RoleBasedRoute from "./RoleProtectedRoute";
@@ -33,7 +32,6 @@ const App = () => {
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["instructor"]} />}>
             <Route path="/" element={<CourseList />} />
-            <Route path="/createcourse" element={<CreateCourse />} />
             <Route path="/managecourse" element={<ManageCourse />} />
             <Route
               path="/managecoursesession"

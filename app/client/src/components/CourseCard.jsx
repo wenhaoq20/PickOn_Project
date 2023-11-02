@@ -59,7 +59,7 @@ const CourseCard = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={onButtonClick}>
+        <Button size="small" variant="contained" onClick={onButtonClick}>
           Enter
         </Button>
       </CardActions>
