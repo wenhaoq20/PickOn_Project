@@ -4,13 +4,17 @@ const Schema = mongoose.Schema;
 const CourseSchema = new mongoose.Schema({
     courseCode: { type: String, required: true },
     courseSection: { type: String, required: true },
-    courseCRN: { type: String, required: true, unique: true },
+    courseCRN: { type: String, required: true },
     courseName: { type: String, required: true },
-    courseSemester: { type: String, required: true }, 
+    courseSemester: { type: String, required: true },
     courseYear: { type: Number, required: true },
     instructor: { type: String, required: true },
     description: { type: String, required: true },
     enrolledStudents: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
 });
+
+CourseSchema.index({ courseCRN: 1, courseYear: 1, courseSemester: 1 }, { unique: true });
+
+CourseSchema.index({ courseCode: 1, courseSection: 1, courseSemester: 1, courseYear: 1 }, { unique: true });
 
 module.exports = mongoose.model('Course', CourseSchema);

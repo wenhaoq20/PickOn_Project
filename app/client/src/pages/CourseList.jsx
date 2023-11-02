@@ -33,6 +33,8 @@ const CourseList = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+
+  //TODO - automatically update course list when a new course is created by using Socket.io and Mongoose change streams
   useEffect(() => {
     const getCourseList = async () => {
       try {

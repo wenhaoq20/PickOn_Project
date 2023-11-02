@@ -34,7 +34,7 @@ const CourseCard = ({ data }) => {
     >
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {data.courseSemester} | Section:{data.courseSection}
+          {data.courseSemester} {data.courseYear} | Section:{data.courseSection}
         </Typography>
         <Typography variant="h5" component="div">
           {data.courseCode}

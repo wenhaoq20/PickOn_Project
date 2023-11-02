@@ -35,7 +35,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     courseSection: "",
     courseCRN: "",
     courseName: "",
-    courseSemester: "",
+    courseSemester: "Spring",
     courseYear: currDate.getFullYear(),
     instructor: userName,
     description: "",

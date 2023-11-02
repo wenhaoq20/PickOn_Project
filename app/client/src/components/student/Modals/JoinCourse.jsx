@@ -8,6 +8,10 @@ import {
   Modal,
   Alert,
   AlertTitle,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
 import { joinCourse } from "../../../api/course/courses";
@@ -25,12 +29,14 @@ const style = {
 
 const JoinCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   const { userId } = useAuth();
+  const currDate = new Date();
   const [formData, setFormData] = useState({
     courseCode: "",
     courseSection: "",
     courseCRN: "",
     userId: userId,
     courseSemester: "",
+    courseYear: currDate.getFullYear(),
   });
   const [errorMsg, setErrorMsg] = useState("");
   const sucessAlert = () => {
@@ -116,18 +122,40 @@ const JoinCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
             setFormData({ ...formData, courseCRN: e.target.value })
           }
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="courseSemester"
-          label="Course Semester"
-          name="courseSemester"
-          onChange={(e) =>
-            setFormData({ ...formData, courseSemester: e.target.value })
-          }
-        />
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <FormControl variant="outlined" margin="normal" required fullWidth>
+              <InputLabel id="courseSemesterLabel">Semester</InputLabel>
+              <Select
+                id="courseSemester"
+                value={formData.courseSemester}
+                onChange={(e) =>
+                  setFormData({ ...formData, courseSemester: e.target.value })
+                }
+                label="Semester"
+              >
+                <MenuItem value={"Spring"}>Spring</MenuItem>
+                <MenuItem value={"Summer"}>Summer</MenuItem>
+                <MenuItem value={"Fall"}>Fall</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="courseYear"
+              label="Course Year"
+              name="courseYear"
+              value={formData.courseYear}
+              onChange={(e) =>
+                setFormData({ ...formData, courseYear: e.target.value })
+              }
+            />
+          </Grid>
+        </Grid>
         <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }}>
           Submit
         </Button>

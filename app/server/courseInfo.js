@@ -19,13 +19,13 @@ courseInfo.get('/get_enrolled_courses', async (req, res) => {
 });
 
 courseInfo.post('/join_course', async (req, res) => {
-    const { userId, courseCode, courseSection, courseCRN, courseSemester } = req.body;
+    const { userId, courseCode, courseSection, courseCRN, courseSemester, courseYear } = req.body;
     try {
         const user = await User.findById(userId);
         if (!user) {
             return res.status(400).send("User not found.");
         }
-        const course = await Course.findOne({ courseCRN, courseCode, courseSection, courseSemester });
+        const course = await Course.findOne({ courseCRN, courseCode, courseSection, courseSemester, courseYear });
         if (!course) {
             return res.status(400).send("Course not found.");
         }
@@ -51,20 +51,22 @@ courseInfo.post('/create_course', async (req, res) => {
         if (!user) {
             return res.status(400).send("User not found.");
         }
-        const existingCourse = await Course.findOne({ courseCode, courseSection, courseCRN, courseSemester, courseYear });
-        if (existingCourse) {
-            return res.status(400).send("Course already exists.");
-        }
+
         const course = new Course({ courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description });
         course.enrolledStudents.push(userId);
         user.enrolledCourses.push(course._id);
+
         await course.save();
         await user.save();
+
         res.status(200).json({ success: true });
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).send("Course already exists.");
+        }
+        console.error('Error creating course:', error);
         res.status(500).send("Error creating course.");
     }
-
 });
 
 module.exports = courseInfo;
