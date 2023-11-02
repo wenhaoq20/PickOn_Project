@@ -29,10 +29,10 @@ courseInfo.post('/join_course', async (req, res) => {
         if (!course) {
             return res.status(400).send("Course not found.");
         }
-        if (course.enrolledStudents.includes(userId)) {
+        if (course.enrolledUsers.includes(userId)) {
             return res.status(400).send("User already enrolled in course.");
         }
-        course.enrolledStudents.push(userId);
+        course.enrolledUsers.push(userId);
         user.enrolledCourses.push(course._id);
         await course.save();
         await user.save();
@@ -53,7 +53,7 @@ courseInfo.post('/create_course', async (req, res) => {
         }
 
         const course = new Course({ courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description });
-        course.enrolledStudents.push(userId);
+        course.enrolledUsers.push(userId);
         user.enrolledCourses.push(course._id);
 
         await course.save();
