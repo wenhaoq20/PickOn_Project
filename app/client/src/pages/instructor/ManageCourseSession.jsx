@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, Stack, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import io from "socket.io-client";
 import Navbar from "../../components/Navbar";
 import ModeCard from "../../components/instructor/cards/ModeCard";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
 import InstructorGroup from "../../components/instructor/InstructorGroup";
 import InstructorPickOn from "../../components/instructor/InstructorPickOn";
+import { socket } from "../../socket.js";
 
 const defaultTheme = createTheme();
-const socket = io.connect("http://localhost:5000");
 
 const ManageCourseSession = () => {
   const modeCardData = [
@@ -57,11 +56,16 @@ const ManageCourseSession = () => {
   };
 
   useEffect(() => {
+    socket.connect();
     socket.emit("join_session", {
       sessionId: session,
       username: "Instructor",
       isInstructor: true,
     });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {

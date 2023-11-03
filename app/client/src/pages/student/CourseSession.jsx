@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import io from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import StudentGame from "../../components/student/StudentGame";
 import StudentGroup from "../../components/student/StudentGroup";
@@ -10,17 +9,24 @@ import StudentAnonymous from "../../components/student/StudentAnonymous";
 import SessionLobby from "../../components/student/SessionLobby";
 import Navbar from "../../components/Navbar";
 import { useAuth } from "../../AuthContext";
+import { socket } from "../../socket.js";
 
-const socket = io.connect("http://localhost:5000");
 const defaultTheme = createTheme();
 
 const CourseSession = () => {
   const { state } = useLocation();
-
   const [sessionMode, setSessionMode] = useState("home");
   const [session, setSession] = useState("ICS314");
   const { userName } = useAuth();
   const name = userName;
+
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      console.log("disconnecting");
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (name) {
