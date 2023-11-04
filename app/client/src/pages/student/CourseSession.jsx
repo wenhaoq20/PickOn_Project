@@ -22,8 +22,8 @@ const CourseSession = () => {
 
   useEffect(() => {
     socket.connect();
+
     return () => {
-      console.log("disconnecting");
       socket.disconnect();
     };
   }, []);

@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 const onlineUsers = {};
 const anonymousResponse = {};
 
-function setupSocketIO(server) {
+const setupSocketIO = (server) => {
     const io = new Server(server, {
         cors: {
             origin: "http://localhost:3000",
@@ -13,6 +13,7 @@ function setupSocketIO(server) {
 
     io.on("connection", (socket) => {
         socket.on("join_session", ({ sessionId, username, isInstructor }) => {
+            console.log(username);
             socket.join(sessionId);
             if (!onlineUsers[sessionId]) {
                 onlineUsers[sessionId] = [];
@@ -20,7 +21,7 @@ function setupSocketIO(server) {
             if (!isInstructor && !onlineUsers[sessionId].includes(username)) {
                 onlineUsers[sessionId].push(username);
             };
-            socket.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
+            io.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
         });
 
         socket.on("leave_session", ({ sessionId, username }) => {
