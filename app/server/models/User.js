@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -8,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
   accountType: { type: String, required: true, default: 'student' },
-  enrolledCourses: [{ type: String, ref: 'Course', field: 'courseCRN', default: [] }],
+  enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course', default: [] }],
 });
 
 UserSchema.pre('save', function (next) {

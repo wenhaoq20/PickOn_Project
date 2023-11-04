@@ -25,7 +25,6 @@ const rows = [
 ];
 
 const SessionLobby = ({ name, data }) => {
-  console.log(data);
   return (
     <Stack
       direction="column"
@@ -35,7 +34,9 @@ const SessionLobby = ({ name, data }) => {
     >
       <Typography variant="h4">Waiting for your instructor.....</Typography>
       <Typography variant="h5"> {name} </Typography>
-      <Typography variant="h5"> {data.courseCode} Section: {data.courseSection} </Typography>
+      <Typography variant="h5">
+        {data.courseCode} Section: {data.courseSection}
+      </Typography>
       <Container>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 500 }} aria-label="simple table">

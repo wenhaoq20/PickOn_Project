@@ -6,37 +6,73 @@ import {
   Typography,
   TextField,
   Grid,
+  Card,
+  CardContent,
+  Alert,
+  AlertTitle,
+  IconButton,
+  Collapse,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "../api/axios";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CourseCard from "../components/CourseCard";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
+import JoinCourse from "../components/student/modals/JoinCourse";
+import CreateCourse from "../components/instructor/modals/CreateCourse";
+import { getUserCourseList } from "../api/course/courses";
+import CloseIcon from "@mui/icons-material/Close";
 const defaultTheme = createTheme();
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
-  const { userId } = useAuth();
+  const [successMsg, setSuccessMsg] = useState("");
+  const { userId, userRole } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
+
+  //TODO - automatically update course list when a new course is created by using Socket.io and Mongoose change streams
   useEffect(() => {
     const getCourseList = async () => {
       try {
-        const res = await axios.get("/get_enrolled_courses", {
-          params: { id: userId },
-        });
+        const res = await getUserCourseList(userId);
         setCourses(res.data.courses);
       } catch (err) {
         console.log(err);
       }
     };
 
-    getCourseList();
-  }, []);
+    getCourseList(userId);
+  }, [successMsg]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Navbar name="Courses" />
+      <Collapse in={alertOpen}>
+        <Alert
+          severity="success"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setAlertOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          <AlertTitle> Success! </AlertTitle>
+          <strong> {successMsg} </strong>
+        </Alert>
+      </Collapse>
       <Container component="main">
         <Box
           sx={{
@@ -72,7 +108,51 @@ const CourseList = () => {
               <CourseCard data={course} />
             </Grid>
           ))}
+          <Grid item>
+            <Card
+              variant="outlined"
+              sx={{
+                width: 300,
+                height: 270,
+                display: "flex",
+                flexDirection: "column",
+              }}
+              onClick={() => handleOpen()}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  flexGrow: 1,
+                }}
+              >
+                <AddCircleOutlineIcon fontSize="large" sx={{ fontSize: 60 }} />
+                {userRole === "student" ? (
+                  <Typography variant="h5">Join a class</Typography>
+                ) : (
+                  <Typography variant="h5">Create a class</Typography>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
+        {userRole === "student" ? (
+          <JoinCourse
+            open={open}
+            handleClose={handleClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+          />
+        ) : (
+          <CreateCourse
+            open={open}
+            handleClose={handleClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );
