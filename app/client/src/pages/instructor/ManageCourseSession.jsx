@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "../../components/Navbar";
+import { useParams } from "react-router-dom";
 import InstructorAnonymous from "../../components/instructor/InstructorAnonymous";
 import InstructorGroup from "../../components/instructor/InstructorGroup";
 import InstructorPickOn from "../../components/instructor/InstructorPickOn";
@@ -13,7 +14,8 @@ const defaultTheme = createTheme();
 const ManageCourseSession = () => {
   const [sessionMode, setSessionMode] = useState("home");
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [session, setSession] = useState("ICS314");
+  const { parameter } = useParams();
+  const [session, setSession] = useState(parameter);
 
   const selectMode = (mode) => {
     socket.emit("select_mode", { mode: mode, sessionId: session });
@@ -33,6 +35,7 @@ const ManageCourseSession = () => {
     });
 
     return () => {
+      selectMode("home");
       socket.disconnect();
     };
   }, []);

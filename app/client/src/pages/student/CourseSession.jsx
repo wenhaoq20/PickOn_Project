@@ -8,6 +8,7 @@ import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
 import SessionLobby from "../../components/student/SessionLobby";
 import Navbar from "../../components/Navbar";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { socket } from "../../socket.js";
 
@@ -16,7 +17,8 @@ const defaultTheme = createTheme();
 const CourseSession = () => {
   const { state } = useLocation();
   const [sessionMode, setSessionMode] = useState("home");
-  const [session, setSession] = useState("ICS314");
+  const { parameter } = useParams();
+  const [session, setSession] = useState(parameter);
   const { userName } = useAuth();
   const name = userName;
 

@@ -28,13 +28,16 @@ const App = () => {
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["student"]} />}>
             <Route path="/course" element={<Course />} />
-            <Route path="/coursesession" element={<CourseSession />} />
+            <Route
+              path="/coursesession/:parameter"
+              element={<CourseSession />}
+            />
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["instructor"]} />}>
             <Route path="/" element={<CourseList />} />
             <Route path="/managecourse" element={<ManageCourse />} />
             <Route
-              path="/managecoursesession"
+              path="/managecoursesession/:parameter"
               element={<ManageCourseSession />}
             />
           </Route>
