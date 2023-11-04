@@ -13,7 +13,6 @@ const setupSocketIO = (server) => {
 
     io.on("connection", (socket) => {
         socket.on("join_session", ({ sessionId, username, isInstructor }) => {
-            console.log(username);
             socket.join(sessionId);
             if (!onlineUsers[sessionId]) {
                 onlineUsers[sessionId] = [];
@@ -48,7 +47,6 @@ const setupSocketIO = (server) => {
         });
 
         socket.on("send_question", ({ question, sessionId }) => {
-            console.log(question);
             socket.to(sessionId).emit("receive_question", question)
         });
 
