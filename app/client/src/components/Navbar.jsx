@@ -13,7 +13,7 @@ import { useAuth } from "../AuthContext";
 
 const Navbar = ({ name, redirect }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { logout } = useAuth();
+  const { logout, userRole } = useAuth();
   const navigator = useNavigate();
 
   const handleMenu = (event) => {
@@ -22,6 +22,11 @@ const Navbar = ({ name, redirect }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCourse = () => {
+    handleClose();
+    navigator("/managecourse");
   };
 
   const handleLogout = () => {
@@ -69,6 +74,9 @@ const Navbar = ({ name, redirect }) => {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
+            {userRole === "instructor" && (
+              <MenuItem onClick={handleCourse}>Manage Courses</MenuItem>
+            )}
             <MenuItem onClick={handleClose}>Settings</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>

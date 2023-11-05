@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Grid,
@@ -11,68 +11,32 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  CssBaseline,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Navbar from "../../components/Navbar";
+import CreateCourse from "../../components/instructor/modals/CreateCourse";
+import { getUserCourseList } from "../../api/course/courses";
+import { useAuth } from "../../AuthContext";
+import { useNavigate } from "react-router-dom";
+import { tableColumns, tableRows } from "../../utilis/ManageCourseTable";
 
-const columns = [
-  { id: "name", label: "Course Name", minWidth: 170 },
-  { id: "code", label: "Code", minWidth: 100 },
-  {
-    id: "instructor",
-    label: "Instructor",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "section",
-    label: "Section",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "edit",
-    label: "Edit",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "enter",
-    label: "Enter",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
-  },
-];
+const defaultTheme = createTheme();
 
-function createData(name, code, instructor, section) {
-  const edit = <Button variant="contained">Edit</Button>;
-  const enter = (
-    <Button
-      style={{
-        backgroundColor: "#2eb24d",
-      }}
-      variant="contained"
-    >
-      Enter
-    </Button>
-  );
-  return { name, code, instructor, section, edit, enter };
-}
-
-const rows = [
-  createData("Software Engineering I", "ICS 314", "Carleton Moore", 1),
-  createData("Design for Mobile Devices", "ICS 466", "Philip Johnson", 1),
-  createData("Written Communication", "ENG 100", "Dax Garcia", 2),
-  createData("Machine-lvl & Systems Programg", "ICS 312", "Henri Casanova", 1),
-  createData("Intermediate Japanese", "JPN 201", "Sean Forte", 2),
-  createData("Capstone Project", "ICS 496", "Anthony Peruma", 1),
-  createData("Discrete Math for CS I", "ICS 141", "Kyungim Baek", 2),
-];
 const ManageCourse = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { userId } = useAuth();
+  const navigator = useNavigate();
+
+  const columns = tableColumns;
+  const rows = tableRows(courses);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -83,74 +47,120 @@ const ManageCourse = () => {
     setPage(0);
   };
 
+  const handleEnter = (crn) => {
+    navigator(`/c/${crn}`);
+  };
+
+  useEffect(() => {
+    const getCourseList = async () => {
+      try {
+        const res = await getUserCourseList(userId);
+        setCourses(res.data.courses);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getCourseList(userId);
+  }, []);
+
   return (
-    <Container>
-      <Grid container spacing={0} alignItems="center" justifyContent={"center"}>
-        <h1>Manage Courses</h1>
-      </Grid>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <Navbar name="Manage Courses" redirect={true} />
+      <Container>
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <h1>Manage Courses</h1>
+        </Grid>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
                     >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.crn}
+                      >
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id}>
+                              {column.id === "enter" ? (
+                                <Button
+                                  style={{ backgroundColor: "#2eb24d" }}
+                                  variant="contained"
+                                  onClick={() => handleEnter(row.crn)}
+                                >
+                                  Enter
+                                </Button>
+                              ) : column.id === "edit" ? (
+                                <Button variant="contained">Edit</Button>
+                              ) : column.format && typeof value === "number" ? (
+                                column.format(value)
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+        <Grid
+          padding="5%"
+          container
+          spacing={0}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <Button variant="contained" onClick={() => handleOpen()}>
+            Add new
+          </Button>
+        </Grid>
+        <CreateCourse
+          open={open}
+          handleClose={handleClose}
+          setSuccessMsg={setSuccessMsg}
+          setAlertOpen={setAlertOpen}
         />
-      </Paper>
-      <Grid
-        padding="5%"
-        container
-        spacing={0}
-        alignItems="center"
-        justifyContent={"center"}
-      >
-        <Button variant="contained">Add new</Button>
-      </Grid>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 };
 

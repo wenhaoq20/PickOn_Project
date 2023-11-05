@@ -1,4 +1,5 @@
 import axios from "../axios";
+import Papa from "papaparse";
 
 export const getUserCourseList = async (userId) => {
     try {
@@ -27,4 +28,18 @@ export const createCourse = async (formData) => {
     } catch (error) {
         throw error;
     }
+}
+
+export const uploadCourseRoster = async (file) => {
+    Papa.parse(file, {
+        skipEmptyLines: "greedy",
+        complete: async (results) => {
+            console.log(results);
+            const res = await axios.post("/upload_course_roster", results.data);
+            return res;
+        },
+        error: (error) => {
+            throw error;
+        },
+    });
 }
