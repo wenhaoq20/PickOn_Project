@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 const onlineUsers = {};
 const anonymousResponse = {};
 
-function setupSocketIO(server) {
+const setupSocketIO = (server) => {
     const io = new Server(server, {
         cors: {
             origin: "http://localhost:3000",
@@ -20,7 +20,7 @@ function setupSocketIO(server) {
             if (!isInstructor && !onlineUsers[sessionId].includes(username)) {
                 onlineUsers[sessionId].push(username);
             };
-            socket.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
+            io.to(sessionId).emit("send_online_users", onlineUsers[sessionId]);
         });
 
         socket.on("leave_session", ({ sessionId, username }) => {
@@ -47,7 +47,6 @@ function setupSocketIO(server) {
         });
 
         socket.on("send_question", ({ question, sessionId }) => {
-            console.log(question);
             socket.to(sessionId).emit("receive_question", question)
         });
 

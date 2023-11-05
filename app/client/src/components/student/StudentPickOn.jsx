@@ -47,7 +47,7 @@ const StudentPickOn = ({ socket, name, sessionId }) => {
   }, [socket]);
 
   return (
-    <Grid Container>
+    <Grid container>
       <Grid
         item
         xs={12}
