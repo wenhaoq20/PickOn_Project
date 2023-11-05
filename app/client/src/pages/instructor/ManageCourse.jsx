@@ -47,8 +47,14 @@ const ManageCourse = () => {
     setPage(0);
   };
 
-  const handleEnter = (crn) => {
-    navigator(`/c/${crn}`);
+  const handleEnter = (course) => {
+    navigator(`/c/${course.crn}`, {
+      state: {
+        courseCRN: course.crn,
+        courseYear: course.year,
+        courseSemester: course.semester,
+      },
+    });
   };
 
   useEffect(() => {
@@ -112,7 +118,7 @@ const ManageCourse = () => {
                                 <Button
                                   style={{ backgroundColor: "#2eb24d" }}
                                   variant="contained"
-                                  onClick={() => handleEnter(row.crn)}
+                                  onClick={() => handleEnter(row)}
                                 >
                                   Enter
                                 </Button>

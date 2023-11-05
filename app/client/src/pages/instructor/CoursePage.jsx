@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CssBaseline, Button, Container, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { uploadCourseRoster } from "../../api/course/courses";
@@ -12,6 +12,7 @@ const CoursePage = () => {
   const [rosterFile, setRosterFile] = useState(null);
   const [rosterData, setRosterData] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState("");
+  const { state } = useLocation();
 
   const handleChange = (event) => {
     const file = event.target.files[0];
@@ -22,8 +23,8 @@ const CoursePage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = uploadCourseRoster(rosterFile);
-      console.log(response);
+      const response = await uploadCourseRoster(rosterFile, state);
+      setRosterData(response.data);
     } catch (error) {
       console.error(error);
     }

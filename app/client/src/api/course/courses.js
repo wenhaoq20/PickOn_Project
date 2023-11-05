@@ -28,18 +28,25 @@ export const createCourse = async (formData) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
-export const uploadCourseRoster = async (file) => {
-    Papa.parse(file, {
-        skipEmptyLines: "greedy",
-        complete: async (results) => {
-            console.log(results);
-            const res = await axios.post("/upload_course_roster", results.data);
-            return res;
-        },
-        error: (error) => {
-            throw error;
-        },
+export const uploadCourseRoster = async (file, courseInfo) => {
+    return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+            skipEmptyLines: "greedy",
+            complete: (results) => {
+                const roster = results.data.slice(5);
+                axios.post("/upload_course_roster", { roster: roster, courseInfo: courseInfo })
+                    .then(res => {
+                        resolve(res);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            },
+            error: (error) => {
+                reject(error);
+            },
+        });
     });
-}
+};
