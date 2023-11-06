@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Grid,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  CssBaseline,
-} from "@mui/material";
+import { Button, Grid, Container, Paper, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "../../components/Navbar";
 import CreateCourse from "../../components/instructor/modals/CreateCourse";
 import { getUserCourseList } from "../../api/course/courses";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/ManageCourseTable";
 
 const defaultTheme = createTheme();
@@ -84,68 +72,15 @@ const ManageCourse = () => {
           <h1>Manage Courses</h1>
         </Grid>
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <TableContainer>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.crn}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id}>
-                              {column.id === "enter" ? (
-                                <Button
-                                  style={{ backgroundColor: "#2eb24d" }}
-                                  variant="contained"
-                                  onClick={() => handleEnter(row)}
-                                >
-                                  Enter
-                                </Button>
-                              ) : column.id === "edit" ? (
-                                <Button variant="contained">Edit</Button>
-                              ) : column.format && typeof value === "number" ? (
-                                column.format(value)
-                              ) : (
-                                value
-                              )}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 25 },
+              },
+            }}
+            pageSizeOptions={[25, 50, 100]}
           />
         </Paper>
         <Grid

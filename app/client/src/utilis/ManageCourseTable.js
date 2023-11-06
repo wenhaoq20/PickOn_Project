@@ -1,41 +1,42 @@
 export const tableColumns = [
-    { id: "name", label: "Course Name", minWidth: 170 },
-    { id: "code", label: "Code", minWidth: 100 },
+    { field: "name", headerName: "Course Name", width: 170 },
+    { field: "code", headerName: "Code", width: 100 },
     {
-        id: "instructor",
-        label: "Instructor",
-        minWidth: 170,
+        field: "instructor",
+        headerName: "Instructor",
+        width: 170,
     },
     {
-        id: "section",
-        label: "Section",
-        minWidth: 100,
+        field: "section",
+        headerName: "Section",
+        width: 100,
     },
     {
-        id: "semester",
-        label: "Semester",
-        minWidth: 100,
+        field: "semester",
+        headerName: "Semester",
+        width: 100,
     },
     {
-        id: "year",
-        label: "Year",
-        minWidth: 100,
+        field: "year",
+        headerName: "Year",
+        width: 100,
     },
     {
-        id: "edit",
-        label: "Edit",
-        minWidth: 170,
+        field: "edit",
+        headerName: "Edit",
+        width: 170,
     },
     {
-        id: "enter",
-        label: "Enter",
-        minWidth: 170,
+        field: "enter",
+        headerName: "Enter",
+        width: 170,
     },
 ]
 
 export const tableRows = (courses) => {
-    return courses.map((course) => {
+    return courses.map((course, index) => {
         return {
+            id: index + 1,
             name: course.courseName,
             code: course.courseCode,
             instructor: course.instructor,

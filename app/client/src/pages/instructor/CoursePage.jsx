@@ -75,10 +75,10 @@ const CoursePage = () => {
           columns={tableColumns}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 50 },
+              paginationModel: { page: 0, pageSize: 25 },
             },
           }}
-          pageSizeOptions={[50, 100]}
+          pageSizeOptions={[25, 50, 100]}
         />
       </Container>
     </ThemeProvider>
