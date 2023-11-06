@@ -1,7 +1,7 @@
 const express = require('express');
 const courseInfo = express.Router();
-const Course = require('./models/Course');
-const User = require('./models/User');
+const Course = require('../../models/Course');
+const User = require('../../models/User');
 
 courseInfo.get('/get_enrolled_courses', async (req, res) => {
     const { id } = req.query;

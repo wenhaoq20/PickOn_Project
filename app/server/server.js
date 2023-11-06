@@ -6,9 +6,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
-const authRoutes = require('./userAuth');
-const userInfo = require('./userInfo');
-const courseInfo = require('./courseInfo');
+const authRoutes = require('./api/v1/userAuth');
+const userInfo = require('./api/v1/userInfo');
+const courseInfo = require('./api/v1/courseInfo');
 const http = require("http");
 const setupSocketIO = require('./socket');
 

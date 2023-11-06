@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CssBaseline, Button, Container, Box } from "@mui/material";
+import { CssBaseline, Button, Container, Box, Grid } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
@@ -36,7 +36,9 @@ const CoursePage = () => {
     event.preventDefault();
     try {
       const response = await uploadCourseRoster(rosterFile, state);
-      getRosterData(state);
+      if (response.status === 200) {
+        getRosterData(state);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -49,37 +51,44 @@ const CoursePage = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
-      <Navbar name="Courses" redirect={true} />
+      <Navbar name="Manage Courses" redirect={true} />
       <Container>
-        <h1>test</h1>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
+        <Grid>
+          <h1>test</h1>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            Upload a file
-            <input type="file" accept=".csv" hidden onChange={handleChange} />
-          </Button>
-          {selectedFileName && <p>File selected: {selectedFileName}</p>}
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={!selectedFileName}
-          >
-            Submit
-          </Button>
-        </Box>
-        <DataGrid
-          rows={rows}
-          columns={tableColumns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 25 },
-            },
-          }}
-          pageSizeOptions={[25, 50, 100]}
-        />
+            <Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload a file
+              <input type="file" accept=".csv" hidden onChange={handleChange} />
+            </Button>
+            {selectedFileName && <p>File selected: {selectedFileName}</p>}
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!selectedFileName}
+            >
+              Submit
+            </Button>
+          </Box>
+          <DataGrid
+            rows={rows}
+            columns={tableColumns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 25 },
+              },
+            }}
+            pageSizeOptions={[25, 50, 100]}
+          />
+        </Grid>
       </Container>
     </ThemeProvider>
   );

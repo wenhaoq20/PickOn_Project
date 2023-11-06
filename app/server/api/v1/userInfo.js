@@ -1,6 +1,6 @@
 const express = require('express');
 const userInfo = express.Router();
-const User = require('./models/User');
+const User = require('../../models/User');
 
 userInfo.get('/full_name', async (req, res) => {
     const { id } = req.query;
