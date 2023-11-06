@@ -82,11 +82,20 @@ courseInfo.post('/upload_course_roster', async (req, res) => {
         });
         course.courseRoster = roster;
         await course.save();
-        res.status(200).json({ roster: roster });
+        res.status(200).send("Course roster uploaded.");
     } catch (error) {
         res.status(500).send("Error uploading course roster.");
     }
 
+});
+
+courseInfo.get('/get_course_roster', async (req, res) => {
+    const { courseCRN, courseSemester, courseYear } = req.query;
+    const course = await Course.findOne({ courseCRN, courseSemester, courseYear });
+    if (!course) {
+        return res.status(400).send("Course not found.");
+    }
+    res.status(200).json({ roster: course.courseRoster });
 });
 
 module.exports = courseInfo;

@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CssBaseline, Button, Container, Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { uploadCourseRoster } from "../../api/course/courses";
+import { uploadCourseRoster, getCourseRoster } from "../../api/course/courses";
+import { DataGrid } from "@mui/x-data-grid";
+import { tableColumns, tableRows } from "../../utilis/CoursePageTable";
 
 const defaultTheme = createTheme();
 
 const CoursePage = () => {
   const [rosterFile, setRosterFile] = useState(null);
-  const [rosterData, setRosterData] = useState(null);
+  const [rosterData, setRosterData] = useState([]);
   const [selectedFileName, setSelectedFileName] = useState("");
   const { state } = useLocation();
+  const rows = tableRows(rosterData);
+
+  const getRosterData = async () => {
+    try {
+      const response = await getCourseRoster(state);
+      setRosterData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleChange = (event) => {
     const file = event.target.files[0];
@@ -24,11 +36,15 @@ const CoursePage = () => {
     event.preventDefault();
     try {
       const response = await uploadCourseRoster(rosterFile, state);
-      setRosterData(response.data);
+      getRosterData(state);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    getRosterData(state);
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -54,6 +70,16 @@ const CoursePage = () => {
             Submit
           </Button>
         </Box>
+        <DataGrid
+          rows={rows}
+          columns={tableColumns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 50 },
+            },
+          }}
+          pageSizeOptions={[50, 100]}
+        />
       </Container>
     </ThemeProvider>
   );

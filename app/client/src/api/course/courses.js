@@ -50,3 +50,14 @@ export const uploadCourseRoster = async (file, courseInfo) => {
         });
     });
 };
+
+export const getCourseRoster = async ({ courseCRN, courseYear, courseSemester }) => {
+    try {
+        const res = await axios.get("/get_course_roster", {
+            params: { courseCRN, courseYear, courseSemester },
+        });
+        return res.data.roster;
+    } catch (error) {
+        throw error;
+    }
+};
