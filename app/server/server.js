@@ -26,9 +26,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
-app.use(authRoutes);
-app.use(userInfo);
-app.use(courseInfo);
+app.use('/api/v1', authRoutes);
+app.use('/api/v1', userInfo);
+app.use('/api/v1', courseInfo);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
