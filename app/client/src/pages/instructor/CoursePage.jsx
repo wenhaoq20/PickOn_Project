@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { CssBaseline, Button, Container, Box, Grid } from "@mui/material";
+import {
+  CssBaseline,
+  Button,
+  Container,
+  Box,
+  Grid,
+  Typography,
+  Chip,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
@@ -15,11 +23,17 @@ const CoursePage = () => {
   const [rosterData, setRosterData] = useState([]);
   const [selectedFileName, setSelectedFileName] = useState("");
   const { state } = useLocation();
+  const { courseCode, courseSection, courseSemester, courseYear, courseCRN } =
+    state;
   const rows = tableRows(rosterData);
 
   const getRosterData = async () => {
     try {
-      const response = await getCourseRoster(state);
+      const response = await getCourseRoster({
+        courseCRN,
+        courseSemester,
+        courseYear,
+      });
       setRosterData(response);
     } catch (error) {
       console.error(error);
@@ -30,6 +44,15 @@ const CoursePage = () => {
     const file = event.target.files[0];
     setRosterFile(file);
     setSelectedFileName(file ? file.name : "");
+  };
+
+  const handleDelete = () => {
+    setRosterFile(null);
+    setSelectedFileName("");
+
+    if (document && document.getElementById("fileInput")) {
+      document.getElementById("fileInput").value = "";
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -53,41 +76,66 @@ const CoursePage = () => {
       <CssBaseline />
       <Navbar name="Manage Courses" redirect={true} />
       <Container>
-        <Grid>
-          <h1>test</h1>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
+        <Grid container direction="column" rowSpacing={{ xs: 2 }}>
+          <Grid item xs={12}>
+            <Typography variant="h3">{`${courseCode} Section ${courseSection} ${courseSemester} ${courseYear}`}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{
+                mt: 1,
+                display: "flex",
+                flexDirection: "row",
+                gap: 1,
+              }}
             >
-              Upload a file
-              <input type="file" accept=".csv" hidden onChange={handleChange} />
-            </Button>
-            {selectedFileName && <p>File selected: {selectedFileName}</p>}
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!selectedFileName}
-            >
-              Submit
-            </Button>
-          </Box>
-          <DataGrid
-            rows={rows}
-            columns={tableColumns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 25 },
-              },
-            }}
-            pageSizeOptions={[25, 50, 100]}
-          />
+              <Chip
+                label={selectedFileName}
+                onDelete={handleDelete}
+                sx={{
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+              />
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload a file
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept=".csv"
+                  hidden
+                  onChange={handleChange}
+                />
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!selectedFileName}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <DataGrid
+              rows={rows}
+              columns={tableColumns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 25 },
+                },
+              }}
+              pageSizeOptions={[25, 50, 100]}
+            />
+          </Grid>
         </Grid>
       </Container>
     </ThemeProvider>

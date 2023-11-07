@@ -13,6 +13,8 @@ const ViewButton = ({ row }) => {
                 courseCRN: course.crn,
                 courseYear: course.year,
                 courseSemester: course.semester,
+                courseCode: course.code,
+                courseSection: course.section,
             },
         });
     };
