@@ -16,8 +16,13 @@ export const tableColumns = [
     },
     {
         field: "points",
-        headerName: "points",
+        headerName: "Points",
         width: 170,
+    },
+    {
+        field: "registered",
+        headerName: "Registered",
+        width: 100,
     },
     {
         field: "edit",

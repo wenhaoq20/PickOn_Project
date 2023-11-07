@@ -81,6 +81,16 @@ courseInfo.post('/upload_course_roster', async (req, res) => {
             return { uhid: student[0], name: student[1], email: student[4] };
         });
         course.courseRoster = roster;
+
+        const studentList = await User.find({ uhid: { $in: roster.map((student) => student.uhid) } });
+        const saveStudentPromises = studentList.map(async (student) => {
+            student.enrolledCourses.push(course._id);
+            await student.save();
+            course.enrolledUsers.push(student._id);
+        });
+
+        await Promise.all(saveStudentPromises);
+
         await course.save();
         res.status(200).send("Course roster uploaded.");
     } catch (error) {

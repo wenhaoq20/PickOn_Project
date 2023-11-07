@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = express.Router();
 const User = require('../../models/User');
+const Course = require('../../models/Course');
 const bcrypt = require('bcryptjs');
 
 auth.post('/register', async (req, res) => {
@@ -13,6 +14,15 @@ auth.post('/register', async (req, res) => {
         const user = new User({ email, password, firstname, lastname, uhid });
         await user.save();
 
+        const courseList = await Course.find({ courseRoster: { $elemMatch: { uhid: uhid } } });
+        const saveCoursePromises = courseList.map(async (course) => {
+            course.enrolledUsers.push(user._id);
+            await course.save();
+            user.enrolledCourses.push(course._id);
+        });
+
+        await Promise.all(saveCoursePromises);
+        await user.save();
         res.status(200).send("Registered successfully!");
     } catch (error) {
         console.error(error);
