@@ -15,6 +15,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { uploadCourseRoster, getCourseRoster } from "../../api/course/courses";
 import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/CoursePageTable";
+import useAxios from "../../api/axios";
 
 const defaultTheme = createTheme();
 
@@ -26,10 +27,11 @@ const CoursePage = () => {
   const { courseCode, courseSection, courseSemester, courseYear, courseCRN } =
     state;
   const rows = tableRows(rosterData);
+  const axiosInstance = useAxios();
 
   const getRosterData = async () => {
     try {
-      const response = await getCourseRoster({
+      const response = await getCourseRoster(axiosInstance, {
         courseCRN,
         courseSemester,
         courseYear,

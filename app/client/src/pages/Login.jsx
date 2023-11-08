@@ -32,10 +32,17 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await userLogin(email, password);
-      if (response.data.success) {
+      console.log(response);
+      console.log(response.data.role);
+      if (response.status === 200) {
         setEmail("");
         setPassword("");
-        login(response.data.role, response.data.id, response.data.name);
+        login(
+          response.data.role,
+          response.data.id,
+          response.data.name,
+          response.data.token
+        );
         navigator("/");
       }
     } catch (error) {

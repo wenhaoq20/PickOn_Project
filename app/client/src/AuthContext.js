@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -19,7 +20,9 @@ export const AuthProvider = ({ children }) => {
     const [userName, setUserName] = useState(
         () => localStorage.getItem('userName') || null
     );
-
+    const [authToken, setAuthToken] = useState(
+        () => localStorage.getItem('authToken') || null
+    );
 
     useEffect(() => {
         localStorage.setItem('isAuthenticated', isAuthenticated);
@@ -36,27 +39,54 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('userName', userName);
     }, [userName]);
 
+    useEffect(() => {
+        localStorage.setItem('authToken', authToken);
+    }, [authToken]);
 
-    const login = (role, id, name) => {
+    const checkTokenExpiry = () => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.exp * 1000 < Date.now()) {
+                logout();
+            }
+        }
+    };
+
+    useEffect(() => {
+        checkTokenExpiry();
+        // Setting up an interval to check token expiry periodically
+        const interval = setInterval(() => {
+            checkTokenExpiry();
+        }, 5 * 60 * 1000); // Every 5 minutes
+
+        return () => clearInterval(interval);
+    }, []);
+
+
+    const login = (role, id, name, token) => {
         setIsAuthenticated(true);
         setUserRole(role);
         setUserId(id);
         setUserName(name);
+        setAuthToken(token);
     };
 
     const logout = () => {
         setIsAuthenticated(false);
+        setAuthToken(null);
         setUserRole(null);
         setUserId(null);
         setUserName(null);
         localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('authToken');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userId');
         localStorage.removeItem('userName');
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userRole, userId, userName, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, authToken, userRole, userId, userName, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
