@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
 import { createCourse } from "../../../api/course/courses";
+import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const style = {
   position: "absolute",
@@ -40,6 +42,8 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     instructor: userName,
     description: "",
     userId: userId,
+    startTime: "",
+    endTime: "",
   });
   const [errorMsg, setErrorMsg] = useState("");
   const sucessAlert = () => {
@@ -172,6 +176,30 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
               }
             />
           </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Grid item xs={6}>
+              <TimePicker
+                label="Course Start Time"
+                value={formData.startTime}
+                onChange={(time) => {
+                  const formattedTime = time ? time.format("hh:mm A") : null;
+                  setFormData({ ...formData, startTime: formattedTime });
+                }}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TimePicker
+                label="Course End Time"
+                value={formData.endTime}
+                onChange={(time) => {
+                  const formattedTime = time ? time.format("hh:mm A") : null;
+                  setFormData({ ...formData, endTime: formattedTime });
+                }}
+              />
+            </Grid>
+          </LocalizationProvider>
         </Grid>
         <TextField
           variant="outlined"
