@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import CourseList from "./pages/CourseList";
 import Register from "./pages/Register";
 import Course from "./pages/student/Course";
+import CoursePage from "./pages/instructor/CoursePage";
 import CourseSession from "./pages/student/CourseSession";
 import ManageCourse from "./pages/instructor/ManageCourse";
 import ManageCourseSession from "./pages/instructor/ManageCourseSession";
@@ -28,18 +29,13 @@ const App = () => {
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["student"]} />}>
             <Route path="/course" element={<Course />} />
-            <Route
-              path="/coursesession/:parameter"
-              element={<CourseSession />}
-            />
+            <Route path="/cs/:parameter" element={<CourseSession />} />
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["instructor"]} />}>
             <Route path="/" element={<CourseList />} />
             <Route path="/managecourse" element={<ManageCourse />} />
-            <Route
-              path="/managecoursesession/:parameter"
-              element={<ManageCourseSession />}
-            />
+            <Route path="/mcs/:parameter" element={<ManageCourseSession />} />
+            <Route path="/c/:parameter" element={<CoursePage />} />
           </Route>
           <Route path="/error" element={<ErrorPage />} />
         </Routes>

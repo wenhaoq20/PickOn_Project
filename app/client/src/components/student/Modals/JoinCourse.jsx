@@ -48,8 +48,7 @@ const JoinCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     e.preventDefault();
     try {
       const response = await joinCourse(formData);
-      console.log(response);
-      if (response.data.success) {
+      if (response.status === 200) {
         sucessAlert();
         handleClose();
       }

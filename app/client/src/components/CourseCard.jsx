@@ -15,7 +15,7 @@ const CourseCard = ({ data }) => {
 
   const onButtonClick = () => {
     if (userRole === "student") {
-      navigator(`/coursesession/${data.courseCRN}`, {
+      navigator(`/cs/${data.courseCRN}`, {
         state: {
           courseCRN: data.courseCRN,
           courseCode: data.courseCode,
@@ -23,7 +23,7 @@ const CourseCard = ({ data }) => {
         },
       });
     } else if (userRole === "instructor") {
-      navigator(`/managecoursesession/${data.courseCRN}`);
+      navigator(`/mcs/${data.courseCRN}`);
     }
   };
 

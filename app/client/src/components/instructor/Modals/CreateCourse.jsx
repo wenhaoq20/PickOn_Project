@@ -52,7 +52,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     try {
       const response = await createCourse(formData);
       console.log(response);
-      if (response.data.success) {
+      if (response.status === 200) {
         sucessAlert();
         handleClose();
       }

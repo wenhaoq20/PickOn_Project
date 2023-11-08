@@ -6,9 +6,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
-const authRoutes = require('./userAuth');
-const userInfo = require('./userInfo');
-const courseInfo = require('./courseInfo');
+const authRoutes = require('./api/v1/userAuth');
+const userInfo = require('./api/v1/userInfo');
+const courseInfo = require('./api/v1/courseInfo');
 const http = require("http");
 const setupSocketIO = require('./socket');
 
@@ -26,9 +26,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
-app.use(authRoutes);
-app.use(userInfo);
-app.use(courseInfo);
+app.use('/api/v1', authRoutes);
+app.use('/api/v1', userInfo);
+app.use('/api/v1', courseInfo);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
