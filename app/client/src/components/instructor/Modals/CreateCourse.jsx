@@ -184,7 +184,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
                 label="Course Start Time"
                 value={formData.startTime}
                 onChange={(time) => {
-                  const formattedTime = time ? time.format("hh:mm A") : null;
+                  const formattedTime = time ? time.format("HH:mm") : null;
                   setFormData({ ...formData, startTime: formattedTime });
                 }}
               />
@@ -194,7 +194,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
                 label="Course End Time"
                 value={formData.endTime}
                 onChange={(time) => {
-                  const formattedTime = time ? time.format("hh:mm A") : null;
+                  const formattedTime = time ? time.format("HH:mm") : null;
                   setFormData({ ...formData, endTime: formattedTime });
                 }}
               />
