@@ -11,6 +11,7 @@ const userInfo = require('./api/v1/userInfo');
 const courseInfo = require('./api/v1/courseInfo');
 const http = require("http");
 const setupSocketIO = require('./socket');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
@@ -26,9 +27,22 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
+const verifyToken = (req, res, next) => {
+  const token =
+    req.headers.authorization && req.headers.authorization.split(' ')[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
 app.use('/api/v1', authRoutes);
-app.use('/api/v1', userInfo);
-app.use('/api/v1', courseInfo);
+app.use('/api/v1', verifyToken, userInfo);
+app.use('/api/v1', verifyToken, courseInfo);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));

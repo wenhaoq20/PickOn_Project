@@ -60,7 +60,11 @@ const CoursePage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await uploadCourseRoster(rosterFile, state);
+      const response = await uploadCourseRoster(
+        axiosInstance,
+        rosterFile,
+        state
+      );
       if (response.status === 200) {
         getRosterData(state);
       }

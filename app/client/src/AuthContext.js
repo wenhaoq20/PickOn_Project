@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -9,45 +10,50 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(
-        () => localStorage.getItem('isAuthenticated') === 'true'
+        () => sessionStorage.getItem('isAuthenticated') === 'true'
     );
     const [userRole, setUserRole] = useState(
-        () => localStorage.getItem('userRole') || null
+        () => sessionStorage.getItem('userRole') || null
     );
     const [userId, setUserId] = useState(
-        () => localStorage.getItem('userId') || null
+        () => sessionStorage.getItem('userId') || null
     );
     const [userName, setUserName] = useState(
-        () => localStorage.getItem('userName') || null
+        () => sessionStorage.getItem('userName') || null
     );
     const [authToken, setAuthToken] = useState(
-        () => localStorage.getItem('authToken') || null
+        () => sessionStorage.getItem('authToken') || null
     );
 
     useEffect(() => {
-        localStorage.setItem('isAuthenticated', isAuthenticated);
+        sessionStorage.setItem('isAuthenticated', isAuthenticated);
     }, [isAuthenticated]);
 
     useEffect(() => {
-        localStorage.setItem('userId', userId);
+        sessionStorage.setItem('userId', userId);
     }, [userId]);
 
     useEffect(() => {
-        localStorage.setItem('userRole', userRole);
+        sessionStorage.setItem('userRole', userRole);
     }, [userRole]);
     useEffect(() => {
-        localStorage.setItem('userName', userName);
+        sessionStorage.setItem('userName', userName);
     }, [userName]);
 
     useEffect(() => {
-        localStorage.setItem('authToken', authToken);
+        sessionStorage.setItem('authToken', authToken);
     }, [authToken]);
 
     const checkTokenExpiry = () => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            const decodedToken = jwtDecode(token);
-            if (decodedToken.exp * 1000 < Date.now()) {
+        const token = sessionStorage.getItem('authToken');
+        if (token !== 'null') {
+            try {
+                const decodedToken = jwtDecode(token);
+                if (decodedToken.exp * 1000 < Date.now()) {
+                    logout();
+                }
+            } catch (error) {
+                console.error('Error decoding token:', error);
                 logout();
             }
         }
@@ -58,11 +64,10 @@ export const AuthProvider = ({ children }) => {
         // Setting up an interval to check token expiry periodically
         const interval = setInterval(() => {
             checkTokenExpiry();
-        }, 5 * 60 * 1000); // Every 5 minutes
+        }, 15 * 60 * 1000); // Every 15 minutes
 
         return () => clearInterval(interval);
     }, []);
-
 
     const login = (role, id, name, token) => {
         setIsAuthenticated(true);
@@ -78,11 +83,11 @@ export const AuthProvider = ({ children }) => {
         setUserRole(null);
         setUserId(null);
         setUserName(null);
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userName');
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('userRole');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('userName');
     };
 
     return (
