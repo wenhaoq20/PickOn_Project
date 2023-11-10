@@ -12,6 +12,7 @@ import { useAuth } from "../AuthContext";
 const CourseCard = ({ data }) => {
   const { userRole } = useAuth();
   const navigator = useNavigate();
+  const now = new Date().toLocaleTimeString("en-GB");
 
   const onButtonClick = () => {
     if (userRole === "student") {
@@ -59,9 +60,20 @@ const CourseCard = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained" onClick={onButtonClick}>
-          Enter
-        </Button>
+        {userRole !== "instructor" ? (
+          <Button
+            size="small"
+            variant="contained"
+            onClick={onButtonClick}
+            disabled={!(now >= data.startTime && now < data.endTime)}
+          >
+            Enter
+          </Button>
+        ) : (
+          <Button size="small" variant="contained" onClick={onButtonClick}>
+            Enter
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

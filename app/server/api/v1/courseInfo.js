@@ -45,14 +45,14 @@ courseInfo.post('/join_course', async (req, res) => {
 });
 
 courseInfo.post('/create_course', async (req, res) => {
-    const { courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description, userId } = req.body;
+    const { courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description, userId, startTime, endTime } = req.body;
     try {
         const user = await User.findById(userId);
         if (!user) {
             return res.status(400).send("User not found.");
         }
 
-        const course = new Course({ courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description });
+        const course = new Course({ courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description, startTime, endTime });
         course.enrolledUsers.push(userId);
         user.enrolledCourses.push(course._id);
 
@@ -94,6 +94,7 @@ courseInfo.post('/upload_course_roster', async (req, res) => {
         await course.save();
         res.status(200).send("Course roster uploaded.");
     } catch (error) {
+        console.error(error);
         res.status(500).send("Error uploading course roster.");
     }
 
