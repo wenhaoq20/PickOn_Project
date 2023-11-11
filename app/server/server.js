@@ -6,9 +6,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
-const authRoutes = require('./api/v1/userAuth');
-const userInfo = require('./api/v1/userInfo');
-const courseInfo = require('./api/v1/courseInfo');
+const userAuth = require('./services/v1/user/auth-user');
+const userGetter = require('./services/v1/user/get-user');
+const courseGetter = require('./services/v1/course/get-course');
+const courseSetter = require('./services/v1/course/set-course');
 const http = require("http");
 const setupSocketIO = require('./socket');
 const jwt = require('jsonwebtoken');
@@ -40,9 +41,10 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-app.use('/api/v1', authRoutes);
-app.use('/api/v1', verifyToken, userInfo);
-app.use('/api/v1', verifyToken, courseInfo);
+app.use('/api/v1', userAuth);
+app.use('/api/v1', verifyToken, userGetter);
+app.use('/api/v1', verifyToken, courseGetter);
+app.use('/api/v1', verifyToken, courseSetter);
 
 const PORT = 5000;
 server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));

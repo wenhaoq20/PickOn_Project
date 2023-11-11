@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { userRegister } from "../api/user/users";
-import useAxios from "../api/axios";
+import { userRegister } from "../services/user/users";
+import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 

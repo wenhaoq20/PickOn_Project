@@ -20,8 +20,8 @@ import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
 import JoinCourse from "../components/student/modals/JoinCourse";
 import CreateCourse from "../components/instructor/modals/CreateCourse";
-import { getUserCourseList } from "../api/course/courses";
-import useAxios from "../api/axios";
+import { getUserCourseList } from "../services/course/courses";
+import useAxios from "../services/axios";
 import CloseIcon from "@mui/icons-material/Close";
 const defaultTheme = createTheme();
 

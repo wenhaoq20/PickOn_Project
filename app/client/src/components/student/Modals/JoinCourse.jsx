@@ -14,8 +14,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
-import { joinCourse } from "../../../api/course/courses";
-import useAxios from "../../../api/axios";
+import { joinCourse } from "../../../services/course/courses";
+import useAxios from "../../../services/axios";
 
 const style = {
   position: "absolute",

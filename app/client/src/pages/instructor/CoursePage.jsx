@@ -12,10 +12,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { uploadCourseRoster, getCourseRoster } from "../../api/course/courses";
+import { uploadCourseRoster, getCourseRoster } from "../../services/course/courses";
 import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/CoursePageTable";
-import useAxios from "../../api/axios";
+import useAxios from "../../services/axios";
 
 const defaultTheme = createTheme();
 

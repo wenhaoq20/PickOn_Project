@@ -14,9 +14,9 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
-import { createCourse } from "../../../api/course/courses";
+import { createCourse } from "../../../services/course/courses";
 import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import useAxios from "../../../api/axios";
+import useAxios from "../../../services/axios";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const style = {
