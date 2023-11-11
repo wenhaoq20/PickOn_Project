@@ -10,42 +10,42 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(
-        () => sessionStorage.getItem('isAuthenticated') === 'true'
+        () => localStorage.getItem('isAuthenticated') === 'true'
     );
     const [userRole, setUserRole] = useState(
-        () => sessionStorage.getItem('userRole') || null
+        () => localStorage.getItem('userRole') || null
     );
     const [userId, setUserId] = useState(
-        () => sessionStorage.getItem('userId') || null
+        () => localStorage.getItem('userId') || null
     );
     const [userName, setUserName] = useState(
-        () => sessionStorage.getItem('userName') || null
+        () => localStorage.getItem('userName') || null
     );
     const [authToken, setAuthToken] = useState(
-        () => sessionStorage.getItem('authToken') || null
+        () => localStorage.getItem('authToken') || null
     );
 
     useEffect(() => {
-        sessionStorage.setItem('isAuthenticated', isAuthenticated);
+        localStorage.setItem('isAuthenticated', isAuthenticated);
     }, [isAuthenticated]);
 
     useEffect(() => {
-        sessionStorage.setItem('userId', userId);
+        localStorage.setItem('userId', userId);
     }, [userId]);
 
     useEffect(() => {
-        sessionStorage.setItem('userRole', userRole);
+        localStorage.setItem('userRole', userRole);
     }, [userRole]);
     useEffect(() => {
-        sessionStorage.setItem('userName', userName);
+        localStorage.setItem('userName', userName);
     }, [userName]);
 
     useEffect(() => {
-        sessionStorage.setItem('authToken', authToken);
+        localStorage.setItem('authToken', authToken);
     }, [authToken]);
 
     const checkTokenExpiry = () => {
-        const token = sessionStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken');
         if (token !== 'null') {
             try {
                 const decodedToken = jwtDecode(token);
@@ -83,11 +83,11 @@ export const AuthProvider = ({ children }) => {
         setUserRole(null);
         setUserId(null);
         setUserName(null);
-        sessionStorage.removeItem('isAuthenticated');
-        sessionStorage.removeItem('authToken');
-        sessionStorage.removeItem('userRole');
-        sessionStorage.removeItem('userId');
-        sessionStorage.removeItem('userName');
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
     };
 
     return (
