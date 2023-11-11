@@ -8,22 +8,27 @@ import useAxios from "../../services/axios";
 import { useAuth } from "../../AuthContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/ManageCourseTable";
+import EditCourse from "../../components/instructor/modals/EditCourse";
 
 const defaultTheme = createTheme();
 
 const ManageCourse = () => {
-  const [open, setOpen] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [editCourse, setEditCourse] = useState("");
   const { userId } = useAuth();
   const axiosInstance = useAxios();
+  const handleCreateOpen = () => setOpenCreate(true);
+  const handleCreateClose = () => setOpenCreate(false);
+  const handleEditOpen = () => setOpenEdit(true);
+  const handleEditClose = () => setOpenEdit(false);
 
-  const columns = tableColumns;
-  const rows = tableRows(courses);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleSetEditCourse = (courseId) => {
+    setEditCourse(courseId);
+  };
 
   useEffect(() => {
     const getCourseList = async () => {
@@ -37,6 +42,9 @@ const ManageCourse = () => {
 
     getCourseList(userId);
   }, []);
+
+  const columns = tableColumns(handleEditOpen, handleSetEditCourse);
+  const rows = tableRows(courses);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -70,16 +78,27 @@ const ManageCourse = () => {
           alignItems="center"
           justifyContent={"center"}
         >
-          <Button variant="contained" onClick={() => handleOpen()}>
+          <Button variant="contained" onClick={() => handleCreateOpen()}>
             Add new
           </Button>
         </Grid>
-        <CreateCourse
-          open={open}
-          handleClose={handleClose}
-          setSuccessMsg={setSuccessMsg}
-          setAlertOpen={setAlertOpen}
-        />
+        {openCreate && (
+          <CreateCourse
+            open={openCreate}
+            handleClose={handleCreateClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+          />
+        )}
+        {openEdit && (
+          <EditCourse
+            open={openEdit}
+            handleClose={handleEditClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+            editCourse={editCourse}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );

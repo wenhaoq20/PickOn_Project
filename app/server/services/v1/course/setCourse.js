@@ -83,7 +83,30 @@ courseSetter.post('/upload_course_roster', async (req, res) => {
 
 });
 
-courseSetter.post('/update_course', async (req, res) => {
+courseSetter.put('/update_course', async (req, res) => {
+    const { courseId, formData } = req.body;
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        course.courseCode = formData.courseCode;
+        course.courseSection = formData.courseSection;
+        course.courseCRN = formData.courseCRN;
+        course.courseName = formData.courseName;
+        course.courseSemester = formData.courseSemester;
+        course.courseYear = formData.courseYear;
+        course.instructor = formData.instructor;
+        course.description = formData.description;
+        course.startTime = formData.startTime;
+        course.endTime = formData.endTime;
+
+        await course.save();
+        res.status(200).send("Course updated.");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error updating course.");
+    }
 
 });
 

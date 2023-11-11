@@ -53,7 +53,20 @@ const RemoveButton = ({ row }) => {
     );
 };
 
-export const tableColumns = [
+const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
+    const handleEdit = (row) => {
+        handleSetEditCourse(row._id);
+        handleOpen();
+    }
+
+    return (
+        <Button variant="contained" onClick={() => handleEdit(row)}>
+            Edit
+        </Button>
+    )
+};
+
+export const tableColumns = (handleOpen, handleSetEditCourse) => [
     { field: "name", headerName: "Course Name", width: 170 },
     { field: "code", headerName: "Code", width: 100 },
     {
@@ -80,7 +93,7 @@ export const tableColumns = [
         field: "edit",
         headerName: "Edit",
         width: 100,
-        renderCell: ({ row }) => <Button variant="contained">Edit</Button>,
+        renderCell: ({ row }) => <EditButton row={row} handleOpen={handleOpen} handleSetEditCourse={handleSetEditCourse} />,
     },
     {
         field: "view",
@@ -96,7 +109,7 @@ export const tableColumns = [
         sortable: false,
         renderCell: ({ row }) => <RemoveButton row={row} />,
     },
-]
+];
 
 export const tableRows = (courses) => {
     return courses.map((course, index) => {

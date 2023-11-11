@@ -20,11 +20,30 @@ courseGetter.get('/get_enrolled_courses', async (req, res) => {
 
 courseGetter.get('/get_course_roster', async (req, res) => {
     const { courseCRN, courseSemester, courseYear } = req.query;
-    const course = await Course.findOne({ courseCRN, courseSemester, courseYear });
-    if (!course) {
-        return res.status(400).send("Course not found.");
+    try {
+        const course = await Course.findOne({ courseCRN, courseSemester, courseYear });
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        res.status(200).json({ roster: course.courseRoster });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error getting course roster.");
     }
-    res.status(200).json({ roster: course.courseRoster });
+});
+
+courseGetter.get('/get_course_info', async (req, res) => {
+    const { courseId } = req.query;
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        res.status(200).json({ course });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error getting course info.");
+    }
 });
 
 module.exports = courseGetter;
