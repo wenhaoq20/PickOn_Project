@@ -60,3 +60,12 @@ export const getCourseRoster = async (axios, { courseCRN, courseYear, courseSeme
         throw error;
     }
 };
+
+export const removeCourse = async (axios, { userId, courseId }) => {
+    try {
+        const res = await axios.delete("api/v1/remove_course", { params: { userId, courseId } });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+};
