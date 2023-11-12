@@ -62,11 +62,17 @@ const EditCourse = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let updatedFormData = { ...formData };
+      if (dayjs.isDayjs(updatedFormData.startTime)) {
+        updatedFormData.startTime = updatedFormData.startTime.format("HH:mm");
+      }
+      if (dayjs.isDayjs(updatedFormData.endTime)) {
+        updatedFormData.endTime = updatedFormData.endTime.format("HH:mm");
+      }
       const response = await updateCourse(axiosInstance, {
         courseId: editCourse,
-        formData,
+        formData: updatedFormData,
       });
-      console.log(response);
       if (response.status === 200) {
         sucessAlert();
         handleClose();
@@ -222,6 +228,7 @@ const EditCourse = ({
                 value={formData.startTime}
                 onChange={(time) => {
                   const formattedTime = time ? time.format("HH:mm") : null;
+                  console.log(formattedTime);
                   setFormData({ ...formData, startTime: formattedTime });
                 }}
               />
