@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-
-
+import { useAuth } from "../AuthContext";
+import useAxios from "../services/axios";
+import { removeCourse } from "../services/course/courses";
 
 const ViewButton = ({ row }) => {
     const navigator = useNavigate();
@@ -19,16 +19,54 @@ const ViewButton = ({ row }) => {
         });
     };
 
-    return (<Button onClick={() => handleEnter(row)}
-        style={{ backgroundColor: "#2eb24d" }}
-        variant="contained">
-        View
-    </Button>
+    return (
+        <Button onClick={() => handleEnter(row)}
+            style={{ backgroundColor: "#2eb24d" }}
+            variant="contained">
+            View
+        </Button>
     );
 
 }
 
-export const tableColumns = [
+const RemoveButton = ({ row }) => {
+    const { userId } = useAuth();
+    const axiosInstance = useAxios();
+    const handleRemove = async (course) => {
+        const courseId = course._id;
+        try {
+            const response = await removeCourse(axiosInstance, { userId, courseId });
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return (
+        <Button onClick={() => handleRemove(row)}
+            style={{
+                backgroundColor: "#e63946", color: "white",
+            }}
+            varint="contained" >
+            Remove
+        </Button >
+    );
+};
+
+const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
+    const handleEdit = (row) => {
+        handleSetEditCourse(row._id);
+        handleOpen();
+    }
+
+    return (
+        <Button variant="contained" onClick={() => handleEdit(row)}>
+            Edit
+        </Button>
+    )
+};
+
+export const tableColumns = (handleOpen, handleSetEditCourse) => [
     { field: "name", headerName: "Course Name", width: 170 },
     { field: "code", headerName: "Code", width: 100 },
     {
@@ -54,17 +92,24 @@ export const tableColumns = [
     {
         field: "edit",
         headerName: "Edit",
-        width: 170,
+        width: 100,
+        renderCell: ({ row }) => <EditButton row={row} handleOpen={handleOpen} handleSetEditCourse={handleSetEditCourse} />,
     },
     {
         field: "view",
         headerName: "View",
-        width: 170,
+        width: 100,
         sortable: false,
         renderCell: ({ row }) => <ViewButton row={row} />,
-
     },
-]
+    {
+        field: "delete",
+        headerName: "Delete",
+        width: 120,
+        sortable: false,
+        renderCell: ({ row }) => <RemoveButton row={row} />,
+    },
+];
 
 export const tableRows = (courses) => {
     return courses.map((course, index) => {
@@ -77,6 +122,7 @@ export const tableRows = (courses) => {
             semester: course.courseSemester,
             year: course.courseYear,
             crn: course.courseCRN,
+            _id: course._id,
         };
     });
 };

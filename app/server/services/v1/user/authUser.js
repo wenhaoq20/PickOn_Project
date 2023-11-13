@@ -1,11 +1,11 @@
 const express = require('express');
-const auth = express.Router();
-const User = require('../../models/User');
-const Course = require('../../models/Course');
+const userAuth = express.Router();
+const User = require('../../../models/User');
+const Course = require('../../../models/Course');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-auth.post('/register', async (req, res) => {
+userAuth.post('/register', async (req, res) => {
     const { email, password, firstname, lastname, uhid } = req.body;
 
     try {
@@ -31,7 +31,7 @@ auth.post('/register', async (req, res) => {
     }
 });
 
-auth.post('/login', async (req, res) => {
+userAuth.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email: email });
@@ -69,4 +69,4 @@ auth.post('/login', async (req, res) => {
     }
 });
 
-module.exports = auth;
+module.exports = userAuth;

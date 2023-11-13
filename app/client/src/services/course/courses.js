@@ -60,3 +60,32 @@ export const getCourseRoster = async (axios, { courseCRN, courseYear, courseSeme
         throw error;
     }
 };
+
+export const updateCourse = async (axios, { courseId, formData }) => {
+    try {
+        const res = await axios.put("api/v1/update_course", { courseId, formData });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const removeCourse = async (axios, { userId, courseId }) => {
+    try {
+        const res = await axios.delete("api/v1/remove_course", { params: { userId, courseId } });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getCourseInfo = async (axios, courseId) => {
+    try {
+        const res = await axios.get("api/v1/get_course_info", {
+            params: { courseId },
+        });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
