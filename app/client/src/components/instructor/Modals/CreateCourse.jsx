@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../../../AuthContext";
 import { createCourse } from "../../../api/course/courses";
 import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import useAxios from "../../../api/axios";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const style = {
@@ -45,6 +46,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     startTime: "",
     endTime: "",
   });
+  const axiosInstance = useAxios();
   const [errorMsg, setErrorMsg] = useState("");
   const sucessAlert = () => {
     setSuccessMsg("Successfully created the course");
@@ -54,7 +56,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createCourse(formData);
+      const response = await createCourse(axiosInstance, formData);
       console.log(response);
       if (response.status === 200) {
         sucessAlert();

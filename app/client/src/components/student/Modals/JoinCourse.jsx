@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
 import { joinCourse } from "../../../api/course/courses";
+import useAxios from "../../../api/axios";
 
 const style = {
   position: "absolute",
@@ -43,11 +44,12 @@ const JoinCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     setSuccessMsg("Successfully joined the course");
     setAlertOpen(true);
   };
+  const axiosInstance = useAxios();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await joinCourse(formData);
+      const response = await joinCourse(axiosInstance, formData);
       if (response.status === 200) {
         sucessAlert();
         handleClose();

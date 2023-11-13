@@ -1,7 +1,6 @@
-import axios from "../axios";
 import Papa from "papaparse";
 
-export const getUserCourseList = async (userId) => {
+export const getUserCourseList = async (axios, userId) => {
     try {
         const res = await axios.get("api/v1/get_enrolled_courses", {
             params: { id: userId },
@@ -12,7 +11,7 @@ export const getUserCourseList = async (userId) => {
     }
 };
 
-export const joinCourse = async (formData) => {
+export const joinCourse = async (axios, formData) => {
     try {
         const res = await axios.post("api/v1/join_course", formData);
         return res;
@@ -21,7 +20,7 @@ export const joinCourse = async (formData) => {
     }
 };
 
-export const createCourse = async (formData) => {
+export const createCourse = async (axios, formData) => {
     try {
         const res = await axios.post("api/v1/create_course", formData);
         return res;
@@ -30,7 +29,7 @@ export const createCourse = async (formData) => {
     }
 };
 
-export const uploadCourseRoster = async (file, courseInfo) => {
+export const uploadCourseRoster = async (axios, file, courseInfo) => {
     return new Promise((resolve, reject) => {
         Papa.parse(file, {
             skipEmptyLines: "greedy",
@@ -51,7 +50,7 @@ export const uploadCourseRoster = async (file, courseInfo) => {
     });
 };
 
-export const getCourseRoster = async ({ courseCRN, courseYear, courseSemester }) => {
+export const getCourseRoster = async (axios, { courseCRN, courseYear, courseSemester }) => {
     try {
         const res = await axios.get("api/v1/get_course_roster", {
             params: { courseCRN, courseYear, courseSemester },

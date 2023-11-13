@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "../../components/Navbar";
 import CreateCourse from "../../components/instructor/modals/CreateCourse";
 import { getUserCourseList } from "../../api/course/courses";
+import useAxios from "../../api/axios";
 import { useAuth } from "../../AuthContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/ManageCourseTable";
@@ -16,7 +17,7 @@ const ManageCourse = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [courses, setCourses] = useState([]);
   const { userId } = useAuth();
-
+  const axiosInstance = useAxios();
 
   const columns = tableColumns;
   const rows = tableRows(courses);
@@ -27,7 +28,7 @@ const ManageCourse = () => {
   useEffect(() => {
     const getCourseList = async () => {
       try {
-        const res = await getUserCourseList(userId);
+        const res = await getUserCourseList(axiosInstance, userId);
         setCourses(res.data.courses);
       } catch (err) {
         console.log(err);

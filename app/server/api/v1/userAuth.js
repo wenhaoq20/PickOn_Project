@@ -3,6 +3,7 @@ const auth = express.Router();
 const User = require('../../models/User');
 const Course = require('../../models/Course');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 auth.post('/register', async (req, res) => {
     const { email, password, firstname, lastname, uhid } = req.body;
@@ -42,7 +43,26 @@ auth.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).send("Invalid password.");
         }
-        res.json({ success: true, role: user.accountType, id: user._id, name: user.firstname + " " + user.lastname });
+
+        const payload = {
+            id: user._id,
+            name: user.firstname + " " + user.lastname,
+            email: user.email,
+            role: user.accountType
+        };
+
+        const token = jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '3h' }
+        );
+
+        res.status(200).json({
+            token: token,
+            role: user.accountType,
+            id: user._id,
+            name: user.firstname + " " + user.lastname
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error logging in.");
