@@ -168,7 +168,7 @@
             });
 
             // Here, you can do further processing with the question and its options, such as sending them to a server or storing them in an array.
-            console.log(`Question ${index + 1}: ${question}`);
+            console.log(`InstructorQuestion ${index + 1}: ${question}`);
             console.log(`Options:`, options);
             console.log(`Correct Option(s):`, correctOption);
             console.log('---');
@@ -184,7 +184,7 @@
 
 <body>
     <div class="container">
-        <h1>Question Creator</h1>
+        <h1>InstructorQuestion Creator</h1>
         <a href="home_teacher.html" id="home-btn">Home</a>
         <form id="quizForm">
             <div id="questionsContainer">
@@ -209,7 +209,7 @@
                     </span>
                 </div>
             </div>
-            <button type="button" onclick="addQuestion()">Add Question</button>
+            <button type="button" onclick="addQuestion()">Add InstructorQuestion</button>
             <button type="button" onclick="window.location.href = 'game_play.html'">Submit</button>
         </form>
     </div>
