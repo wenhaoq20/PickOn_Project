@@ -16,7 +16,8 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-import { userLogin } from "../api/user/users";
+import { userLogin } from "../services/user/users";
+import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 
@@ -27,15 +28,23 @@ const Login = () => {
 
   const { login, isAuthenticated } = useAuth();
   const navigator = useNavigate();
+  const axiosInstance = useAxios();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await userLogin(email, password);
-      if (response.data.success) {
+      const response = await userLogin(axiosInstance, email, password);
+      console.log(response);
+      console.log(response.data.role);
+      if (response.status === 200) {
         setEmail("");
         setPassword("");
-        login(response.data.role, response.data.id, response.data.name);
+        login(
+          response.data.role,
+          response.data.id,
+          response.data.name,
+          response.data.token
+        );
         navigator("/");
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   TextField,
@@ -14,10 +14,11 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
-import { createCourse } from "../../../services/course/courses";
+import { updateCourse, getCourseInfo } from "../../../services/course/courses";
 import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import useAxios from "../../../services/axios";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -30,34 +31,48 @@ const style = {
   p: 4,
 };
 
-const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
+const EditCourse = ({
+  open,
+  handleClose,
+  setSuccessMsg,
+  setAlertOpen,
+  editCourse,
+}) => {
   const { userName, userId } = useAuth();
-  const currDate = new Date();
   const [formData, setFormData] = useState({
     courseCode: "",
     courseSection: "",
     courseCRN: "",
     courseName: "",
-    courseSemester: "Spring",
-    courseYear: currDate.getFullYear(),
+    courseSemester: "",
+    courseYear: "",
     instructor: userName,
     description: "",
     userId: userId,
-    startTime: "",
-    endTime: "",
+    startTime: null,
+    endTime: null,
   });
   const axiosInstance = useAxios();
   const [errorMsg, setErrorMsg] = useState("");
   const sucessAlert = () => {
-    setSuccessMsg("Successfully created the course");
+    setSuccessMsg("Successfully edited the course");
     setAlertOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createCourse(axiosInstance, formData);
-      console.log(response);
+      let updatedFormData = { ...formData };
+      if (dayjs.isDayjs(updatedFormData.startTime)) {
+        updatedFormData.startTime = updatedFormData.startTime.format("HH:mm");
+      }
+      if (dayjs.isDayjs(updatedFormData.endTime)) {
+        updatedFormData.endTime = updatedFormData.endTime.format("HH:mm");
+      }
+      const response = await updateCourse(axiosInstance, {
+        courseId: editCourse,
+        formData: updatedFormData,
+      });
       if (response.status === 200) {
         sucessAlert();
         handleClose();
@@ -75,6 +90,31 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
     }
   };
 
+  useEffect(() => {
+    const getCourse = async () => {
+      try {
+        const response = await getCourseInfo(axiosInstance, editCourse);
+        const course = response.data.course;
+        setFormData({
+          courseCode: course.courseCode,
+          courseSection: course.courseSection,
+          courseCRN: course.courseCRN,
+          courseName: course.courseName,
+          courseSemester: course.courseSemester,
+          courseYear: course.courseYear,
+          instructor: userName,
+          description: course.description,
+          userId: userId,
+          startTime: dayjs(course.startTime, "HH:mm"),
+          endTime: dayjs(course.endTime, "HH:mm"),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getCourse();
+  }, []);
+
   return (
     <Modal
       open={open}
@@ -89,18 +129,18 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
             <strong> {errorMsg} </strong>
           </Alert>
         )}
-        <Typography variant="h5">Enter the class information</Typography>
+        <Typography variant="h5">Edit the class information</Typography>
         <Grid container spacing={1}>
           <Grid item xs={6}>
             <TextField
               variant="outlined"
               margin="normal"
               required
-              fullWidth
               id="courseCode"
               label="Course Code"
               name="courseCode"
               autoFocus
+              value={formData.courseCode}
               onChange={(e) =>
                 setFormData({ ...formData, courseCode: e.target.value })
               }
@@ -111,10 +151,10 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
               variant="outlined"
               margin="normal"
               required
-              fullWidth
               id="courseSection"
               label="Course Section"
               name="courseSection"
+              value={formData.courseSection}
               onChange={(e) =>
                 setFormData({ ...formData, courseSection: e.target.value })
               }
@@ -129,6 +169,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
           id="courseCRN"
           label="Course CRN"
           name="courseCRN"
+          value={formData.courseCRN}
           onChange={(e) =>
             setFormData({ ...formData, courseCRN: e.target.value })
           }
@@ -141,6 +182,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
           id="courseName"
           label="Course Name"
           name="courseName"
+          value={formData.courseName}
           onChange={(e) =>
             setFormData({ ...formData, courseName: e.target.value })
           }
@@ -168,7 +210,6 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
               variant="outlined"
               margin="normal"
               required
-              fullWidth
               id="courseYear"
               label="Course Year"
               name="courseYear"
@@ -187,6 +228,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
                 value={formData.startTime}
                 onChange={(time) => {
                   const formattedTime = time ? time.format("HH:mm") : null;
+                  console.log(formattedTime);
                   setFormData({ ...formData, startTime: formattedTime });
                 }}
               />
@@ -213,6 +255,7 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
           name="description"
           multiline
           minRows={3}
+          value={formData.description}
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
@@ -225,4 +268,4 @@ const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   );
 };
 
-export default CreateCourse;
+export default EditCourse;

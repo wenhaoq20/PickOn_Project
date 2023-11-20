@@ -1,9 +1,7 @@
-import axios from "../axios";
-
-export const userLogin = async (email, password) => {
+export const userLogin = async (axios, email, password) => {
     try {
         const response = await axios.post(
-            "/login",
+            "api/v1/login",
             {
                 email,
                 password,
@@ -18,10 +16,10 @@ export const userLogin = async (email, password) => {
     }
 };
 
-export const userRegister = async (formData) => {
+export const userRegister = async (axios, formData) => {
     try {
         const response = await axios.post(
-            "http://localhost:5000/register",
+            "api/v1/register",
             formData
         );
         return response;

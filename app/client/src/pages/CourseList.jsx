@@ -20,7 +20,8 @@ import Navbar from "../components/Navbar";
 import { useAuth } from "../AuthContext";
 import JoinCourse from "../components/student/modals/JoinCourse";
 import CreateCourse from "../components/instructor/modals/CreateCourse";
-import { getUserCourseList } from "../api/course/courses";
+import { getUserCourseList } from "../services/course/courses";
+import useAxios from "../services/axios";
 import CloseIcon from "@mui/icons-material/Close";
 const defaultTheme = createTheme();
 
@@ -32,13 +33,13 @@ const CourseList = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const axiosInstance = useAxios();
 
   //TODO - automatically update course list when a new course is created by using Socket.io and Mongoose change streams
   useEffect(() => {
     const getCourseList = async () => {
       try {
-        const res = await getUserCourseList(userId);
+        const res = await getUserCourseList(axiosInstance, userId);
         setCourses(res.data.courses);
       } catch (err) {
         console.log(err);

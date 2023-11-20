@@ -9,8 +9,12 @@ const CourseSchema = new mongoose.Schema({
     courseSemester: { type: String, required: true },
     courseYear: { type: Number, required: true },
     instructor: { type: String, required: true },
+    instructorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     description: { type: String, required: true },
     enrolledUsers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+    courseRoster: [{ uhid: String, name: String, email: String, default: [] }],
+    startTime: { type: String, required: true },
+    endTime: { type: String, required: true },
 });
 
 CourseSchema.index({ courseCRN: 1, courseYear: 1, courseSemester: 1 }, { unique: true });

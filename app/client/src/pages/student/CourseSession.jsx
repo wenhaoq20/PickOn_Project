@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import StudentGame from "../../components/student/StudentGame";
 import StudentGroup from "../../components/student/StudentGroup";
 import StudentPickOn from "../../components/student/StudentPickOn";
 import StudentAnonymous from "../../components/student/StudentAnonymous";
 import SessionLobby from "../../components/student/SessionLobby";
 import Navbar from "../../components/Navbar";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { socket } from "../../socket.js";
 

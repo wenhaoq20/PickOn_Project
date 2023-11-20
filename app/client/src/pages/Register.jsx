@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { userRegister } from "../api/user/users";
+import { userRegister } from "../services/user/users";
+import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 
@@ -28,6 +29,7 @@ const Register = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const navigator = useNavigate();
+  const axiosInstance = useAxios();
 
   const handleChange = (e) => {
     setFormData({
@@ -40,7 +42,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await userRegister(formData);
+      const response = await userRegister(axiosInstance, formData);
       console.log(response.data);
       setSuccessMsg("Successfully registered.");
       navigator("/login");
