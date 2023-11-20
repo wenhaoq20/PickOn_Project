@@ -144,4 +144,35 @@ courseSetter.delete('/remove_course', async (req, res) => {
     }
 });
 
+courseSetter.delete('/remove_student', async (req, res) => {
+    const { studentUHId, userId, courseCRN, courseYear, courseSemester } = req.query;
+    try {
+        const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        if (!course.instructorId.equals(userId)) {
+            return res.status(401).send("User is not authorized to delete this student!");
+        }
+
+        const studentInRoster = course.courseRoster.some(s => s.uhid === studentUHId);
+        if (!studentInRoster) {
+            return res.status(400).send("Student not found in course roster.");
+        }
+        const student = await User.findOne({ uhid: studentUHId });
+        student.enrolledCourses.pull(course._id);
+        await student.save();
+
+        await Course.updateOne(
+            { _id: course._id },
+            { $pull: { courseRoster: { uhid: studentUHId } } }
+        );
+
+        return res.status(200).send("Student removed from course roster.");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error removing student.");
+    }
+});
+
 module.exports = courseSetter;

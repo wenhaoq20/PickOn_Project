@@ -12,10 +12,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { uploadCourseRoster, getCourseRoster } from "../../services/course/courses";
+import {
+  uploadCourseRoster,
+  getCourseRoster,
+} from "../../services/course/courses";
 import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/CoursePageTable";
 import useAxios from "../../services/axios";
+import { useAuth } from "../../AuthContext";
 
 const defaultTheme = createTheme();
 
@@ -28,6 +32,8 @@ const CoursePage = () => {
     state;
   const rows = tableRows(rosterData);
   const axiosInstance = useAxios();
+  const { userId } = useAuth();
+  const courseInfo = { courseSemester, courseYear, courseCRN };
 
   const getRosterData = async () => {
     try {
@@ -56,6 +62,8 @@ const CoursePage = () => {
       document.getElementById("fileInput").value = "";
     }
   };
+
+  const handleCreateOpen = () => {};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -133,7 +141,7 @@ const CoursePage = () => {
           <Grid item xs={12}>
             <DataGrid
               rows={rows}
-              columns={tableColumns}
+              columns={tableColumns(courseInfo, userId)}
               initialState={{
                 pagination: {
                   paginationModel: { page: 0, pageSize: 25 },
@@ -142,6 +150,9 @@ const CoursePage = () => {
               pageSizeOptions={[25, 50, 100]}
             />
           </Grid>
+          <Button variant="contained" onClick={() => handleCreateOpen()}>
+            Add a student
+          </Button>
         </Grid>
       </Container>
     </ThemeProvider>
