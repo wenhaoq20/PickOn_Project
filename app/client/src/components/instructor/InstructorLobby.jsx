@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Container, Typography, Stack } from "@mui/material";
-import ModeCard from "../../components/instructor/cards/ModeCard";
+import ModeCard from "./cards/ModeCard";
 import { modeData } from "../../public/data/modesInfo.js";
 
 const InstructorLobby = ({ handleSelectMode }) => {

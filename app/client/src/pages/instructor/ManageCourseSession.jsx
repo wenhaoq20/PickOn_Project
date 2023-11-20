@@ -8,6 +8,7 @@ import InstructorGroup from "../../components/instructor/InstructorGroup";
 import InstructorPickOn from "../../components/instructor/InstructorPickOn";
 import InstructorLobby from "../../components/instructor/InstructorLobby.jsx";
 import { socket } from "../../socket.js";
+import InstructorGame from '../../components/instructor/InstructorGame';
 
 const defaultTheme = createTheme();
 
@@ -53,7 +54,13 @@ const ManageCourseSession = () => {
       {sessionMode === "home" && (
         <InstructorLobby handleSelectMode={handleSelectMode} />
       )}
-      {sessionMode === "competition" && <div>competition</div>}
+      {sessionMode === "competition" && (
+          <InstructorGame
+              onButtonClick={() => selectMode("home")}
+              socket={socket}
+              sessionId={session}
+          />
+      )}
       {sessionMode === "group" && (
         <InstructorGroup
           onButtonClick={() => selectMode("home")}

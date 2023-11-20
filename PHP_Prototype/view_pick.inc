@@ -32,10 +32,10 @@ if (isset($_POST['student_action'])) {
             $_SESSION['current_student'] = $_COOKIE['student_name'];
             echo "ok, {$_COOKIE['student_name']} you will be picked on!";
             break;
-        case "Question/Comment":
+        case "InstructorQuestion/Comment":
             $_SESSION['raised_hand'] = $_COOKIE['student_name'];
             break;
-        case "Cancel Question/Comment":
+        case "Cancel InstructorQuestion/Comment":
             unset($_SESSION['raised_hand']);
             break;
         case "Pick on someone else!":
@@ -58,7 +58,7 @@ if (isset($_COOKIE['student_name'])) {
         $pickon_str = 'Pick on me!';
     }
     echo "<center><input type='submit' value='{$pickon_str}' name='student_action'>";
-    $question_button_str = 'Question/Comment';
+    $question_button_str = 'InstructorQuestion/Comment';
     if (isset($_SESSION['raised_hand']) and $_SESSION['raised_hand'] == $_COOKIE['student_name']) {
         $question_button_str = "Cancel " . $question_button_str;
     }
