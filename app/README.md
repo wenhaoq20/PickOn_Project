@@ -16,7 +16,7 @@ First, download and install [Node.js](https://nodejs.org/en/) if you don't alrea
 
 If you want to use your own MongoDB database, please follow the setup instructions [here](https://www.mongodb.com/free-cloud-database). If not, you can contact Wenhao or Braydon to provide the setup and permissions.
 
-### Installation
+### Installing Project
 
 1. Clone the repo from https://github.com/dport96/PickOn_Project
 2. cd to the PickOn_Project/app/ directory
@@ -44,3 +44,7 @@ npm run start
 npm run devStart
 ```
 3. Visit [http://localhost:3000](http://localhost:3000) to confirm that the website is running
+
+## Contact
+- [Wenhao Q.](mailto:wenhaoq@hawaii.edu)
+- [Braydon N.](mailto:braydonn@hawaii.edu)

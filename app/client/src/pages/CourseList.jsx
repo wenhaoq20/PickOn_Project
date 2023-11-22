@@ -25,6 +25,12 @@ import useAxios from "../services/axios";
 import CloseIcon from "@mui/icons-material/Close";
 const defaultTheme = createTheme();
 
+/**
+ * Page for user's course list.
+ *
+ * @component
+ * @returns {React.ReactElement} The page for the list of user enrolled courses.
+ */
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const [successMsg, setSuccessMsg] = useState("");

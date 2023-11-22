@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Box, Button } from "@mui/material";
 
+/**
+ * Component for the student game mode for courseSession.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {int} props.initialCount The initial count for the timer.
+ * @returns {React.ReactElement} The countdown timer component.
+ */
 const CountDownTimer = ({ initialCount }) => {
   const [count, setCount] = useState(initialCount);
 
@@ -35,6 +43,12 @@ const CountDownTimer = ({ initialCount }) => {
   );
 };
 
+/**
+ * Component for the student game mode for courseSession.
+ * 
+ * @component
+ * @returns {React.ReactElement} The student game mode component.
+ */
 const StudentGame = () => {
   return (
     <Container component="main">

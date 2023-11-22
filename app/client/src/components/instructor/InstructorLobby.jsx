@@ -3,6 +3,14 @@ import { Box, Container, Typography, Stack } from "@mui/material";
 import ModeCard from "./cards/ModeCard";
 import { modeData } from "../../public/data/modesInfo.js";
 
+/**
+ * Component for the instructor lobby for courseSession.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {function} props.handleSelectMode The function to handle the mode selection.
+ * @returns {React.ReactElement} The instructor lobby component.
+ */
 const InstructorLobby = ({ handleSelectMode }) => {
   const modeCardData = modeData;
   return (

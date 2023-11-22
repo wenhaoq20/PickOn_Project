@@ -11,7 +11,18 @@ import {
 } from "@mui/material";
 import CasinoIcon from "@mui/icons-material/Casino";
 
-const InstructorGroup = ({ onButtonClick, socket, onlineUsers, sessionId }) => {
+/**
+ * Component for the instructor pickOn mode for courseSession.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {function} props.onButtonClick The function to handle the back button.
+ * @param {Object} props.socket The socket for the component.
+ * @param {string[]} props.onlineUsers The array of online users.
+ * @param {string} props.sessionId The id of the session.
+ * @returns {React.ReactElement} The instructor pickOn component.
+ */
+const InstructorPickOn = ({ onButtonClick, socket, onlineUsers, sessionId }) => {
   const [pickedStudent, setPickedStudent] = useState(null);
 
   const handleRandomPickOn = () => {
@@ -86,4 +97,4 @@ const InstructorGroup = ({ onButtonClick, socket, onlineUsers, sessionId }) => {
   );
 };
 
-export default InstructorGroup;
+export default InstructorPickOn;

@@ -4,10 +4,13 @@ import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
+// Custom hook that shorthands the context.
 export const useAuth = () => {
     return useContext(AuthContext);
 }
 
+// Provider component that wraps your app and makes auth object
+// available to any child component that calls useAuth().
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(
         () => localStorage.getItem('isAuthenticated') === 'true'

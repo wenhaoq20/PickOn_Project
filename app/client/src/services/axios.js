@@ -2,6 +2,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
+/**
+ * Custom hook for axios instance.
+ * 
+ * @returns {Object} The axios instance
+*/
 const useAxios = () => {
     const navigator = useNavigate();
     const { authToken, logout } = useAuth();

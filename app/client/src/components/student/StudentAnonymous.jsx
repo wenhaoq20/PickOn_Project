@@ -10,6 +10,15 @@ import {
   Paper,
 } from "@mui/material";
 
+/**
+ * Component for the student anonymous mode for courseSession.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {Object} props.socket The socket for the component.
+ * @param {string} props.sessionId The id of the session.
+ * @returns {React.ReactElement} The student anonymous component.
+ */
 const StudentAnonymous = ({ socket, sessionId }) => {
   const [responses, setResponses] = useState([]);
   const [question, setQuestion] = useState("");
