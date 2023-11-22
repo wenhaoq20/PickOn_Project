@@ -30,6 +30,16 @@ const style = {
   p: 4,
 };
 
+/**
+ * Component for creating a course.
+ * 
+ * @component
+ * @param {boolean} props.open The boolean for the modal open state.
+ * @param {function} props.handleClose The function to handle the modal close.
+ * @param {function} props.setSuccessMsg The function to set the success message.
+ * @param {function} props.setAlertOpen The function to set the alert open state.
+ * @returns {React.ReactElement} The create course component.
+ */
 const CreateCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   const { userName, userId } = useAuth();
   const currDate = new Date();

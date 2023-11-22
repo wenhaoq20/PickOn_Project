@@ -16,7 +16,7 @@ import {
  * @param {string} props.description The description of the mode.
  * @param {string} props.image The image of the mode.
  * @param {string} props.altText The alt text of the image.
- * @param {Function} props.onButtonClick The function to call when the button is clicked.
+ * @param {function} props.onButtonClick The function to call when the button is clicked.
  * @returns {React.ReactElement} The mode card.
  */
 const ModeCard = ({ title, description, image, altText, onButtonClick }) => {

@@ -12,7 +12,6 @@ import {
  * Component for the student group mode for courseSession.
  * 
  * @component
- * @param {Object} props The props for the component.
  * @param {Object} props.socket The socket for the component.
  * @param {string} props.name The name of the user.
  * @returns {React.ReactElement} The student group mode component.

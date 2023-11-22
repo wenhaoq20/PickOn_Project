@@ -32,7 +32,6 @@ const style = {
  * Component for the join course modal.
  * 
  * @component
- * @param {Object} props The props for the component.
  * @param {boolean} props.open Whether the modal is open.
  * @param {function} props.handleClose The function to close the modal.
  * @param {function} props.setSuccessMsg The function to set the success message.

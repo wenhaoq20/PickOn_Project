@@ -5,7 +5,6 @@ import { Container, Typography, Grid, Box, Button } from "@mui/material";
  * Component for the student game mode for courseSession.
  * 
  * @component
- * @param {Object} props The props for the component.
  * @param {int} props.initialCount The initial count for the timer.
  * @returns {React.ReactElement} The countdown timer component.
  */

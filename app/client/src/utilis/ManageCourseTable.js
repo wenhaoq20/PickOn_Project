@@ -72,8 +72,8 @@ const RemoveButton = ({ row }) => {
  * 
  * @component
  * @param {Object} row The row of the table
- * @param {Function} handleOpen Function to open the edit dialog
- * @param {Function} handleSetEditCourse Function to set the course to edit
+ * @param {function} handleOpen Function to open the edit dialog
+ * @param {function} handleSetEditCourse Function to set the course to edit
  * @returns {React.Element} The edit button
  */
 const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
@@ -92,8 +92,8 @@ const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
 /**
  * The columns of the course table.
  * 
- * @param {Function} handleOpen Function to open the edit dialog
- * @param {Function} handleSetEditCourse Function to set the course to edit
+ * @param {function} handleOpen Function to open the edit dialog
+ * @param {function} handleSetEditCourse Function to set the course to edit
  * @returns {Object[]} The columns of the course table
  */
 export const tableColumns = (handleOpen, handleSetEditCourse) => [

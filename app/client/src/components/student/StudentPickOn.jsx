@@ -5,7 +5,6 @@ import { Box, Button, Grid } from "@mui/material";
  * Component for the student pick on mode for courseSession.
  * 
  * @component
- * @param {Object} props The props for the component.
  * @param {Object} props.socket The socket for the component.
  * @param {string} props.name The name of the user.
  * @param {string} props.sessionId The id of the session.
