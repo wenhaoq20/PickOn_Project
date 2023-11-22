@@ -89,3 +89,24 @@ export const getCourseInfo = async (axios, courseId) => {
         throw error;
     }
 }
+
+export const removeStudent = async (axios, { uhId, userId, courseInfo }) => {
+    const { courseCRN, courseYear, courseSemester } = courseInfo;
+    try {
+        const res = await axios.delete("api/v1/remove_student", { params: { uhId, userId, courseCRN, courseYear, courseSemester } });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const addStudent = async (axios, formData, courseInfo) => {
+    const { courseCRN, courseYear, courseSemester } = courseInfo;
+    const { firstName, lastName, middleName, uhId, email, userId } = formData;
+    try {
+        const res = await axios.post("api/v1/add_student", { firstName, lastName, middleName, uhId, email, userId, courseCRN, courseYear, courseSemester });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}

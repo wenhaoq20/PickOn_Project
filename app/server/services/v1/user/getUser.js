@@ -9,21 +9,21 @@ userGetter.get('/full_name', async (req, res) => {
         if (!user) {
             return res.status(400).send("User not found.");
         }
-        res.json({ success: true, firstname: user.firstname, lastname: user.lastname });
+        res.json({ success: true, firstName: user.firstName, lastName: user.lastName });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error getting user info.");
     }
 });
 
-userGetter.get('/uhid', async (req, res) => {
+userGetter.get('/uhId', async (req, res) => {
     const { id } = req.query;
     try {
-        const user = await User.findById(id).select('uhid');
+        const user = await User.findById(id).select('uhId');
         if (!user) {
             return res.status(400).send("User not found.");
         }
-        res.json({ success: true, uhid: user.uhid });
+        res.json({ success: true, uhId: user.uhId });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error getting user info.");

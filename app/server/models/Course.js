@@ -12,7 +12,7 @@ const CourseSchema = new mongoose.Schema({
     instructorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     description: { type: String, required: true },
     enrolledUsers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
-    courseRoster: [{ uhid: String, name: String, email: String, default: [] }],
+    courseRoster: [{ uhId: String, firstName: String, lastName: String, middleName: String, email: String }],
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
 });
