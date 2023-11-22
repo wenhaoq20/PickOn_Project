@@ -9,6 +9,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
+/**
+ * Component for the course card in CourseList.
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {Object} props.data Course data
+ * @returns {React.ReactElement} The course card.
+ */
 const CourseCard = ({ data }) => {
   const { userRole } = useAuth();
   const navigator = useNavigate();

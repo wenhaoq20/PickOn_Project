@@ -17,13 +17,19 @@ import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for user registration.
+ *
+ * @component
+ * @returns {React.ReactElement} The register form page.
+ */
 const Register = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    firstname: "",
-    lastname: "",
-    uhid: "",
+    firstName: "",
+    lastName: "",
+    uhId: "",
   });
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -109,29 +115,29 @@ const Register = () => {
               margin="normal"
               required
               fullWidth
-              name="firstname"
+              name="firstName"
               label="First Name"
-              id="firstname"
-              autoComplete="firstname"
+              id="firstName"
+              autoComplete="firstName"
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="lastname"
+              name="lastName"
               label="Last Name"
-              id="lastname"
-              autoComplete="lastname"
+              id="lastName"
+              autoComplete="lastName"
               onChange={handleChange}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="uhid"
+              name="uhId"
               label="UH ID"
-              id="uhid"
+              id="uhId"
               autoComplete="UH ID"
               onChange={handleChange}
             />

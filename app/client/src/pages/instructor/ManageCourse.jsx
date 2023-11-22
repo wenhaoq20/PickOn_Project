@@ -12,6 +12,12 @@ import EditCourse from "../../components/instructor/modals/EditCourse";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for instructor to manage their courses.
+ *
+ * @component
+ * @returns {React.ReactElement} The course management page.
+ */
 const ManageCourse = () => {
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);

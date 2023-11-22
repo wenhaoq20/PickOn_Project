@@ -1,5 +1,11 @@
 import React from "react";
 
+/**
+ * Page for error 404.
+ *
+ * @component
+ * @returns {React.ReactElement} The error page.
+ */
 const ErrorPage = () => {
   return (
     <div>

@@ -3,6 +3,20 @@ const courseSetter = express.Router();
 const Course = require('../../../models/Course');
 const User = require('../../../models/User');
 
+/**
+ * Route allowing a user to join a specific course.
+ * 
+ * @path {POST} /join_course
+ * @body {String} userId The unique identifier of the user.
+ * @body {String} courseCode The code of the course.
+ * @body {String} courseSection The section of the course.
+ * @body {String} courseCRN The Course Registration Number.
+ * @body {String} courseSemester The semester of the course (e.g., 'Fall', 'Spring').
+ * @body {String} courseYear The year of the course.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseSetter.post('/join_course', async (req, res) => {
     const { userId, courseCode, courseSection, courseCRN, courseSemester, courseYear } = req.body;
     try {
@@ -28,6 +42,25 @@ courseSetter.post('/join_course', async (req, res) => {
     }
 });
 
+/**
+ * Route for creating a new course.
+ * 
+ * @path {POST} /create_course
+ * @body {String} courseCode The code of the course.
+ * @body {String} courseSection The section of the course.
+ * @body {String} courseCRN The Course Registration Number.
+ * @body {String} courseName The name of the course.
+ * @body {String} courseSemester The semester of the course (e.g., 'Fall', 'Spring').
+ * @body {String} courseYear The year of the course.
+ * @body {String} instructor The name of the course instructor.
+ * @body {String} description The description of the course.
+ * @body {String} userId The unique identifier of the user creating the course.
+ * @body {String} startTime The start time of the course.
+ * @body {String} endTime The end time of the course.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseSetter.post('/create_course', async (req, res) => {
     const { courseCode, courseSection, courseCRN, courseName, courseSemester, courseYear, instructor, description, userId, startTime, endTime } = req.body;
     try {
@@ -53,6 +86,16 @@ courseSetter.post('/create_course', async (req, res) => {
     }
 });
 
+/**
+ * Route for uploading a course roster.
+ * 
+ * @path {POST} /upload_course_roster
+ * @body {Object} courseInfo Contains courseCRN, courseSemester, and courseYear to identify the course.
+ * @body {Array} roster An array of student information to be added to the course roster.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseSetter.post('/upload_course_roster', async (req, res) => {
     const { courseCRN, courseSemester, courseYear } = req.body.courseInfo;
     try {
@@ -61,11 +104,15 @@ courseSetter.post('/upload_course_roster', async (req, res) => {
             return res.status(400).send("Course not found.");
         }
         const roster = req.body.roster.map((student) => {
-            return { uhid: student[0], name: student[1], email: student[4] };
+            const lastName = student[1].split(',')[0];
+            const firstpart = student[1].split(',')[1];
+            const firstName = firstpart.split(' ')[1];
+            const middleName = firstpart.split(' ').slice(2).join(' ');
+            return { uhId: student[0], firstName: firstName, lastName: lastName, middleName: middleName, email: student[4] };
         });
         course.courseRoster = roster;
 
-        const studentList = await User.find({ uhid: { $in: roster.map((student) => student.uhid) } });
+        const studentList = await User.find({ uhId: { $in: roster.map((student) => student.uhId) } });
         const saveStudentPromises = studentList.map(async (student) => {
             student.enrolledCourses.push(course._id);
             await student.save();
@@ -80,9 +127,18 @@ courseSetter.post('/upload_course_roster', async (req, res) => {
         console.error(error);
         res.status(500).send("Error uploading course roster.");
     }
-
 });
 
+/**
+ * Route for updating a course's details.
+ * 
+ * @path {PUT} /update_course
+ * @body {String} courseId The unique identifier of the course to be updated.
+ * @body {Object} formData The updated course details.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseSetter.put('/update_course', async (req, res) => {
     const { courseId, formData } = req.body;
     try {
@@ -107,9 +163,18 @@ courseSetter.put('/update_course', async (req, res) => {
         console.error(error);
         res.status(500).send("Error updating course.");
     }
-
 });
 
+/**
+ * Route for removing a course.
+ * 
+ * @path {DELETE} /remove_course
+ * @query {String} userId The unique identifier of the instructor or user.
+ * @query {String} courseId The unique identifier of the course to be removed.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseSetter.delete('/remove_course', async (req, res) => {
     const { userId, courseId } = req.query;
     try {
@@ -142,6 +207,83 @@ courseSetter.delete('/remove_course', async (req, res) => {
         console.error(error);
         res.status(500).send("Error removing course.");
     }
+});
+
+/**
+ * Route for removing a student from a course roster.
+ * 
+ * @path {DELETE} /remove_student
+ * @query {String} uhId The University ID of the student.
+ * @query {String} userId The unique identifier of the instructor or user.
+ * @query {String} courseCRN The Course Registration Number.
+ * @query {String} courseYear The year of the course.
+ * @query {String} courseSemester The semester of the course.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
+courseSetter.delete('/remove_student', async (req, res) => {
+    const { uhId, userId, courseCRN, courseYear, courseSemester } = req.query;
+    try {
+        const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        if (!course.instructorId.equals(userId)) {
+            return res.status(401).send("User is not authorized to delete this student!");
+        }
+
+        const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
+        if (!studentInRoster) {
+            return res.status(400).send("Student not found in course roster.");
+        }
+        const student = await User.findOne({ uhId: uhId });
+        if (student !== null) {
+            student.enrolledCourses.pull(course._id);
+            await student.save();
+        }
+
+        await Course.updateOne(
+            { _id: course._id },
+            { $pull: { courseRoster: { uhId: uhId } } }
+        );
+
+        return res.status(200).send("Student removed from course roster.");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error removing student.");
+    }
+});
+
+/**
+ * Route for adding a student to a course roster.
+ * 
+ * @path {POST} /add_student
+ * @body {Object} studentDetails The details of the student to be added.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
+courseSetter.post('/add_student', async (req, res) => {
+    console.log(req.body);
+    const { courseCRN, courseYear, courseSemester, uhId, userId, email, firstName, lastName, middleName } = req.body;
+    
+    const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+    if (!course) {
+        return res.status(400).send("Course not found.");
+    }
+    if (!course.instructorId.equals(userId)) {
+        return res.status(401).send("User is not authorized to add students to this course!");
+    }
+
+    const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
+    if (studentInRoster) {
+        return res.status(400).send("Student already in course roster.");
+    }
+
+    course.courseRoster.push({ uhId, firstName, lastName, middleName, email });
+    await course.save();
+    res.status(200).send("Successfully added student.");
 });
 
 module.exports = courseSetter;

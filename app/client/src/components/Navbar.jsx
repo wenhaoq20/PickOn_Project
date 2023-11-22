@@ -11,6 +11,15 @@ import { AccountCircle, ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
+/**
+ * Component for the navbar.
+ *
+ * @component
+ * @param {Object} props Component props
+ * @param {string} props.name Name of the page
+ * @param {boolean} props.redirect Whether to show back button
+ * @returns {React.ReactElement} The top navbar.
+ */
 const Navbar = ({ name, redirect }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { logout, userRole } = useAuth();

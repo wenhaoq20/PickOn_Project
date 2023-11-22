@@ -12,6 +12,12 @@ import InstructorGame from '../../components/instructor/InstructorGame';
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for instructor to manage their course session.
+ *
+ * @component
+ * @returns {React.ReactElement} The course session management page.
+ */
 const ManageCourseSession = () => {
   const [sessionMode, setSessionMode] = useState("home");
   const [onlineUsers, setOnlineUsers] = useState([]);

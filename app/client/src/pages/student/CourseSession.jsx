@@ -13,6 +13,12 @@ import { socket } from "../../socket.js";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for student session page.
+ *
+ * @component
+ * @returns {React.ReactElement} The student page.
+ */
 const CourseSession = () => {
   const { state } = useLocation();
   const [sessionMode, setSessionMode] = useState("home");

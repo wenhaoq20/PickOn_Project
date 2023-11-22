@@ -6,16 +6,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 userAuth.post('/register', async (req, res) => {
-    const { email, password, firstname, lastname, uhid } = req.body;
+    const { email, password, firstName, lastName, uhId } = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) return res.status(400).send("User already exists!");
 
-        const user = new User({ email, password, firstname, lastname, uhid });
+        const user = new User({ email, password, firstName, lastName, uhId });
         await user.save();
 
-        const courseList = await Course.find({ courseRoster: { $elemMatch: { uhid: uhid } } });
+        const courseList = await Course.find({ courseRoster: { $elemMatch: { uhId: uhId } } });
         const saveCoursePromises = courseList.map(async (course) => {
             course.enrolledUsers.push(user._id);
             await course.save();
@@ -46,7 +46,7 @@ userAuth.post('/login', async (req, res) => {
 
         const payload = {
             id: user._id,
-            name: user.firstname + " " + user.lastname,
+            name: user.firstName + " " + user.lastName,
             email: user.email,
             role: user.accountType
         };
@@ -61,7 +61,7 @@ userAuth.post('/login', async (req, res) => {
             token: token,
             role: user.accountType,
             id: user._id,
-            name: user.firstname + " " + user.lastname
+            name: user.firstName + " " + user.lastName
         });
     } catch (error) {
         console.error(error);

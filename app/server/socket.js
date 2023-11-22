@@ -3,6 +3,12 @@ const { Server } = require("socket.io");
 const onlineUsers = {};
 const anonymousResponse = {};
 
+/**
+ * Setup SocketIO server.
+ * 
+ * @param {Object} server The HTTP server.
+ * @returns {Object} The SocketIO server.
+ */
 const setupSocketIO = (server) => {
   const io = new Server(server, {
     cors: {
