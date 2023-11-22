@@ -7,7 +7,13 @@ const leaderboard = [
   "4th: Zane",
   "5th: Hop",
 ]
-const InstructorStandings = () => {
+const InstructorStandings = ({ onButtonClick, socket , sessionId }) => {
+
+  const goNext = () => {
+    socket.emit('standings_finished', { sessionId });
+    onButtonClick();
+  }
+
   return (
       <Box
           sx={{
@@ -80,7 +86,9 @@ const InstructorStandings = () => {
                 </Box>
             ))}
           </Paper>
-          <Button variant='contained'>
+          <Button variant='contained'
+            onClick={goNext}
+          >
             Next Question
           </Button>
         </Grid>
@@ -89,4 +97,4 @@ const InstructorStandings = () => {
   );
 }
 
-export default InstructorStandings();
+export default InstructorStandings;

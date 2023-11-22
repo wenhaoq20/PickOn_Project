@@ -7,7 +7,12 @@ const leaderboard = [
   "4th: Zane",
   "5th: Hop",
 ]
-const StudentStandings = () => {
+const StudentStandings = ({ onButtonClick, socket, sessionId }) => {
+
+  socket.on('standings_finished', () => {
+    onButtonClick();
+  })
+
   return (
       <Box
           sx={{
@@ -91,4 +96,4 @@ const StudentStandings = () => {
   );
 }
 
-export default StudentStandings();
+export default StudentStandings;

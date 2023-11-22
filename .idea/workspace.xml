@@ -5,17 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48cebc6d-340f-4835-8842-e71830032fb8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/client/src/components/instructor/InstructorGame.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/client/src/components/instructor/modals/question.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/client/src/components/instructor/modals/standings.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/client/src/components/student/modals/question.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/client/src/components/student/modals/standings.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/Cards/ModeCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/cards/ModeCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/InstructorLobby.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/InstructorLobby.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/Modals/CreateCourse.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/modals/CreateCourse.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client/src/components/student/Modals/JoinCourse.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/student/modals/JoinCourse.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/client/src/pages/instructor/ManageCourseSession.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/pages/instructor/ManageCourseSession.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/InstructorGame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/InstructorGame.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/modals/InstructorQuestion.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/modals/InstructorQuestion.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/instructor/modals/InstructorStandings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/instructor/modals/InstructorStandings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/student/StudentGame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/student/StudentGame.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/student/modals/StudentQuestion.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/student/modals/StudentQuestion.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/components/student/modals/StudentStandings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/components/student/modals/StudentStandings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/client/src/pages/student/CourseSession.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/client/src/pages/student/CourseSession.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/server/socket.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/server/socket.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

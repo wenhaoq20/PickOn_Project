@@ -50,7 +50,7 @@ const CourseSession = () => {
       <CssBaseline />
       <Navbar name="Course Session" redirect={true} />
       {sessionMode === "home" && <SessionLobby name={name} data={state} />}
-      {sessionMode === "competition" && <StudentGame />}
+      {sessionMode === "competition" && <StudentGame socket={socket} sessionId={session} />}
       {sessionMode === "group" && <StudentGroup socket={socket} name={name} />}
       {sessionMode === "anonymous" && (
         <StudentAnonymous socket={socket} sessionId={session} />
