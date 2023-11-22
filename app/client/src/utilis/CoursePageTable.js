@@ -8,8 +8,8 @@ import { removeStudent } from "../services/course/courses";
  * 
  * @component
  * @param {Object} row The row of the table
- * @param {Function} handleOpen Function to open the edit student modal
- * @param {Function} handleSetEditStudent Function to set the student to edit
+ * @param {function} handleOpen Function to open the edit student modal
+ * @param {function} handleSetEditStudent Function to set the student to edit
  * @returns {React.Element} The edit button
  */
 const EditButton = ({ row, handleOpen, handleSetEditStudent }) => {
@@ -69,8 +69,8 @@ const RemoveButton = ({ row, userId, courseInfo }) => {
  * 
  * @param {Object} courseInfo The student information
  * @param {string} userId The user's ID
- * @param {Function} handleOpen Function to open the edit student modal
- * @param {Function} handleSetEditStudent Function to set the student to edit
+ * @param {function} handleOpen Function to open the edit student modal
+ * @param {function} handleSetEditStudent Function to set the student to edit
  * @returns {Array} The array of columns
  */
 export const tableColumns = (courseInfo, userId, handleOpen, handleSetEditStudent) => [

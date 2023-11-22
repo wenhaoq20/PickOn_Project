@@ -20,7 +20,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
  * Component for the instructor group mode for courseSession.
  * 
  * @component
- * @param {Object} props The props for the component.
  * @param {function} props.onButtonClick The function to handle the back button.
  * @param {string[]} props.onlineUsers The array of online users.
  * @param {Object} props.socket The socket for the component.
