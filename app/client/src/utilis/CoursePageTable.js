@@ -3,9 +3,9 @@ import { Button } from "@mui/material";
 import useAxios from "../services/axios";
 import { removeStudent } from "../services/course/courses";
 
-const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
+const EditButton = ({ row, handleOpen, handleSetEditStudent }) => {
     const handleEdit = (row) => {
-        handleSetEditCourse(row._id);
+        handleSetEditStudent(row._id);
         handleOpen();
     };
 
@@ -23,9 +23,9 @@ const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
 const RemoveButton = ({ row, userId, courseInfo }) => {
     const axiosInstance = useAxios();
     const handleRemove = async (row) => {
-        const studentUHId = row.uhid;
+        const uhId = row.uhId;
         try {
-            const response = await removeStudent(axiosInstance, { studentUHId, userId, courseInfo });
+            const response = await removeStudent(axiosInstance, { uhId, userId, courseInfo });
             console.log(response);
         } catch (error) {
             console.error(error);
@@ -46,11 +46,21 @@ const RemoveButton = ({ row, userId, courseInfo }) => {
     );
 }
 
-export const tableColumns = (courseInfo, userId) => [
+export const tableColumns = (courseInfo, userId, handleOpen, handleSetEditStudent) => [
     {
-        field: "name",
-        headerName: "Name",
+        field: "firstName",
+        headerName: "First Name",
         width: 170,
+    },
+    {
+        field: "lastName",
+        headerName: "Last Name",
+        width: 170,
+    },
+    {
+        field: "middleName",
+        headerName: "Middle Name",
+        width: 120,
     },
     {
         field: "email",
@@ -58,7 +68,7 @@ export const tableColumns = (courseInfo, userId) => [
         width: 170,
     },
     {
-        field: "uhid",
+        field: "uhId",
         headerName: "UHID",
         width: 170,
     },
@@ -72,7 +82,7 @@ export const tableColumns = (courseInfo, userId) => [
         headerName: "Edit",
         width: 120,
         sortable: false,
-        renderCell: ({ row }) => <EditButton row={row} courseInfo={courseInfo} />,
+        renderCell: ({ row }) => <EditButton row={row} courseInfo={courseInfo} handleOpen={handleOpen} handleSetEditStudent={handleSetEditStudent} />,
     },
     {
         field: "delete",
@@ -87,9 +97,11 @@ export const tableRows = (students) => {
     return students.map((student, index) => {
         return {
             id: index + 1,
-            name: student.name,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            middleName: student.middleName,
             email: student.email,
-            uhid: student.uhid,
+            uhId: student.uhId,
         };
     });
 };

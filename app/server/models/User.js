@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  uhid: { type: String, required: true, unique: true },
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
+  uhId: { type: String, required: true, unique: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   accountType: { type: String, required: true, default: 'student' },
   enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course', default: [] }],
 });

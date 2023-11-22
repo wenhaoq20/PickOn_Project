@@ -61,11 +61,15 @@ courseSetter.post('/upload_course_roster', async (req, res) => {
             return res.status(400).send("Course not found.");
         }
         const roster = req.body.roster.map((student) => {
-            return { uhid: student[0], name: student[1], email: student[4] };
+            const lastName = student[1].split(',')[0];
+            const firstpart = student[1].split(',')[1];
+            const firstName = firstpart.split(' ')[1];
+            const middleName = firstpart.split(' ').slice(2).join(' ');
+            return { uhId: student[0], firstName: firstName, lastName: lastName, middleName: middleName, email: student[4] };
         });
         course.courseRoster = roster;
 
-        const studentList = await User.find({ uhid: { $in: roster.map((student) => student.uhid) } });
+        const studentList = await User.find({ uhId: { $in: roster.map((student) => student.uhId) } });
         const saveStudentPromises = studentList.map(async (student) => {
             student.enrolledCourses.push(course._id);
             await student.save();
@@ -145,7 +149,7 @@ courseSetter.delete('/remove_course', async (req, res) => {
 });
 
 courseSetter.delete('/remove_student', async (req, res) => {
-    const { studentUHId, userId, courseCRN, courseYear, courseSemester } = req.query;
+    const { uhId, userId, courseCRN, courseYear, courseSemester } = req.query;
     try {
         const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
         if (!course) {
@@ -155,17 +159,19 @@ courseSetter.delete('/remove_student', async (req, res) => {
             return res.status(401).send("User is not authorized to delete this student!");
         }
 
-        const studentInRoster = course.courseRoster.some(s => s.uhid === studentUHId);
+        const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
         if (!studentInRoster) {
             return res.status(400).send("Student not found in course roster.");
         }
-        const student = await User.findOne({ uhid: studentUHId });
-        student.enrolledCourses.pull(course._id);
-        await student.save();
+        const student = await User.findOne({ uhId: uhId });
+        if (student !== null) {
+            student.enrolledCourses.pull(course._id);
+            await student.save();
+        }
 
         await Course.updateOne(
             { _id: course._id },
-            { $pull: { courseRoster: { uhid: studentUHId } } }
+            { $pull: { courseRoster: { uhId: uhId } } }
         );
 
         return res.status(200).send("Student removed from course roster.");
@@ -173,6 +179,28 @@ courseSetter.delete('/remove_student', async (req, res) => {
         console.error(error);
         res.status(500).send("Error removing student.");
     }
+});
+
+courseSetter.post('/add_student', async (req, res) => {
+    console.log(req.body);
+    const { courseCRN, courseYear, courseSemester, uhId, userId, email, firstName, lastName, middleName } = req.body;
+    
+    const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+    if (!course) {
+        return res.status(400).send("Course not found.");
+    }
+    if (!course.instructorId.equals(userId)) {
+        return res.status(401).send("User is not authorized to add students to this course!");
+    }
+
+    const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
+    if (studentInRoster) {
+        return res.status(400).send("Student already in course roster.");
+    }
+
+    course.courseRoster.push({ uhId, firstName, lastName, middleName, email });
+    await course.save();
+    res.status(200).send("Successfully added student.");
 });
 
 module.exports = courseSetter;

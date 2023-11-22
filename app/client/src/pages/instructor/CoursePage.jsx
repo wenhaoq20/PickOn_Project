@@ -20,6 +20,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tableColumns, tableRows } from "../../utilis/CoursePageTable";
 import useAxios from "../../services/axios";
 import { useAuth } from "../../AuthContext";
+import AddStudent from "../../components/instructor/modals/AddStudent";
+import EditStudent from "../../components/instructor/modals/EditStudent";
 
 const defaultTheme = createTheme();
 
@@ -27,6 +29,11 @@ const CoursePage = () => {
   const [rosterFile, setRosterFile] = useState(null);
   const [rosterData, setRosterData] = useState([]);
   const [selectedFileName, setSelectedFileName] = useState("");
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+  const [openEditStudent, setOpenEditStudent] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [selectEditStudent, setSelectEditStudent] = useState(null);
   const { state } = useLocation();
   const { courseCode, courseSection, courseSemester, courseYear, courseCRN } =
     state;
@@ -34,6 +41,14 @@ const CoursePage = () => {
   const axiosInstance = useAxios();
   const { userId } = useAuth();
   const courseInfo = { courseSemester, courseYear, courseCRN };
+  const handleAddStudentOpen = () => setOpenAddStudent(true);
+  const handleAddStudentClose = () => setOpenAddStudent(false);
+  const handleEditStudentOpen = () => setOpenEditStudent(true);
+  const handleEditStudentClose = () => setOpenEditStudent(false);
+
+  const handleSetEditStudent = (studentId) => {
+    setSelectEditStudent(studentId);
+  };
 
   const getRosterData = async () => {
     try {
@@ -62,8 +77,6 @@ const CoursePage = () => {
       document.getElementById("fileInput").value = "";
     }
   };
-
-  const handleCreateOpen = () => {};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -136,12 +149,23 @@ const CoursePage = () => {
               >
                 Submit
               </Button>
+              <Button
+                variant="contained"
+                onClick={() => handleAddStudentOpen()}
+              >
+                Add a student
+              </Button>
             </Box>
           </Grid>
           <Grid item xs={12}>
             <DataGrid
               rows={rows}
-              columns={tableColumns(courseInfo, userId)}
+              columns={tableColumns(
+                courseInfo,
+                userId,
+                handleEditStudentOpen,
+                handleSetEditStudent
+              )}
               initialState={{
                 pagination: {
                   paginationModel: { page: 0, pageSize: 25 },
@@ -150,10 +174,26 @@ const CoursePage = () => {
               pageSizeOptions={[25, 50, 100]}
             />
           </Grid>
-          <Button variant="contained" onClick={() => handleCreateOpen()}>
-            Add a student
-          </Button>
         </Grid>
+        {openAddStudent && (
+          <AddStudent
+            open={openAddStudent}
+            handleClose={handleAddStudentClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+            courseInfo={courseInfo}
+          />
+        )}
+        {openEditStudent && (
+          <EditStudent
+            open={openEditStudent}
+            handleClose={handleEditStudentClose}
+            setSuccessMsg={setSuccessMsg}
+            setAlertOpen={setAlertOpen}
+            selectEditStudent={selectEditStudent}
+            courseInfo={courseInfo}
+          />
+        )}
       </Container>
     </ThemeProvider>
   );
