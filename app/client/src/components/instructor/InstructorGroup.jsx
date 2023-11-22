@@ -15,6 +15,18 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+/**
+ * Component for the instructor group mode for courseSession.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {function} props.onButtonClick The function to handle the back button.
+ * @param {string[]} props.onlineUsers The array of online users.
+ * @param {Object} props.socket The socket for the component.
+ * @param {string} props.sessionId The id of the session.
+ * @returns {React.ReactElement} The instructor group component.
+ */
 const InstructorGroup = ({ onButtonClick, onlineUsers, sessionId, socket }) => {
   const [groupSize, setGroupSize] = useState(1);
   const [groups, setGroups] = useState([]);

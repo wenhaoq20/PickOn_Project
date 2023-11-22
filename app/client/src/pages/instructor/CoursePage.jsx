@@ -25,6 +25,12 @@ import EditStudent from "../../components/instructor/modals/EditStudent";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for instructor individual course page
+ *
+ * @component
+ * @returns {React.ReactElement} The course page.
+ */
 const CoursePage = () => {
   const [rosterFile, setRosterFile] = useState(null);
   const [rosterData, setRosterData] = useState([]);

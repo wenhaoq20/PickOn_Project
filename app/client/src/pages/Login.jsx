@@ -21,6 +21,12 @@ import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for user login and authentication.
+ *
+ * @component
+ * @returns {React.ReactElement} The login form page.
+ */
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

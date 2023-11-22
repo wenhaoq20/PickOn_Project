@@ -28,6 +28,17 @@ const style = {
   p: 4,
 };
 
+/**
+ * Component for the join course modal.
+ * 
+ * @component
+ * @param {Object} props The props for the component.
+ * @param {boolean} props.open Whether the modal is open.
+ * @param {function} props.handleClose The function to close the modal.
+ * @param {function} props.setSuccessMsg The function to set the success message.
+ * @param {function} props.setAlertOpen The function to set the alert open.
+ * @returns {React.ReactElement} The join course modal component.
+ */
 const JoinCourse = ({ open, handleClose, setSuccessMsg, setAlertOpen }) => {
   const { userId } = useAuth();
   const currDate = new Date();

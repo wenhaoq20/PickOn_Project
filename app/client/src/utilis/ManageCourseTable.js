@@ -5,6 +5,13 @@ import { useAuth } from "../AuthContext";
 import useAxios from "../services/axios";
 import { removeCourse } from "../services/course/courses";
 
+/**
+ * Component for the view button in the course table.
+ * 
+ * @component
+ * @param {Object} row The row of the table
+ * @returns {React.Element} The view button
+ */
 const ViewButton = ({ row }) => {
     const navigator = useNavigate();
     const handleEnter = (course) => {
@@ -29,6 +36,13 @@ const ViewButton = ({ row }) => {
 
 }
 
+/**
+ * Component for the remove button in the course table.
+ * 
+ * @component
+ * @param {Object} row The row of the table
+ * @returns {React.Element} The remove button
+ */
 const RemoveButton = ({ row }) => {
     const { userId } = useAuth();
     const axiosInstance = useAxios();
@@ -53,6 +67,15 @@ const RemoveButton = ({ row }) => {
     );
 };
 
+/**
+ * Component for the edit button in the course table.
+ * 
+ * @component
+ * @param {Object} row The row of the table
+ * @param {Function} handleOpen Function to open the edit dialog
+ * @param {Function} handleSetEditCourse Function to set the course to edit
+ * @returns {React.Element} The edit button
+ */
 const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
     const handleEdit = (row) => {
         handleSetEditCourse(row._id);
@@ -66,6 +89,13 @@ const EditButton = ({ row, handleOpen, handleSetEditCourse }) => {
     )
 };
 
+/**
+ * The columns of the course table.
+ * 
+ * @param {Function} handleOpen Function to open the edit dialog
+ * @param {Function} handleSetEditCourse Function to set the course to edit
+ * @returns {Object[]} The columns of the course table
+ */
 export const tableColumns = (handleOpen, handleSetEditCourse) => [
     { field: "name", headerName: "Course Name", width: 170 },
     { field: "code", headerName: "Code", width: 100 },
@@ -111,6 +141,12 @@ export const tableColumns = (handleOpen, handleSetEditCourse) => [
     },
 ];
 
+/**
+ * The rows of the course table.
+ * 
+ * @param {Object[]} courses The courses to display
+ * @returns {Object[]} The rows of the course table
+ */
 export const tableRows = (courses) => {
     return courses.map((course, index) => {
         return {

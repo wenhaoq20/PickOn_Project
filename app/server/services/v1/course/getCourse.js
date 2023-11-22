@@ -3,6 +3,15 @@ const courseGetter = express.Router();
 const Course = require('../../../models/Course');
 const User = require('../../../models/User');
 
+/**
+ * Route serving the list of enrolled courses for a specific user.
+ * 
+ * @path {GET} /get_enrolled_courses
+ * @query {String} id The unique identifier of the user.
+ * @response {Object} The JSON response contains a success flag and an array of enrolled courses.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseGetter.get('/get_enrolled_courses', async (req, res) => {
     const { id } = req.query;
     try {
@@ -18,6 +27,17 @@ courseGetter.get('/get_enrolled_courses', async (req, res) => {
     }
 });
 
+/**
+ * Route serving the roster of a specific course.
+ * 
+ * @path {GET} /get_course_roster
+ * @query {String} courseCRN The Course Registration Number.
+ * @query {String} courseSemester The semester of the course (e.g., 'Fall', 'Spring').
+ * @query {String} courseYear The year of the course.
+ * @response {Object} The JSON response containing the course roster.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseGetter.get('/get_course_roster', async (req, res) => {
     const { courseCRN, courseSemester, courseYear } = req.query;
     try {
@@ -32,6 +52,15 @@ courseGetter.get('/get_course_roster', async (req, res) => {
     }
 });
 
+/**
+ * Route serving detailed information about a specific course.
+ * 
+ * @path {GET} /get_course_info
+ * @query {String} courseId The unique identifier of the course.
+ * @response {Object} The JSON response containing the detailed information of the course.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
 courseGetter.get('/get_course_info', async (req, res) => {
     const { courseId } = req.query;
     try {

@@ -24,6 +24,15 @@ const rows = [
   createData("Total", 35),
 ];
 
+/**
+ * Component for the session lobby in the student view
+ * 
+ * @component
+ * @param {Object} props Component props 
+ * @param {string} name Student name
+ * @param {Object} data Course data
+ * @returns 
+ */
 const SessionLobby = ({ name, data }) => {
   return (
     <Stack

@@ -17,6 +17,12 @@ import useAxios from "../services/axios";
 
 const defaultTheme = createTheme();
 
+/**
+ * Page for user registration.
+ *
+ * @component
+ * @returns {React.ReactElement} The register form page.
+ */
 const Register = () => {
   const [formData, setFormData] = useState({
     email: "",

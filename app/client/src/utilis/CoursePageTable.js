@@ -3,6 +3,15 @@ import { Button } from "@mui/material";
 import useAxios from "../services/axios";
 import { removeStudent } from "../services/course/courses";
 
+/**
+ * Component for the edit button in the student table.
+ * 
+ * @component
+ * @param {Object} row The row of the table
+ * @param {Function} handleOpen Function to open the edit student modal
+ * @param {Function} handleSetEditStudent Function to set the student to edit
+ * @returns {React.Element} The edit button
+ */
 const EditButton = ({ row, handleOpen, handleSetEditStudent }) => {
     const handleEdit = (row) => {
         handleSetEditStudent(row._id);
@@ -20,6 +29,15 @@ const EditButton = ({ row, handleOpen, handleSetEditStudent }) => {
     );
 }
 
+/**
+ * Component for the remove button in the student table.
+ * 
+ * @component
+ * @param {Object} row The row of the table
+ * @param {string} userId The user's ID
+ * @param {Object} courseInfo The course information
+ * @returns {React.Element} The remove button
+ */
 const RemoveButton = ({ row, userId, courseInfo }) => {
     const axiosInstance = useAxios();
     const handleRemove = async (row) => {
@@ -46,6 +64,15 @@ const RemoveButton = ({ row, userId, courseInfo }) => {
     );
 }
 
+/**
+ * The columns for the student table.
+ * 
+ * @param {Object} courseInfo The student information
+ * @param {string} userId The user's ID
+ * @param {Function} handleOpen Function to open the edit student modal
+ * @param {Function} handleSetEditStudent Function to set the student to edit
+ * @returns {Array} The array of columns
+ */
 export const tableColumns = (courseInfo, userId, handleOpen, handleSetEditStudent) => [
     {
         field: "firstName",
@@ -93,6 +120,12 @@ export const tableColumns = (courseInfo, userId, handleOpen, handleSetEditStuden
     },
 ];
 
+/**
+ * The rows for the student table.
+ * 
+ * @param {Array} students The array of students
+ * @returns {Array} The array of rows
+ */
 export const tableRows = (students) => {
     return students.map((student, index) => {
         return {
