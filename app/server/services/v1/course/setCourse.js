@@ -265,25 +265,73 @@ courseSetter.delete('/remove_student', async (req, res) => {
  * @error {String} message Error message in case of failure.
  */
 courseSetter.post('/add_student', async (req, res) => {
-    console.log(req.body);
     const { courseCRN, courseYear, courseSemester, uhId, userId, email, firstName, lastName, middleName } = req.body;
-    
-    const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
-    if (!course) {
-        return res.status(400).send("Course not found.");
-    }
-    if (!course.instructorId.equals(userId)) {
-        return res.status(401).send("User is not authorized to add students to this course!");
-    }
+    try {
+        const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        if (!course.instructorId.equals(userId)) {
+            return res.status(401).send("User is not authorized to add students to this course!");
+        }
 
-    const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
-    if (studentInRoster) {
-        return res.status(400).send("Student already in course roster.");
-    }
+        const studentInRoster = course.courseRoster.some(s => s.uhId === uhId);
+        if (studentInRoster) {
+            return res.status(400).send("Student already in course roster.");
+        }
 
-    course.courseRoster.push({ uhId, firstName, lastName, middleName, email });
-    await course.save();
-    res.status(200).send("Successfully added student.");
+        const student = await Student.findOne({ uhId: uhId });
+        if (student !== null) {
+            student.enrolledCourses.push(course._id);
+            await student.save();
+        }
+
+        course.courseRoster.push({ uhId, firstName, lastName, middleName, email });
+        await course.save();
+        res.status(200).send("Successfully added student.");
+    } catch (error) {
+        res.status(500).send("Error adding student.");
+    }
+});
+
+/**
+ * Route for editing a student in a course roster.
+ * 
+ * @path {PUT} /edit_student
+ * @body {Object} newData The updated student details.
+ * @body {Object} oldData The old student details.
+ * @body {String} courseCRN The Course Registration Number.
+ * @body {String} courseYear The year of the course.
+ * @body {String} courseSemester The semester of the course.
+ * @response {String} message Success or error message.
+ * @response {Number} status HTTP status code of the response.
+ * @error {String} message Error message in case of failure.
+ */
+courseSetter.put('/edit_student', async (req, res) => {
+    const { newData, oldData, courseCRN, courseYear, courseSemester } = req.body;
+    try {
+        const course = await Course.findOne({ courseCRN, courseYear, courseSemester });
+        if (!course) {
+            return res.status(400).send("Course not found.");
+        }
+        const studentInRoster = course.courseRoster.some(s => s.uhId === oldData.uhId);
+        if (!studentInRoster) {
+            return res.status(400).send("Student not found in course roster.");
+        }
+        if (newData.uhId !== oldData.uhId) {
+            const studentInRoster = course.courseRoster.some(s => s.uhId === newData.uhId);
+            if (studentInRoster) {
+                return res.status(400).send("The new UH ID is already in course roster.");
+            }
+        }
+        await Course.updateOne(
+            { _id: course._id, "courseRoster.uhId": oldData.uhId },
+            { $set: { "courseRoster.$.uhId": newData.uhId, "courseRoster.$.firstName": newData.firstName, "courseRoster.$.lastName": newData.lastName, "courseRoster.$.middleName": newData.middleName, "courseRoster.$.email": newData.email } }
+        );
+        res.status(200).send("Successfully updated student.");
+    } catch (error) {
+        res.status(500).send("Error editing student.");
+    }
 });
 
 module.exports = courseSetter;

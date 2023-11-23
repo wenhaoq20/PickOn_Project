@@ -221,3 +221,13 @@ export const addStudent = async (axios, formData, courseInfo) => {
         throw error;
     }
 }
+
+export const editStudent = async (axios, newData, oldData, courseInfo) => {
+    const { courseCRN, courseYear, courseSemester } = courseInfo;
+    try {
+        const res = await axios.put("api/v1/edit_student", { newData, oldData, courseCRN, courseYear, courseSemester });
+        return res;
+    } catch (error) {
+        throw error;
+    }
+};

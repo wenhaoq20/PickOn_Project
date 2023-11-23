@@ -47,6 +47,7 @@ const CoursePage = () => {
   const axiosInstance = useAxios();
   const { userId } = useAuth();
   const courseInfo = { courseSemester, courseYear, courseCRN };
+  
   const handleAddStudentOpen = () => setOpenAddStudent(true);
   const handleAddStudentClose = () => setOpenAddStudent(false);
   const handleEditStudentOpen = () => setOpenEditStudent(true);

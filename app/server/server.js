@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const mongoose = require('mongoose');
-const session = require('express-session');
 const cors = require('cors');
 const userAuth = require('./services/v1/user/authUser');
 const userGetter = require('./services/v1/user/getUser');
@@ -25,8 +24,6 @@ setupSocketIO(server);
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
-
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 const verifyToken = (req, res, next) => {
   const token =
