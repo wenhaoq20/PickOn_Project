@@ -72,7 +72,6 @@ const EditStudent = ({
         selectEditStudent,
         courseInfo
       );
-      console.log(response);
       if (response.status === 200) {
         sucessAlert();
         handleClose();

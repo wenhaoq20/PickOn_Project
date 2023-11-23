@@ -44,7 +44,6 @@ const RemoveButton = ({ row, userId, courseInfo }) => {
         const uhId = row.uhId;
         try {
             const response = await removeStudent(axiosInstance, { uhId, userId, courseInfo });
-            console.log(response);
         } catch (error) {
             console.error(error);
         }

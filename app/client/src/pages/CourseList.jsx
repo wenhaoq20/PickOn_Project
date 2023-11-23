@@ -48,7 +48,7 @@ const CourseList = () => {
         const res = await getUserCourseList(axiosInstance, userId);
         setCourses(res.data.courses);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
 
