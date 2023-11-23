@@ -35,7 +35,8 @@ const style = {
  * @param {function} props.handleClose The function to handle the modal close.
  * @param {function} props.setSuccessMsg The function to set the success message.
  * @param {function} props.setAlertOpen The function to set the alert open state.
- * @param {string} props.editCourse The id of the course to edit.
+ * @param {Object} props.selectEditStudent The student information to edit.
+ * @param {Object} props.courseInfo The course information.
  * @returns {React.ReactElement} The edit course component.
  */
 const EditStudent = ({
