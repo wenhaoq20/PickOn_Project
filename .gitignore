@@ -1,4 +1,6 @@
 /*
 
 !.gitignore
-!app/
+!client/
+!server/
+!Procfile
