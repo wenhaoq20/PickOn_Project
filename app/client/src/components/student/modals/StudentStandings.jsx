@@ -1,4 +1,5 @@
 import { Box, Grid, Paper, Typography } from '@mui/material';
+import { useEffect } from 'react';
 
 const leaderboard = [
   "1st: Dave",
@@ -9,9 +10,11 @@ const leaderboard = [
 ]
 const StudentStandings = ({ onButtonClick, socket, sessionId }) => {
 
-  socket.on('standings_finished', () => {
-    onButtonClick();
-  })
+  useEffect(() => {
+    socket.on("standings_finished", () => {
+      onButtonClick();
+    })
+  }, [onButtonClick, socket]);
 
   return (
       <Box

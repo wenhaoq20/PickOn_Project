@@ -5,7 +5,6 @@ import { AuthProvider } from "./AuthContext";
 import Login from "./pages/Login";
 import CourseList from "./pages/CourseList";
 import Register from "./pages/Register";
-import Course from "./pages/student/Course";
 import CoursePage from "./pages/instructor/CoursePage";
 import CourseSession from "./pages/student/CourseSession";
 import ManageCourse from "./pages/instructor/ManageCourse";
@@ -28,7 +27,6 @@ const App = () => {
             <Route path="/" element={<CourseList />} />
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["student"]} />}>
-            <Route path="/course" element={<Course />} />
             <Route path="/cs/:parameter" element={<CourseSession />} />
           </Route>
           <Route element={<RoleBasedRoute requiredRoles={["instructor"]} />}>

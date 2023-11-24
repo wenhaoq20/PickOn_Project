@@ -16,20 +16,23 @@ const InstructorQuestion = ({ onButtonClick, onFinalButtonClick, questions, ques
   const timeUp = () => {
     clearTimeout(timer.current);
     questionDone();
+    setAnswers(0);
     if (questions[questionNum].final === true) {
+      socket.emit('question_finished', true, sessionId);
       onFinalButtonClick();
     } else {
+      socket.emit('question_finished', false, sessionId);
       onButtonClick();
     }
   }
 
   useEffect(() => {
-    socket.on("game_receive_answer", num => {
+    socket.on("game_receive_answer", (num) => {
       setAnswers(answers+1);
       const correct = questions[questionNum].answers[num].correct
       socket.emit("notify_correct", { correct, sessionId} );
     });
-  }, [socket, questions, questionNum, answers]);
+  }, [socket, questions, questionNum, answers, sessionId]);
 
   const questionDone = () => {
     socket.emit('question_finished', { sessionId });

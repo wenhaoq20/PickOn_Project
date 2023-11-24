@@ -5,6 +5,9 @@ const StudentQuestion = ({ onButtonClick, onFinalButtonClick, questions, questio
 
   const [count, setCount] = useState(15);
   const [answers, setAnswers] = useState(0);
+  const [questionMode, setQuestionMode] = useState(0);
+  const [added, setAdded] = useState(false);
+  const [points, setPoints] = useState(0);
   let timer = useRef(null);
   timer.current = setTimeout(() => {
     setCount((count-1));
@@ -15,23 +18,41 @@ const StudentQuestion = ({ onButtonClick, onFinalButtonClick, questions, questio
 
   const timeUp = () => {
     clearTimeout(timer.current);
-    if (questions[questionNum].final === true) {
-      onFinalButtonClick();
-    } else {
-      onButtonClick();
-    }
   }
 
   const sendAnswer = (num) => {
     socket.emit("game_send_answer", { num, sessionId });
   }
 
-
   useEffect(() => {
-    socket.on("game_receive_answer", num => {
-      setAnswers(answers+1);
-    });
-  }, [socket, answers]);
+    socket.once('question_finished', final => {
+      setAnswers(0);
+      if (final) {
+        onFinalButtonClick();
+      } else {
+        onButtonClick();
+      }
+    })
+    socket.once("student_notify_correct", (correct) => {
+      setQuestionMode(1);
+      if(correct) {
+        const x = (count/15)*1000;
+        addPoints(x);
+      } else {
+        addPoints(0);
+      }
+    })
+  }, [socket, onButtonClick, onFinalButtonClick]);
+
+  const addPoints = (num) => {
+    if (!added) {
+      console.log("num: " + num);
+      setAnswers((answers+1));
+      setPoints(points => (points + num));
+      console.log(points);
+      setAdded(true);
+    }
+  }
 
   return (
       <Box
@@ -54,6 +75,7 @@ const StudentQuestion = ({ onButtonClick, onFinalButtonClick, questions, questio
               alignItems: "center",
             }}
         >Seconds remaining: {count}</Typography>
+        { questionMode === 0 && (
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Stack
@@ -82,6 +104,18 @@ const StudentQuestion = ({ onButtonClick, onFinalButtonClick, questions, questio
             </Stack>
           </Grid>
         </Grid>
+            )}
+        { questionMode === 1 && (
+            <Typography
+                sx={{
+                  marginTop: 8,
+                  marginBottom: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+            >Waiting for timer to finish...</Typography>
+        )}
         <Typography
             sx={{
               marginTop: 8,

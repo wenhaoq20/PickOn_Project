@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import InstructorQuestion from './modals/InstructorQuestion';
 import InstructorStandings from './modals/InstructorStandings';
@@ -18,7 +18,7 @@ const InstructorGame = ({ onButtonClick, socket, sessionId }) => {
   const [mode, setMode] = useState(0);
   let [num, setNum] = useState(0);
 
-  const questions = [{
+  let questions = [{
     question: 'What is the capital of Korea',
     final: false,
     answers: [
@@ -68,13 +68,15 @@ const InstructorGame = ({ onButtonClick, socket, sessionId }) => {
     setMode(3);
   }
 
-  socket.on('join_game', ({participant}) => {
-    setParticipants(participant);
-  })
+  useEffect(() => {
+    socket.on('join_game', ({ participant }) => {
+      setParticipants(participant);
+    })
+  }, [socket, setParticipants])
 
   const begin = (questions) => {
-    const questionsJSON = JSON.stringify(questions);
-    socket.emit('begin_game', { questionsJSON, sessionId });
+    const newQuestions = JSON.stringify(questions);
+    socket.emit('begin_game', newQuestions, sessionId);
     goQuestions();
   }
 

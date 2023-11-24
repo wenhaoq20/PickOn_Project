@@ -77,17 +77,16 @@ const setupSocketIO = (server) => {
       socket.to(sessionId).emit("receive_pickOn_pass", { name });
     });
 
-    socket.on("question_finished", sessionId => {
-      socket.to(sessionId).emit("question_finished");
+    socket.on("question_finished", (final, sessionId) => {
+      socket.to(sessionId).emit("question_finished", final);
     });
 
-    socket.on("standings_finished", sessionId => {
+    socket.on("standings_finished", ({ sessionId }) => {
       socket.to(sessionId).emit("standings_finished");
     });
 
-    socket.on("begin_game", ({questions, sessionId}) => {
-      console.log(questions);
-      socket.to(sessionId).emit("begin_game_student", JSON.parse(questions));
+    socket.on("begin_game", (questions, sessionId) => {
+      socket.to(sessionId).emit("begin_game_student", questions);
     });
 
     socket.on("join_game", ({participant, sessionId}) => {
@@ -95,11 +94,11 @@ const setupSocketIO = (server) => {
     });
 
     socket.on("game_send_answer", ({num, sessionId}) => {
-      socket.to(sessionId).emit("game_receive_answer", {num});
+      socket.to(sessionId).emit("game_receive_answer", num);
     });
 
     socket.on("notify_correct", ({correct, sessionId}) => {
-      socket.to(sessionId).emit("student_notify_correct", {correct});
+      socket.to(sessionId).emit("student_notify_correct", correct);
     });
 
   });

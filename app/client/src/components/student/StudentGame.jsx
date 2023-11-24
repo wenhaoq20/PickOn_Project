@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Typography, Box, Button, TextField } from "@mui/material";
 import StudentStandings from './modals/StudentStandings';
 import StudentQuestion from './modals/StudentQuestion';
@@ -31,13 +31,15 @@ const StudentGame = ({ socket, sessionId }) => {
       setMode(0);
     }
 
-    socket.on('begin_game_student', ({ questions }) => {
-      setQuestions(questions);
-      goQuestions();
-    })
-
-    socket.on('join_game', ({ participant }) => {
-      setParticipants(participant);
+    useEffect(() => {
+      socket.on('begin_game_student', (questions) => {
+        let newQuestions = JSON.parse(questions);
+        setQuestions(newQuestions);
+        goQuestions();
+      })
+      socket.on('join_game', ({ participant }) => {
+        setParticipants(participant);
+      })
     })
 
     return (
