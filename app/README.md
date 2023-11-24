@@ -29,19 +29,20 @@ PickOn_Project/app/client $ npm install
 PickOn_Project/app/server $ npm install
 ```
 5. Create an .env file in the /server directory. It should look like this
-```bash
-
+```
+MONGO_URI=<Your own MongoDB_URI to the database>
+JWT_SECRET=<Your own JWT secret for password hashing>
 ```
 If you are using your own MongoDB database, you can enter your own secret. If you are using the provided one, please contact Wenhao or Braydon for the secret.
 
 ### Usage
 1. Start the client side by cd to the client/ directory and run
 ```bash
-npm run start
+PickOn_Project/app/client $ npm run start
 ```
 2. Start the server side by cd to the server/ directory and run
 ```bash
-npm run devStart
+PickOn_Project/app/server $ npm run devStart
 ```
 3. Visit [http://localhost:3000](http://localhost:3000) to confirm that the website is running
 

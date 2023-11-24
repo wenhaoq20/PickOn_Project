@@ -56,7 +56,6 @@ const AddStudent = ({ open, handleClose, setSuccessMsg, setAlertOpen, courseInfo
     e.preventDefault();
     try {
       const response = await addStudent(axiosInstance, formData, courseInfo);
-      console.log(response);
       if (response.status === 200) {
         sucessAlert();
         handleClose();

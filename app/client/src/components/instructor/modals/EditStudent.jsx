@@ -8,17 +8,13 @@ import {
   Modal,
   Alert,
   AlertTitle,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
 import { useAuth } from "../../../AuthContext";
-import { updateCourse, getCourseInfo } from "../../../services/course/courses";
-import { TimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  editStudent,
+  getStudentFromRoster,
+} from "../../../services/course/courses";
 import useAxios from "../../../services/axios";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -33,13 +29,14 @@ const style = {
 
 /**
  * Component for editing a course.
- * 
+ *
  * @component
  * @param {boolean} props.open The boolean for the modal open state.
  * @param {function} props.handleClose The function to handle the modal close.
  * @param {function} props.setSuccessMsg The function to set the success message.
  * @param {function} props.setAlertOpen The function to set the alert open state.
- * @param {string} props.editCourse The id of the course to edit.
+ * @param {Object} props.selectEditStudent The student information to edit.
+ * @param {Object} props.courseInfo The course information.
  * @returns {React.ReactElement} The edit course component.
  */
 const EditStudent = ({
@@ -47,14 +44,17 @@ const EditStudent = ({
   handleClose,
   setSuccessMsg,
   setAlertOpen,
-  editCourse,
+  selectEditStudent,
+  courseInfo,
 }) => {
-  const { userName, userId } = useAuth();
+  const { userId } = useAuth();
   const [formData, setFormData] = useState({
-    studentFirstname: "",
-    studentLastname: "",
-    studentEmail: "",
-    studentUHId: "",
+    firstName: selectEditStudent.firstName,
+    lastName: selectEditStudent.lastName,
+    middleName: selectEditStudent.middleName,
+    email: selectEditStudent.email,
+    uhId: selectEditStudent.uhId,
+    userId: userId,
   });
   const axiosInstance = useAxios();
   const [errorMsg, setErrorMsg] = useState("");
@@ -66,17 +66,12 @@ const EditStudent = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let updatedFormData = { ...formData };
-      if (dayjs.isDayjs(updatedFormData.startTime)) {
-        updatedFormData.startTime = updatedFormData.startTime.format("HH:mm");
-      }
-      if (dayjs.isDayjs(updatedFormData.endTime)) {
-        updatedFormData.endTime = updatedFormData.endTime.format("HH:mm");
-      }
-      const response = await updateCourse(axiosInstance, {
-        courseId: editCourse,
-        formData: updatedFormData,
-      });
+      const response = await editStudent(
+        axiosInstance,
+        formData,
+        selectEditStudent,
+        courseInfo
+      );
       if (response.status === 200) {
         sucessAlert();
         handleClose();
@@ -85,39 +80,12 @@ const EditStudent = ({
       if (!error?.response) {
         setErrorMsg("No response from server");
       } else if (error.response?.status === 400) {
-        setErrorMsg(
-          "Invalid user/course information or course already created"
-        );
+        setErrorMsg("Invalid user/course information or user doesn't exist");
       } else {
         setErrorMsg("Something went wrong");
       }
     }
   };
-
-  useEffect(() => {
-    const getCourse = async () => {
-      try {
-        const response = await getCourseInfo(axiosInstance, editCourse);
-        const course = response.data.course;
-        setFormData({
-          courseCode: course.courseCode,
-          courseSection: course.courseSection,
-          courseCRN: course.courseCRN,
-          courseName: course.courseName,
-          courseSemester: course.courseSemester,
-          courseYear: course.courseYear,
-          instructor: userName,
-          description: course.description,
-          userId: userId,
-          startTime: dayjs(course.startTime, "HH:mm"),
-          endTime: dayjs(course.endTime, "HH:mm"),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getCourse();
-  }, []);
 
   return (
     <Modal
@@ -133,49 +101,19 @@ const EditStudent = ({
             <strong> {errorMsg} </strong>
           </Alert>
         )}
-        <Typography variant="h5">Edit the class information</Typography>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              id="courseCode"
-              label="Course Code"
-              name="courseCode"
-              autoFocus
-              value={formData.courseCode}
-              onChange={(e) =>
-                setFormData({ ...formData, courseCode: e.target.value })
-              }
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              id="courseSection"
-              label="Course Section"
-              name="courseSection"
-              value={formData.courseSection}
-              onChange={(e) =>
-                setFormData({ ...formData, courseSection: e.target.value })
-              }
-            />
-          </Grid>
-        </Grid>
+        <Typography variant="h5">Edit the student information</Typography>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          id="courseCRN"
-          label="Course CRN"
-          name="courseCRN"
-          value={formData.courseCRN}
+          id="firstName"
+          label="First Name"
+          name="firstName"
+          autoFocus
+          value={formData.firstName}
           onChange={(e) =>
-            setFormData({ ...formData, courseCRN: e.target.value })
+            setFormData({ ...formData, firstName: e.target.value })
           }
         />
         <TextField
@@ -183,86 +121,56 @@ const EditStudent = ({
           margin="normal"
           required
           fullWidth
-          id="courseName"
-          label="Course Name"
-          name="courseName"
-          value={formData.courseName}
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          value={formData.lastName}
           onChange={(e) =>
-            setFormData({ ...formData, courseName: e.target.value })
+            setFormData({ ...formData, lastName: e.target.value })
           }
         />
         <Grid container spacing={1}>
           <Grid item xs={6}>
-            <FormControl variant="outlined" margin="normal" required fullWidth>
-              <InputLabel id="courseSemesterLabel">Semester</InputLabel>
-              <Select
-                id="courseSemester"
-                value={formData.courseSemester}
-                onChange={(e) =>
-                  setFormData({ ...formData, courseSemester: e.target.value })
-                }
-                label="Semester"
-              >
-                <MenuItem value={"Spring"}>Spring</MenuItem>
-                <MenuItem value={"Summer"}>Summer</MenuItem>
-                <MenuItem value={"Fall"}>Fall</MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="middleName"
+              label="Middle Name"
+              name="middleName"
+              value={formData.middleName}
+              onChange={(e) =>
+                setFormData({ ...formData, middleName: e.target.value })
+              }
+            />
           </Grid>
           <Grid item xs={6}>
             <TextField
               variant="outlined"
               margin="normal"
               required
-              id="courseYear"
-              label="Course Year"
-              name="courseYear"
-              value={formData.courseYear}
+              fullWidth
+              id="uhId"
+              label="UH ID"
+              name="uhId"
+              value={formData.uhId}
               onChange={(e) =>
-                setFormData({ ...formData, courseYear: e.target.value })
+                setFormData({ ...formData, uhId: e.target.value })
               }
             />
           </Grid>
-        </Grid>
-        <Grid container spacing={1}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Grid item xs={6}>
-              <TimePicker
-                label="Course Start Time"
-                value={formData.startTime}
-                onChange={(time) => {
-                  const formattedTime = time ? time.format("HH:mm") : null;
-                  console.log(formattedTime);
-                  setFormData({ ...formData, startTime: formattedTime });
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TimePicker
-                label="Course End Time"
-                value={formData.endTime}
-                onChange={(time) => {
-                  const formattedTime = time ? time.format("HH:mm") : null;
-                  setFormData({ ...formData, endTime: formattedTime });
-                }}
-              />
-            </Grid>
-          </LocalizationProvider>
         </Grid>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          id="description"
-          label="Course Description"
-          name="description"
-          multiline
-          minRows={3}
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
+          id="uhEmail"
+          label="UH Email"
+          name="uhEmail"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         />
         <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }}>
           Submit

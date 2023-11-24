@@ -120,7 +120,7 @@ const EditCourse = ({
           endTime: dayjs(course.endTime, "HH:mm"),
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     getCourse();

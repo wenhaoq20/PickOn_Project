@@ -13,8 +13,8 @@ import { removeStudent } from "../services/course/courses";
  * @returns {React.Element} The edit button
  */
 const EditButton = ({ row, handleOpen, handleSetEditStudent }) => {
-    const handleEdit = (row) => {
-        handleSetEditStudent(row._id);
+    const handleEdit = () => {
+        handleSetEditStudent(row);
         handleOpen();
     };
 
@@ -44,7 +44,6 @@ const RemoveButton = ({ row, userId, courseInfo }) => {
         const uhId = row.uhId;
         try {
             const response = await removeStudent(axiosInstance, { uhId, userId, courseInfo });
-            console.log(response);
         } catch (error) {
             console.error(error);
         }
@@ -109,7 +108,7 @@ export const tableColumns = (courseInfo, userId, handleOpen, handleSetEditStuden
         headerName: "Edit",
         width: 120,
         sortable: false,
-        renderCell: ({ row }) => <EditButton row={row} courseInfo={courseInfo} handleOpen={handleOpen} handleSetEditStudent={handleSetEditStudent} />,
+        renderCell: ({ row }) => <EditButton row={row} handleOpen={handleOpen} handleSetEditStudent={handleSetEditStudent} />,
     },
     {
         field: "delete",

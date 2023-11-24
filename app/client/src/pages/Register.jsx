@@ -49,7 +49,6 @@ const Register = () => {
 
     try {
       const response = await userRegister(axiosInstance, formData);
-      console.log(response.data);
       setSuccessMsg("Successfully registered.");
       navigator("/login");
     } catch (error) {
